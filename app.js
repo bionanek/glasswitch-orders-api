@@ -1,12 +1,17 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const config = require('config');
 
 const app = express();
 
 const productsRoutes = require('./api/routes/products');
 
-app.use(morgan('dev'));
+if (config.util.getEnv('NODE_ENV') == 'test') {
+    app.use(morgan('test'));
+} else {
+    app.use(morgan('dev'));
+}
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

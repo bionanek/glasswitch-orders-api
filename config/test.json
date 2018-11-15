@@ -1,0 +1,10 @@
+{
+    "dbOptions": {
+        "database": "GlassWitchOrders_Tests",
+        "username": "root",
+        "password": "password$",
+        "host": "localhost",
+        "dialect": "mysql",
+        "logging": false
+    }
+}

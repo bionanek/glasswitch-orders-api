@@ -1,15 +1,9 @@
+const config = require('config');
 const Sequelize = require('sequelize');
 const ProductModel = require('./models/product');
 
-const sequelize = new Sequelize(
-    'GlassWitchOrders', 
-    'root', 
-    'password$', 
-    {
-        host: 'localhost',
-        dialect: 'mysql'
-    }
-);
+const options = config.dbOptions;
+const sequelize = new Sequelize(options);
 
 sequelize
     .authenticate()

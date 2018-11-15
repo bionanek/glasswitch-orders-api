@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "test": "export NODE_ENV=test && mocha api/tests/**/**.test.js",
+    "start": "export NODE_ENV=dev && nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   "dependencies": {
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
+    "config": "^2.0.1",
     "express": "^4.16.4",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.4",
