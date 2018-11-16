@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const dbHelper = require('../sequelize');
+const dbHelper = require('../dbHelper');
 
 var db = dbHelper.getSequelize();
 
@@ -13,7 +13,7 @@ var ProductSchema = db.define('product', {
 });
 
 ProductSchema
-    .sync({ force: true })
+    .sync({ force: false })
     .then(() => {
         console.log('Products table has been created');
     })

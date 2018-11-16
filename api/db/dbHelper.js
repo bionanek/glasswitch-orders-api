@@ -12,13 +12,4 @@ exports.getSequelize = () => {
     sequelize = new Sequelize(options);
 
     return sequelize;
-    // sequelize
-    //     .authenticate()
-    //     .then(() => {
-    //         console.log('connection established...');
-    //         return sequelize;
-    //     })
-    //     .catch((error) => {
-    //         console.log('DB Connection Error:', error);
-    //     });
 }

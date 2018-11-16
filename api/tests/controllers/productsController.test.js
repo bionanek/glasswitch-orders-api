@@ -1,7 +1,7 @@
 const sinon = require('sinon');
 const expect = require('chai').expect;
 
-const Products = require('../../db/sequelize').Products;
+const Products = require('../../db/dbHelper').Products;
 const ProductModel = require('../../db/models/product');
 const ProductsController = require('../../controllers/productsController');
 
