@@ -15,7 +15,7 @@ var ProductSchema = db.define('product', {
 ProductSchema
     .sync({ force: false })
     .then(() => {
-        console.log('Products table has been created');
+        console.log('Products table has been synced');
     })
     .catch ((error) => {
     console.log('Error occured while creating Products table:', error);
@@ -24,10 +24,8 @@ ProductSchema
 exports.Product = ProductSchema;
 
 exports.saveProduct = (productData) => {
-    var product = ProductSchema.build(productData);
-
     return new Promise((resolve, reject) => {
-        product.save()
+        ProductSchema.create(productData)
             .then((savedProduct) => {
                 console.log('Product created!');
                 resolve(savedProduct);

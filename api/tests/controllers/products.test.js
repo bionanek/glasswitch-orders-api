@@ -24,7 +24,7 @@ describe('Products', () => {
         done();
     });
 
-    it('Create new product', () => {
+    it('Should create new product', () => {
         var productTestObj = {
             name: 'TestProduct'
         };
@@ -35,7 +35,6 @@ describe('Products', () => {
             createProductPromise.should.eventually.have.property('name').equal(productTestObj.name),
             createProductPromise.should.eventually.have.property('id'),
             createProductPromise.should.eventually.have.property('id').that.is.a('number')
-
         ]);
     });
 });

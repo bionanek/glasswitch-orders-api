@@ -7,8 +7,6 @@ exports.createProduct = (productData) => {
             return;
         }
 
-        console.log('doing some data processing ....');
-
         productDb.saveProduct(productData)
             .then((product) => {
                 resolve(product);
