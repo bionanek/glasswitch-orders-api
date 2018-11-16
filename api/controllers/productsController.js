@@ -14,7 +14,7 @@ exports.get_all = (request, response, next) => {
 exports.create = (request, response, next) => {
     var productData = request.body;
     
-    productsDomain.createProduct(productData)
+    productsDomain.create(productData)
         .then(product => {
             response.status(200).json(product);
         })

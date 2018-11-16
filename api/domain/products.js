@@ -1,6 +1,6 @@
 const productDb = require('../db/models/product');
 
-exports.createProduct = (productData) => {
+exports.create = (productData) => {
     return new Promise((resolve, reject) => {
         if (!productData.name) {
             reject ('Missing fields');
@@ -14,5 +14,13 @@ exports.createProduct = (productData) => {
             .catch((error) => {
                 reject(error);
             });
+    });
+};
+
+exports.getAll = () => {
+    return new Promise((resolve, reject) => {
+        var array = ["asd", "asd"];
+
+        resolve(array);
     });
 };

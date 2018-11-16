@@ -8,8 +8,8 @@ const productDomain = require('../../domain/products');
 describe('Products', () => {
 
     let clearDatabase = () => {
+        console.log("Called clearDatabase");
         ProductModel.destroy({
-            where: {},
             truncate: true
         });
     }
@@ -25,16 +25,41 @@ describe('Products', () => {
     });
 
     it('Should create new product', () => {
+        //ARANGE
         var productTestObj = {
             name: 'TestProduct'
         };
         console.log('Mock object: ' + productTestObj.name + ', ' + productTestObj.id);
 
-        var createProductPromise = productDomain.createProduct(productTestObj);
+        //ACT
+        var createProductPromise = productDomain.create(productTestObj);
+
         return Promise.all([
+
+            //ASSERT
             createProductPromise.should.eventually.have.property('name').equal(productTestObj.name),
             createProductPromise.should.eventually.have.property('id'),
             createProductPromise.should.eventually.have.property('id').that.is.a('number')
+        ]);
+    });
+
+    it('Should return a list of all products', () => {
+        //ARANGE
+        var productTestObj1 = {
+            name: "Product1"
+        };
+
+        var productTestObj2 = {
+            name: "Product2"
+        };
+
+        ProductModel.bulkCreate([productTestObj1, productTestObj2]);
+
+        //ACT
+        var getAllPromise = productDomain.getAll();
+
+        return Promise.all([
+            getAllPromise.should.eventually.be.a('array')
         ]);
     });
 });
