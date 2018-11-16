@@ -7,20 +7,20 @@ const productDomain = require('../../domain/products');
 
 describe('Products', () => {
 
-    beforeEach((done) => {
+    let clearDatabase = () => {
         ProductModel.destroy({
             where: {},
             truncate: true
         });
+    }
+
+    beforeEach((done) => {
+        clearDatabase();
         done();
     });
 
     afterEach((done) => {
-        ProductModel.destroy({
-            where: {},
-            truncate: true
-        });
-
+        clearDatabase();
         done();
     });
 
