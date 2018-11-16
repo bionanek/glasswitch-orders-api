@@ -1,4 +1,4 @@
-const Products = require('../db/sequelize').Products;
+const productsDomain = require('../domain/products');
 
 exports.hello_world = (request, response, next) => {
     const responseBody = {
@@ -9,11 +9,16 @@ exports.hello_world = (request, response, next) => {
 };
 
 exports.get_all = (request, response, next) => {
-    Products.findAll()
-        .then((products) => {
-            response.status(200).json({
-                Products: products,
-                Total: products.length
-            });
-        });
+};
+
+exports.create = (request, response, next) => {
+    var productData = request.body;
+    
+    productsDomain.createProduct(productData)
+        .then(product => {
+            response.status(200).json(product);
+        })
+        .catch(error => {
+            response.status(401).json(error);
+        })
 };
