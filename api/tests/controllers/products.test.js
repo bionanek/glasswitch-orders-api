@@ -1,4 +1,5 @@
 const chai = require('chai');
+const expect = require('chai').expect;
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised).should();
 
@@ -85,13 +86,22 @@ describe('Products', () => {
             name: "Product2"
         };
 
-        ProductModel.bulkCreate([productTestObj1, productTestObj2]);
-
-        //ACT
-        var getAllPromise = productDomain.getAll();
-
-        return Promise.all([
-            getAllPromise.should.eventually.be.a('array')
-        ]);
+        ProductModel.bulkCreate([productTestObj1, productTestObj2])
+            .then(() => {
+                ProductModel.findAll()
+                    .map(el => el.get({ plain: true }))
+                    .then((createdProducts) => {
+                        //ACT
+                        console.log('Created products: ');
+                        console.log(createdProducts);
+                        var getAllPromise = productDomain.getAll();
+        
+                        return Promise.all([
+                            expect(getAllPromise).eventually.be.an('array'),
+                            expect(getAllPromise).eventually.has.lengthOf(2),
+                            expect(getAllPromise).eventually.equal(createdProducts) // TODO: throws Unhandled rejection AssertionError: expected [ Array(2) ] to equal [ Array(2) ]
+                        ]);
+                    });
+            });
     });
 });

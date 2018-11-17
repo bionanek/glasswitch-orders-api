@@ -19,8 +19,18 @@ exports.create = (productData) => {
 
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
-        var array = ["asd", "asd"];
+        productDb.getAll()
+            .then((products) => {
+                if (products == null) {
+                    throw Error('Error while getting all products');
+                }
 
-        resolve(array);
+                console.log(products);
+
+                resolve(products);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 };

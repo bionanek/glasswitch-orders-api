@@ -1,14 +1,16 @@
 const productsDomain = require('../domain/products');
 
-exports.hello_world = (request, response, next) => {
-    const responseBody = {
-        message: "Hello world"
-    };
-
-    response.status(200).json(responseBody);
-};
-
 exports.get_all = (request, response, next) => {
+    productsDomain.getAll()
+        .then((products) => {
+            response.status(200).json(products);
+        })
+        .catch((error) => {
+            response.status(400).json({
+                message: error.message,
+                trace: error.trace
+            });
+        });
 };
 
 exports.create = (request, response, next) => {

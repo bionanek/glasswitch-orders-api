@@ -27,12 +27,23 @@ exports.saveProduct = (productData) => {
     return new Promise((resolve, reject) => {
         ProductSchema.create(productData)
             .then((savedProduct) => {
-                console.log('Product created!');
                 resolve(savedProduct);
             })
             .catch((error) => {
-                console.log('Error occured when saving new product.');
                 reject(error);
+            });
+    });
+};
+
+exports.getAll = () => {
+    return new Promise((resolve, reject) => {
+        ProductSchema.findAll()
+            .map(el => el.get({ plain: true }))
+            .then((products) => {
+                resolve(products);
+            })
+            .catch((error) => {
+                reject(error)
             });
     });
 };
