@@ -13,6 +13,19 @@ exports.get_all = (request, response, next) => {
         });
 };
 
+exports.getById = (request, response, next) => {
+    productsDomain.getById(request.params.productId)
+        .then((product) => {
+            response.status(200).json(product);
+        })
+        .catch((error) => {
+            response.status(400).json({
+                message: error.message,
+                trace: error.trace
+            });
+        });
+};
+
 exports.create = (request, response, next) => {
     var productData = request.body;
     

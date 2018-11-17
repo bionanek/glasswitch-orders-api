@@ -47,3 +47,19 @@ exports.getAll = () => {
             });
     });
 };
+
+exports.getById = (productId) => {
+    return new Promise((resolve, reject) => {
+        ProductSchema.findById(productId)
+            .then(product => {
+                if (product == null) {
+                    reject('Product with given ID doesn\'t exist');
+                }
+
+                resolve(product);
+            })
+            .catch(error => {
+                reject(error);
+            })
+    });
+};

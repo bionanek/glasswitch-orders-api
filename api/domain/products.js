@@ -32,3 +32,19 @@ exports.getAll = () => {
             });
     });
 };
+
+exports.getById = (productId) => {
+    return new Promise((resolve, reject) => {
+        productDb.getById(productId)
+            .then((product) => {
+                if (product == null) {
+                    throw Error('Error while getting product by id');
+                }
+
+                resolve(product);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
