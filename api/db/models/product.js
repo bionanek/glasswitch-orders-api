@@ -21,7 +21,7 @@ ProductSchema
     console.log('Error occured while creating Products table:', error);
 });
 
-exports.Product = ProductSchema;
+exports.Products = ProductSchema;
 
 exports.saveProduct = (productData) => {
     return new Promise((resolve, reject) => {

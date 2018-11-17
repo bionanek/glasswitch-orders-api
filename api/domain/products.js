@@ -25,8 +25,6 @@ exports.getAll = () => {
                     throw Error('Error while getting all products');
                 }
 
-                console.log(products);
-
                 resolve(products);
             })
             .catch((error) => {
