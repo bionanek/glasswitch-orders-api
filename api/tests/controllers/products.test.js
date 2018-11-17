@@ -43,6 +43,38 @@ describe('Products', () => {
         ]);
     });
 
+    it('Should not create new product with name as empty string', () => {
+        //ARANGE
+        var productTestObj = {
+            name: ""
+        };
+        var expectedErrorString = 'Name can\'t be empty';
+
+        //ACT
+        var createProductPromise = productDomain.create(productTestObj);
+
+        return Promise.all([
+            //ASSERT
+            createProductPromise.should.eventually.be.rejectedWith(Error, expectedErrorString)
+        ]);
+    });
+
+    it('Should not create new product with name as space only string', () => {
+        //ARANGE
+        var productTestObj = {
+            name: " "
+        };
+        var expectedErrorString = 'Name can\'t be empty';
+
+        //ACT
+        var createProductPromise = productDomain.create(productTestObj);
+
+        return Promise.all([
+            //ASSERT
+            createProductPromise.should.eventually.be.rejectedWith(Error, expectedErrorString)
+        ]);
+    });
+
     it('Should return a list of all products', () => {
         //ARANGE
         var productTestObj1 = {

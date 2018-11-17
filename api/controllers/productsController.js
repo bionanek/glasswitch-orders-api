@@ -19,6 +19,9 @@ exports.create = (request, response, next) => {
             response.status(200).json(product);
         })
         .catch(error => {
-            response.status(401).json(error);
+            response.status(400).json({
+                message: error.message,
+                trace: error.trace
+            });
         })
 };

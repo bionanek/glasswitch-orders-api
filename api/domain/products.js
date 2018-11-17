@@ -2,8 +2,8 @@ const productDb = require('../db/models/product');
 
 exports.create = (productData) => {
     return new Promise((resolve, reject) => {
-        if (!productData.name) {
-            reject ('Missing fields');
+        if (!productData.name || !/\S/.test(productData.name)) {
+            reject(new Error('Name can\'t be empty'));
             return;
         }
 
