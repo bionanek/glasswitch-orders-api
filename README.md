@@ -25,12 +25,12 @@ To understand why we do the above associations we start off by knowing what are 
 In setting a `Parent.hasOne(Child)`, methods available to parent DAO instance:
 
 ``` javascript
-parent.getChild,
-parent.setChild,
-parent.addChild,
-parent.createChild,
-parent.removeChild,
-parent.hasChild
+parent.getChild(),
+parent.setChild(),
+parent.addChild(),
+parent.createChild(),
+parent.removeChild(),
+parent.hasChild()
 ```
 
 ### hasMany():
@@ -38,13 +38,13 @@ parent.hasChild
 In setting a `Parent.hasMany(Child)`, methods available to parent DAO instance:
 
 ``` javascript
-parent.getChildren,
-parent.setChildren,
-parent.addChild,
-parent.createChild,
-parent.removeChild,
-parent.hasChild,
-parent.hasChildren
+parent.getChildren(),
+parent.setChildren(),
+parent.addChild(),
+parent.createChild(),
+parent.removeChild(),
+parent.hasChild(),
+parent.hasChildren()
 ```
 
 ### belongsTo()/belongsToMany:
@@ -52,14 +52,14 @@ parent.hasChildren
 In setting a `Child.belongsTo(Parent)`, methods available to child DAO instance:
 
 ``` javascript
-child.getParent,
-child.setParent,
-child.createParent
+child.getParent(),
+child.setParent(),
+child.createParent()
 
 //belongsToMany
-child.getParents,
-child.setParents,
-child.createParents
+child.getParents(),
+child.setParents(),
+child.createParents()
 ``` 
 
 #### The syntax for setting up relationships. And our conventions
@@ -103,5 +103,5 @@ TableNames: **PascalCase**
 keys: **camelCase**
 
 foreignkeys: **TableNameInPascalCase_foreignKeyInCamelCase**
-
+()
 Example: **User_pictureId** Meaning: This key of **pictureId** came from the User table.
