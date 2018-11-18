@@ -1,6 +1,6 @@
 const dataModel = require('../models/productDataModel')
 
-var ProductSchema = dataModel.productDataModel();
+var ProductSchema = dataModel.productDataModel;
 
 ProductSchema
     .sync({ force: false })
