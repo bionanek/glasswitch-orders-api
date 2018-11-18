@@ -1,6 +1,6 @@
 const productsDomain = require('../domain/products');
 
-exports.get_all = (request, response, next) => {
+exports.getAll = (request, response, next) => {
     productsDomain.getAll()
         .then((products) => {
             response.status(200).json(products);

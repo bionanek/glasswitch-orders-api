@@ -1,4 +1,4 @@
-const productDb = require('../db/models/product');
+const productDb = require('../db/repositories/product');
 
 exports.create = (productData) => {
     return new Promise((resolve, reject) => {

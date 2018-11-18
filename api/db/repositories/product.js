@@ -1,16 +1,6 @@
-const Sequelize = require('sequelize');
-const dbHelper = require('../dbHelper');
+const dataModel = require('../models/productDataModel')
 
-var db = dbHelper.getSequelize();
-
-var ProductSchema = db.define('product', {
-    id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    name: Sequelize.STRING
-});
+var ProductSchema = dataModel.productDataModel();
 
 ProductSchema
     .sync({ force: false })
