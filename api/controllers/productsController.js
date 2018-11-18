@@ -1,4 +1,4 @@
-const productsDomain = require('../domain/products');
+const productsDomain = require('../domain/productsDomain');
 
 exports.getAll = (request, response, next) => {
     productsDomain.getAll()
@@ -28,7 +28,7 @@ exports.getById = (request, response, next) => {
 
 exports.create = (request, response, next) => {
     var productData = request.body;
-    
+
     productsDomain.create(productData)
         .then(product => {
             response.status(200).json(product);
@@ -39,4 +39,12 @@ exports.create = (request, response, next) => {
                 trace: error.trace
             });
         })
+};
+
+exports.update = (request, response, next) => {
+    var updatedProduct =
+    {
+        id: request.params.productId,
+        name: request.body.name,
+    }
 };

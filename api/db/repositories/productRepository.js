@@ -1,21 +1,10 @@
-const dataModel = require('../models/productDataModel')
+const Products = require('../dbHelper').products;
 
-var ProductSchema = dataModel.productDataModel;
-
-ProductSchema
-    .sync({ force: false })
-    .then(() => {
-        console.log('Products table has been synced');
-    })
-    .catch ((error) => {
-    console.log('Error occured while creating Products table:', error);
-});
-
-exports.Products = ProductSchema;
+exports.Products = Products;
 
 exports.saveProduct = (productData) => {
     return new Promise((resolve, reject) => {
-        ProductSchema.create(productData)
+        Products.create(productData)
             .then((savedProduct) => {
                 resolve(savedProduct);
             })
@@ -27,7 +16,7 @@ exports.saveProduct = (productData) => {
 
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
-        ProductSchema.findAll()
+        Products.findAll()
             .map(el => el.get({ plain: true }))
             .then((products) => {
                 resolve(products);
@@ -40,7 +29,7 @@ exports.getAll = () => {
 
 exports.getById = (productId) => {
     return new Promise((resolve, reject) => {
-        ProductSchema.findById(productId)
+        Products.findById(productId)
             .then(product => {
                 if (product == null) {
                     reject('Product with given ID doesn\'t exist');

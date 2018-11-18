@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 
-const ProductDb = require('../../db/repositories/product');
-const productDomain = require('../../domain/products');
+const ProductDb = require('../../db/repositories/productRepository');
+const productDomain = require('../../domain/productsDomain');
 
 describe('Products', () => {
 

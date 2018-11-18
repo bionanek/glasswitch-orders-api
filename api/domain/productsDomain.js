@@ -1,4 +1,4 @@
-const productDb = require('../db/repositories/product');
+const productRepo = require('../db/repositories/productRepository');
 
 exports.create = (productData) => {
     return new Promise((resolve, reject) => {
@@ -7,7 +7,7 @@ exports.create = (productData) => {
             return;
         }
 
-        productDb.saveProduct(productData)
+        productRepo.saveProduct(productData)
             .then((product) => {
                 resolve(product);
             })
@@ -19,7 +19,7 @@ exports.create = (productData) => {
 
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
-        productDb.getAll()
+        productRepo.getAll()
             .then((products) => {
                 if (products == null) {
                     throw Error('Error while getting all products');
@@ -35,7 +35,7 @@ exports.getAll = () => {
 
 exports.getById = (productId) => {
     return new Promise((resolve, reject) => {
-        productDb.getById(productId)
+        productRepo.getById(productId)
             .then((product) => {
                 if (product == null) {
                     throw Error('Error while getting product by id');
