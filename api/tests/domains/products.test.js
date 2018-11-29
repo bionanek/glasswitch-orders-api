@@ -1,31 +1,29 @@
 const expect = require('chai').expect;
 
-const ProductDb = require('../../db/repositories/productRepository');
+const DbHelper = require('../../db/dbHelper');
+const ProductDb = DbHelper.Products;
+const PriceDb = DbHelper.Prices;
+const Sequelize = DbHelper.Sequelize;
 const productDomain = require('../../domain/productsDomain');
 
 describe('Products', () => {
 
-    let clearDatabase = () => {
-        console.log("Called clearDatabase");
-        ProductDb.Products.destroy({
-            truncate: true
-        });
-    }
-
-    beforeEach((done) => {
-        clearDatabase();
-        done();
-    });
-
-    afterEach((done) => {
-        clearDatabase();
-        done();
+    beforeEach(async () => {
+        return await Sequelize.sync({force: true});
     });
 
     it('Should create new product', async () => {
         //ARRANGE
         var productTestObj = {
-            name: 'TestProduct'
+            name: 'TestProduct',
+            description: 'Description',
+            type: 'Type',
+            category: 'Category',
+            width: 12.2,
+            height: 13.2,
+            depth: 44.2,
+            image: 'Image Path',
+            Product_priceID: 2
         };
         console.log('Mock object: ' + productTestObj.name + ', ' + productTestObj.id);
 
@@ -81,10 +79,10 @@ describe('Products', () => {
             name: "Product2"
         };
 
-        await ProductDb.Products.bulkCreate([productTestObj1, productTestObj2]);
+        await ProductDb.bulkCreate([productTestObj1, productTestObj2]);
 
         //ACT
-        const allProducts = await ProductDb.Products.findAll()
+        const allProducts = await ProductDb.findAll()
             .map(el => el.get({ plain: true }));
         //ASSERT
         expect(allProducts).to.be.an('array');

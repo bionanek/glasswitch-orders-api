@@ -1,4 +1,4 @@
-const Products = require('../dbHelper').products;
+const Products = require('../dbHelper').Products;
 
 exports.Products = Products;
 

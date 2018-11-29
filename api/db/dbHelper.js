@@ -1,7 +1,7 @@
 const config = require('config');
 const Sequelize = require('sequelize');
 var PricesDataModel = require('./models/priceDataModel').priceDataModel;
-var ProductsDataModel = require('./models/productDataModel').productDataModel
+var ProductsDataModel = require('./models/productDataModel').productDataModel;
 let sequelize;
 
 function getSequelize() {
@@ -16,14 +16,15 @@ function getSequelize() {
 
 sequelize = getSequelize();
 
-var Prices = sequelize.define('prices', PricesDataModel)
-var Products = sequelize.define('products', ProductsDataModel);
+var Prices = sequelize.define('prices', PricesDataModel, {freezeTableName: true})
+var Products = sequelize.define('products', ProductsDataModel, {freezeTableName: true});
 
 sequelize.sync({ force: true });
 
 
-exports.prices = Prices;
-exports.products = Products;
+exports.Prices = Prices;
+exports.Products = Products;
+exports.Sequelize = sequelize;
 
 
 
