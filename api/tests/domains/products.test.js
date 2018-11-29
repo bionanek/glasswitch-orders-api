@@ -7,9 +7,24 @@ const Sequelize = DbHelper.Sequelize;
 const productDomain = require('../../domain/productsDomain');
 
 describe('Products', () => {
+    let price;
 
-    beforeEach(async () => {
-        return await Sequelize.sync({force: true});
+    before(async () =>{
+        await Sequelize.sync({force: true});
+
+        price = await PriceDb.create({
+            pln: 4.2,
+            eur: 4.2,
+            usd: 4.2
+        });
+
+        console.log('============= Price created, id: ' + price.id + ' =============')
+
+        return;
+    });
+
+    afterEach(async () => {
+        return await ProductDb.sync({force: true});
     });
 
     it('Should create new product', async () => {
@@ -23,7 +38,7 @@ describe('Products', () => {
             height: 13.2,
             depth: 44.2,
             image: 'Image Path',
-            Product_priceID: 2
+            Product_priceID: price.id
         };
         console.log('Mock object: ' + productTestObj.name + ', ' + productTestObj.id);
 
