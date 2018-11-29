@@ -42,9 +42,21 @@ exports.create = (request, response, next) => {
 };
 
 exports.update = (request, response, next) => {
-    var updatedProduct =
-    {
-        id: request.params.productId,
-        name: request.body.name,
-    }
+    const productId = request.params.productId;
+    // var updatedProduct = {};
+
+    // Object.getOwnPropertyNames(request.body).forEach( (property) => {
+    //     updatedProduct[property] = request.body[property];
+    // });
+
+    productsDomain.update(productId, request.body)
+        .then((affectedRows) => {
+            response.status(200).json(affectedRows);
+        })
+        .catch((error) => {
+            response.status(500).json({
+                message: error.message,
+                trace: error.trace
+            });
+        });
 };

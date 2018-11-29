@@ -14,6 +14,19 @@ exports.saveProduct = (productData) => {
     });
 };
 
+exports.updateProduct = (productId, updatedProduct) => {
+    return new Promise((resolve, reject) => {
+        Products.update(
+            updatedProduct,
+            { where: { id: productId } }
+        ).then((affectedRows) => {
+            resolve(affectedRows);
+        }).catch((error) =>{
+            reject(error);
+        });
+    });
+};
+
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
         Products.findAll()

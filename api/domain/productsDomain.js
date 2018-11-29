@@ -17,6 +17,18 @@ exports.create = (productData) => {
     });
 };
 
+exports.update = (productId, updatedProduct) => {
+    return new Promise((resolve, reject) => {
+        productRepo.updateProduct(productId, updatedProduct)
+            .then((affectedRows) => {
+                resolve(affectedRows);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
         productRepo.getAll()
