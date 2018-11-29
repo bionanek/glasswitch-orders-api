@@ -18,8 +18,6 @@ describe('Products', () => {
             usd: 4.2
         });
 
-        console.log('============= Price created, id: ' + price.id + ' =============')
-
         return;
     });
 
@@ -40,7 +38,6 @@ describe('Products', () => {
             image: 'Image Path',
             Product_priceID: price.id
         };
-        console.log('Mock object: ' + productTestObj.name + ', ' + productTestObj.id);
 
         //ACT
         var createdProduct = await productDomain.create(productTestObj);
@@ -87,11 +84,27 @@ describe('Products', () => {
     it('Should return a list of all products', async () => {
         //ARRANGE
         var productTestObj1 = {
-            name: "Product1"
+            name: 'Product1',
+            description: 'Description',
+            type: 'Type',
+            category: 'Category',
+            width: 12.2,
+            height: 13.2,
+            depth: 44.2,
+            image: 'Image Path',
+            Product_priceID: price.id
         };
 
         var productTestObj2 = {
-            name: "Product2"
+            name: 'Product2',
+            description: 'Description',
+            type: 'Type',
+            category: 'Category',
+            width: 12.2,
+            height: 13.2,
+            depth: 44.2,
+            image: 'Image Path',
+            Product_priceID: price.id
         };
 
         await ProductDb.bulkCreate([productTestObj1, productTestObj2]);
@@ -99,6 +112,7 @@ describe('Products', () => {
         //ACT
         const allProducts = await ProductDb.findAll()
             .map(el => el.get({ plain: true }));
+
         //ASSERT
         expect(allProducts).to.be.an('array');
         expect(allProducts).to.have.lengthOf(2);
