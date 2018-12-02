@@ -29,6 +29,26 @@ exports.update = (productId, updatedProduct) => {
     });
 };
 
+exports.delete = (productId) => {
+    return new Promise((resolve, reject) => {
+        if (isNaN(productId)) {
+            reject({ message: 'Product ID must be an integer. Given ID: ' + productId });
+            return;
+        } else if (productId < 0) {
+            reject({ message: 'Product ID must be a positive number. Given ID: ' + productId });
+            return;
+        }
+
+        productRepo.deleteProduct(productId)
+            .then((removedRows) => {
+                resolve(removedRows);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
         productRepo.getAll()

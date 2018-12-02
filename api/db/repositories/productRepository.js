@@ -27,6 +27,24 @@ exports.updateProduct = (productId, updatedProduct) => {
     });
 };
 
+exports.deleteProduct = (productId) => {
+    return new Promise((resolve, reject) => {
+        Products.destroy({ where: { id: productId }, cascade: true })
+            .then((removedRows) => {
+                if (removedRows === 1) {
+                    resolve(removedRows);
+                } else {
+                    console.log('repo else');
+                    reject('Product with given ID doesn\'t exist');
+                }
+            })
+            .catch((error) => {
+                console.log('repo catch');
+                reject(error);
+            });
+    });
+};
+
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
         Products.findAll()
