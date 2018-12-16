@@ -1,6 +1,7 @@
-const Prices = require('../dbHelper').prices;
+const Prices = require('../dbHelper').Prices;
 
 exports.Prices = Prices;
+
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
         Prices.findAll()
@@ -12,4 +13,16 @@ exports.getAll = () => {
                 reject(error)
             });
     });
+};
+
+exports.savePrice = (priceData) => {
+    return new Promise((resolve, reject) => {
+        Prices.create(priceData)
+            .then((savedPrice) => {
+                resolve(savedPrice);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    })
 };

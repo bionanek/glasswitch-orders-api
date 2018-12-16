@@ -1,13 +1,20 @@
 const productRepo = require('../db/repositories/productRepository');
+const pricesDomain = require('./pricesDomain');
 
 exports.create = (productData) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         if (!productData.name || !/\S/.test(productData.name)) {
             reject(new Error('Name can\'t be empty'));
             return;
         }
 
-        productRepo.saveProduct(productData)
+        let price = await pricesDomain.create(productData.price);
+
+        let productWithPriceId = Object.assign({}, productData); 
+        delete productWithPriceId.price;
+        productWithPriceId['Product_priceID'] = price.id
+
+        productRepo.saveProduct(productWithPriceId)
             .then((product) => {
                 resolve(product);
             })
