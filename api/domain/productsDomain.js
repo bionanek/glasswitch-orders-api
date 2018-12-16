@@ -17,7 +17,7 @@ exports.create = (productData) => {
         delete productWithPriceId.price;
         productWithPriceId['Product_priceID'] = price.id
 
-        productRepo.saveProduct(productWithPriceId)
+        productRepo.createProduct(productWithPriceId)
             .then((product) => {
                 resolve(product);
             })

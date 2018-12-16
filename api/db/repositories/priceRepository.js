@@ -15,11 +15,11 @@ exports.getAll = () => {
     });
 };
 
-exports.savePrice = (priceData) => {
+exports.createPrice = (priceData) => {
     return new Promise((resolve, reject) => {
         Prices.create(priceData)
-            .then((savedPrice) => {
-                resolve(savedPrice);
+            .then((createdPrice) => {
+                resolve(createdPrice);
             })
             .catch((error) => {
                 reject(error);

@@ -5,7 +5,8 @@ const config = require('config');
 
 const app = express();
 
-const productsRoutes = require('./api/routes/products');
+const productsRoutes = require('./api/routes/productsRouter');
+const customersRoutes = require('./api/routes/customersRouter');
 
 if (config.util.getEnv('NODE_ENV') == 'test') {
     app.use(morgan('test'));
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/products', productsRoutes);
+app.use('/customers', customersRoutes);
 
 app.use((request, response, next) => {
     const error = new Error('Not found');

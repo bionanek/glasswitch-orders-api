@@ -2,11 +2,11 @@ const Products = require('../dbHelper').Products;
 
 exports.Products = Products;
 
-exports.saveProduct = (productData) => {
+exports.createProduct = (productData) => {
     return new Promise((resolve, reject) => {
         Products.create(productData)
-            .then((savedProduct) => {
-                resolve(savedProduct);
+            .then((createdProduct) => {
+                resolve(createdProduct);
             })
             .catch((error) => {
                 reject(error);

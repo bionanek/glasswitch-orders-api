@@ -2,9 +2,9 @@ const priceRepo = require('../db/repositories/priceRepository');
 
 exports.create = (priceData) => {
     return new Promise((resolve, reject) => {
-        priceRepo.savePrice(priceData)
-            .then((savedPrice) => {
-                resolve(savedPrice);
+        priceRepo.createPrice(priceData)
+            .then((createdPrice) => {
+                resolve(createdPrice);
             })
             .catch((error) => {
                 reject(error);
