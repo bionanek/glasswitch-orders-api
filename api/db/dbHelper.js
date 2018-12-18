@@ -18,12 +18,13 @@ function getSequelize() {
 
 sequelize = getSequelize();
 
-var Prices = sequelize.define('prices', PricesDataModel, {freezeTableName: true})
-var Products = sequelize.define('products', ProductsDataModel, {freezeTableName: true});
-var Customers = sequelize.define('customers', CustomersDataModel, {freezeTableName: true});
+var Products = sequelize.define('product', ProductsDataModel, {freezeTableName: true});
+var Prices = sequelize.define('price', PricesDataModel, {freezeTableName: true})
+var Customers = sequelize.define('customer', CustomersDataModel, {freezeTableName: true});
+
+Products.Price = Products.belongsTo(Prices);
 
 sequelize.sync({ force: true });
-
 
 exports.Prices = Prices;
 exports.Products = Products;

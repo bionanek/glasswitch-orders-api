@@ -6,18 +6,12 @@ exports.create = (productData) => {
         if (!productData.name || !/\S/.test(productData.name)) {
             reject(new Error('Name can\'t be empty'));
             return;
-        } else if (productData.price === null) {
+        } else if (productData.price == undefined || productData.price === null) {
             reject(new Error('Price has to be provided for a product.'));
             return;
         }
 
-        let price = await pricesDomain.create(productData.price);
-
-        let productWithPriceId = Object.assign({}, productData); 
-        delete productWithPriceId.price;
-        productWithPriceId['Product_priceID'] = price.id
-
-        productRepo.createProduct(productWithPriceId)
+        productRepo.createProduct(productData)
             .then((product) => {
                 resolve(product);
             })
@@ -58,8 +52,6 @@ exports.delete = (productId) => {
             });
     });
 };
-
-// TODO: Implement eager loading so that product is returned with price already.
 
 exports.getAll = () => {
     return new Promise((resolve, reject) => {

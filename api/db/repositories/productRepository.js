@@ -4,7 +4,7 @@ exports.Products = Products;
 
 exports.createProduct = (productData) => {
     return new Promise((resolve, reject) => {
-        Products.create(productData)
+        Products.create(productData, { include: [Products.Price], as: 'personId' })
             .then((createdProduct) => {
                 resolve(createdProduct);
             })
@@ -34,7 +34,6 @@ exports.deleteProduct = (productId) => {
                 if (removedRows === 1) {
                     resolve(removedRows);
                 } else {
-                    console.log('repo else');
                     reject('Product with given ID doesn\'t exist');
                 }
             })
@@ -47,7 +46,7 @@ exports.deleteProduct = (productId) => {
 
 exports.getAll = () => {
     return new Promise((resolve, reject) => {
-        Products.findAll()
+        Products.findAll({ include: [Products.Price] })
             .map(el => el.get({ plain: true }))
             .then((products) => {
                 resolve(products);
@@ -60,7 +59,7 @@ exports.getAll = () => {
 
 exports.getById = (productId) => {
     return new Promise((resolve, reject) => {
-        Products.findById(productId)
+        Products.findById(productId, { include: [Products.Price] })
             .then(product => {
                 if (product == null) {
                     reject('Product with given ID doesn\'t exist');

@@ -18,10 +18,10 @@ exports.productDataModel = {
     height: Types.DOUBLE,
     depth: Types.DOUBLE,
     image: Types.STRING,
-    Product_priceID: { 
-        type: Types.INTEGER, 
-        allowNull: false, 
-        references: { model: 'prices', key: 'id' },
-        cascadeDelete: true 
-    }
+    // Product_priceID: { 
+    //     type: Types.INTEGER, 
+    //     allowNull: false, 
+    //     references: { model: 'prices', key: 'id' },
+    //     cascadeDelete: true 
+    // }
 };
