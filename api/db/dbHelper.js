@@ -22,7 +22,7 @@ var Products = sequelize.define('product', ProductsDataModel, {freezeTableName: 
 var Prices = sequelize.define('price', PricesDataModel, {freezeTableName: true})
 var Customers = sequelize.define('customer', CustomersDataModel, {freezeTableName: true});
 
-Products.Price = Products.belongsTo(Prices);
+Products.Price = Products.belongsTo(Prices, { onDelete: 'cascade' });
 
 sequelize.sync({ force: true });
 

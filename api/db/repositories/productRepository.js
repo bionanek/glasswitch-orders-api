@@ -33,18 +33,29 @@ exports.updateProduct = (productId, updatedProduct) => {
 
 exports.deleteProduct = (productId) => {
     return new Promise((resolve, reject) => {
-        Products.destroy({ where: { id: productId }, cascade: true })
-            .then((removedRows) => {
-                if (removedRows === 1) {
-                    resolve(removedRows);
-                } else {
-                    reject('Product with given ID doesn\'t exist');
+        let affectedRows = 0;
+        let priceId;
+        
+        Products.findById(productId)
+            .then((product) => {
+                if (product === null || product === undefined) {
+                    return reject({ message: 'Product with given ID doesn\'t exist' });
                 }
+
+                priceId = product.priceId;
+                return Products.destroy({ where: { id: productId }, cascade: true });
+            })
+            .then((removedRows) => {
+                affectedRows += removedRows;
+                return Prices.destroy({ where: { id: priceId } });
+            })
+            .then((removedRows) => {
+                affectedRows += removedRows;
+                resolve(affectedRows);
             })
             .catch((error) => {
-                console.log('repo catch');
                 reject(error);
-            });
+            });           
     });
 };
 
