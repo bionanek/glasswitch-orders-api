@@ -1,4 +1,5 @@
 const Products = require('../dbHelper').Products;
+const Prices = require('../dbHelper').Prices;
 
 exports.Products = Products;
 
@@ -16,11 +17,14 @@ exports.createProduct = (productData) => {
 
 exports.updateProduct = (productId, updatedProduct) => {
     return new Promise((resolve, reject) => {
-        Products.update(
-            updatedProduct,
-            { where: { id: productId } }
-        ).then((affectedRows) => {
-            resolve(affectedRows);
+        let priceUpdatePromise = Prices.update(updatedProduct.price, { where: { id: updatedProduct.priceId } });
+        let productUpdatePromise = Products.update(updatedProduct, { where: { id: productId } });
+
+        Promise.all([priceUpdatePromise, productUpdatePromise]).then((results) => {
+            let totalAffectedRows = 0;
+            results.forEach((rowsAffectedInCall) => totalAffectedRows += parseInt(rowsAffectedInCall));
+            
+            resolve(totalAffectedRows);
         }).catch((error) =>{
             reject(error);
         });
