@@ -17,6 +17,5 @@ exports.customerDataModel = {
     billing_street: { type: Types.STRING, allowNull: false },
     billing_city: { type: Types.STRING, allowNull: false },
     billing_country: { type: Types.STRING, allowNull: false },
-    billing_postCode: { type: Types.STRING, allowNull: true },
-
+    billing_postCode: { type: Types.STRING, allowNull: true }
 }

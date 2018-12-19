@@ -55,7 +55,7 @@ exports.deleteProduct = (productId) => {
             })
             .catch((error) => {
                 reject(error);
-            });           
+            });
     });
 };
 

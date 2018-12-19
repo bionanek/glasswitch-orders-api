@@ -13,3 +13,11 @@ exports.createCustomer = (customerData) => {
             })
     });
 };
+
+exports.updateCustomer = async (customerId, updatedCustomerData) => {
+    try {
+        return Customers.update(updatedCustomerData, { where: { id: customerId } });
+    } catch(error) {
+        throw new Error(error);
+    }
+};
