@@ -17,7 +17,21 @@ exports.createCustomer = (customerData) => {
 exports.updateCustomer = async (customerId, updatedCustomerData) => {
     try {
         return Customers.update(updatedCustomerData, { where: { id: customerId } });
-    } catch(error) {
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+exports.deleteCustomer = async (customerId) => {
+    const requestedCustomer = await Customers.findById(customerId);
+
+    if (requestedCustomer === null || requestedCustomer === undefined) {
+        throw new Error('Customer with given ID doesn\'t exist');
+    }
+
+    try {
+        return Customers.destroy({ where: { id: customerId }, cascade: true });
+    } catch (error) {
         throw new Error(error);
     }
 };
