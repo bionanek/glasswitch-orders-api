@@ -58,7 +58,6 @@ exports.getAll = (request, response, next) => {
             response.status(200).json(customers);
         })
         .catch((error) => {
-            console.log(error);
             response.status(400).json({
                 message: error.message,
                 trace: error.trace
@@ -72,7 +71,6 @@ exports.getById = (request, response, next) => {
             response.status(200).json(customerId);
         })
         .catch((error) => {
-            console.log(error);
             response.status(400).json({
                 message: error.message,
                 trace: error.trace

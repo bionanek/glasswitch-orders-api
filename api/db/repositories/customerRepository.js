@@ -36,30 +36,30 @@ exports.deleteCustomer = async (customerId) => {
     }
 };
 
-exports.getAll = async (customers) => {
-    const requestedCustomer = await Customers.findAll(customers);
+exports.getAll = async () => {
+    const allCustomers = await Customers.findAll();
 
-    if(requestedCustomer === null || requestedCustomer === undefined) {
+    if (allCustomers === null || allCustomers === undefined) { 
         throw new Error('Customers table is empty. REPO');
     }
 
     try {
-        return Customers.findAll(customers);
-    } catch(error) {
+        return allCustomers;
+    } catch (error) {
         throw new Error(error);
     }
-};
+}
 
 exports.getById = async (customerId) => {
     const requestedCustomer = await Customers.findById(customerId);
 
-    if(requestedCustomer === null || requestedCustomer === undefined) {
+    if (requestedCustomer === null || requestedCustomer === undefined) {
         throw new Error('Customer with given ID doesn\'t exists');
     }
 
     try {
-        return Customers.findById(customerId);
-    } catch (error) {
+        return requestedCustomer;
+    } catch(error) {
         throw new Error(error);
     }
 };

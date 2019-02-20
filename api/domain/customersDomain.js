@@ -41,14 +41,14 @@ exports.delete = async (customerId) => {
     return affectedRows;
 };
 
-exports.getAll = async (customers) => {
-    let affectedRows = await customerRepo.getAll(customers);
+exports.getAll = async () => {
+    let fetchedRows = await customerRepo.getAll();
 
-    if (affectedRows == 0) {
+    if (fetchedRows == 0) {
         throw new Error('No customers found.');
+    } else {
+        return fetchedRows;
     }
-
-    return affectedRows;
 };
 
 exports.getById = async (customerId) => {
@@ -56,11 +56,11 @@ exports.getById = async (customerId) => {
         throw new Error('Customer ID must be an integer. Given ID: ' + customerId);
     }
 
-    let affectedRows = await customerRepo.getById(customerId);
+    let fetchedRow = await customerRepo.getById(customerId);
 
-    if (affectedRows == 0) {
+    if (fetchedRow == 0) {
         throw new Error('No customer found.');
+    } else {
+        return fetchedRow;
     }
-
-    return affectedRows;
 };
