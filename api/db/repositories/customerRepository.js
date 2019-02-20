@@ -35,3 +35,17 @@ exports.deleteCustomer = async (customerId) => {
         throw new Error(error);
     }
 };
+
+exports.getById = async (customerId) => {
+    const requestedCustomer = await Customers.findById(customerId);
+
+    if(requestedCustomer === null || requestedCustomer === undefined) {
+        throw new Error('Customer with given ID doesn\'t exists');
+    }
+
+    try {
+        return Customers.findById(customerId);
+    } catch (error) {
+        throw new Error(error);
+    }
+};

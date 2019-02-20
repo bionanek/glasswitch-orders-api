@@ -51,3 +51,17 @@ exports.delete = async (request, response, next) => {
         });
     }
 };
+
+exports.getById = (request, response, next) => {
+    customersDomain.getById(request.params.customerId)
+        .then((customerId) => {
+            response.status(200).json(customerId);
+        })
+        .catch((error) => {
+            console.log(error);
+            response.status(400).json({
+                message: error.message,
+                trace: error.trace
+            });
+        });
+};
