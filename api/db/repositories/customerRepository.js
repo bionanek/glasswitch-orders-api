@@ -36,6 +36,20 @@ exports.deleteCustomer = async (customerId) => {
     }
 };
 
+exports.getAll = async (customers) => {
+    const requestedCustomer = await Customers.findAll(customers);
+
+    if(requestedCustomer === null || requestedCustomer === undefined) {
+        throw new Error('Customers table is empty. REPO');
+    }
+
+    try {
+        return Customers.findAll(customers);
+    } catch(error) {
+        throw new Error(error);
+    }
+};
+
 exports.getById = async (customerId) => {
     const requestedCustomer = await Customers.findById(customerId);
 

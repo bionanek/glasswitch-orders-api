@@ -41,6 +41,16 @@ exports.delete = async (customerId) => {
     return affectedRows;
 };
 
+exports.getAll = async (customers) => {
+    let affectedRows = await customerRepo.getAll(customers);
+
+    if (affectedRows == 0) {
+        throw new Error('No customers found.');
+    }
+
+    return affectedRows;
+};
+
 exports.getById = async (customerId) => {
     if (isNaN(customerId)) {
         throw new Error('Customer ID must be an integer. Given ID: ' + customerId);

@@ -52,6 +52,20 @@ exports.delete = async (request, response, next) => {
     }
 };
 
+exports.getAll = (request, response, next) => {
+    customersDomain.getAll()
+        .then((customers) => {
+            response.status(200).json(customers);
+        })
+        .catch((error) => {
+            console.log(error);
+            response.status(400).json({
+                message: error.message,
+                trace: error.trace
+            });
+        });
+};
+
 exports.getById = (request, response, next) => {
     customersDomain.getById(request.params.customerId)
         .then((customerId) => {
