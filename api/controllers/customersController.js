@@ -27,7 +27,6 @@ exports.update = async (request, response, next) => {
 
     try {
         const affectedRows = await customersDomain.update(customerId, updateCustomerData);
-
         response.status(200).json(affectedRows);
     } catch (error) {
         response.status(404).json({
@@ -42,7 +41,6 @@ exports.delete = async (request, response, next) => {
 
     try {
         const affectedRows = await customersDomain.delete(customerId);
-
         response.status(200).json(affectedRows);
     } catch (error) {
         response.status(404).json({
