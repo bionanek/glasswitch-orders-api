@@ -21,7 +21,7 @@ exports.update = async (request, response, next) => {
 
     if (isNaN(customerId)) {
         return response.status(400).json({
-            message: 'Customer ID must be an Intiger'
+            message: 'Customer ID must be an Integer'
         });
     }
 

@@ -43,9 +43,9 @@ exports.getAll = async () => {
 
     if (allCustomers === null || allCustomers === undefined) { 
         throw new Error('Customers table is empty. REPO');
+    } else {
+        return allCustomers;
     }
-    
-    return allCustomers;
 }
 
 exports.getById = async (customerId) => {
@@ -59,7 +59,7 @@ exports.getById = async (customerId) => {
 
     if (requestedCustomer === null || requestedCustomer === undefined) {
         throw new Error('Customer with given ID doesn\'t exists');
+    } else {
+        return requestedCustomer;
     }
-
-    return requestedCustomer;
 };
