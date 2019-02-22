@@ -1,15 +1,19 @@
 const customerRepo = require('./../db/repositories/customerRepository');
 
 exports.create = async (customerData) => {
-    if (customerData === null || customerData === undefined) {
-        throw new Error('Provide Customer object to create new Customer.');
+    let newCustomer;
+
+    if (!customerData.name || !/\S/.test(customerData.name)) {
+        throw new Error('Name can\'t be empty');
     }
 
     try {
-        return await customerRepo.createCustomer(customerData);
+        newCustomer = await customerRepo.createCustomer(customerData);
     } catch (error) {
         throw new Error(error);
     }
+
+    return newCustomer;
 };
 
 exports.update = async (customerId, updatedCustomerData) => {
