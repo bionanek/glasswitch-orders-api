@@ -1,8 +1,8 @@
 const customerRepo = require('./../db/repositories/customerRepository');
 
 exports.create = async (customerData) => {
-    if (customerData === null || customerData === undefined) {
-        throw new Error('Provide Customer object to create new Customer.');
+    if (!customerData.name || !/\S/.test(customerData.name)) {
+        throw new Error('Name can\'t be empty');
     }
 
     try {
