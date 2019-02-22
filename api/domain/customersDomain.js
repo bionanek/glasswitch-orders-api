@@ -1,16 +1,15 @@
 const customerRepo = require('./../db/repositories/customerRepository');
 
-exports.create = (customerData) => {
-    return new Promise((resolve, reject) => {
-        if (customerData === null) {
-            reject(new Error('Provide Customer object to create new Customer.'));
-            return;
-        }
+exports.create = async (customerData) => {
+    if (customerData === null || customerData === undefined) {
+        throw new Error('Provide Customer object to create new Customer.');
+    }
 
-        customerRepo.createCustomer(customerData)
-            .then((createdCustomer) => resolve(createdCustomer))
-            .catch((error) => reject(error));
-    });
+    try {
+        return await customerRepo.createCustomer(customerData);
+    } catch (error) {
+        throw new Error(error);
+    }
 };
 
 exports.update = async (customerId, updatedCustomerData) => {
@@ -20,10 +19,10 @@ exports.update = async (customerId, updatedCustomerData) => {
 
     let affectedRows = await customerRepo.updateCustomer(customerId, updatedCustomerData);
 
-    if (affectedRows == 0) {
+    if (affectedRows === 0) {
         throw new Error('No customer updated.');
     }
-
+    
     return affectedRows;
 };
 
@@ -34,7 +33,7 @@ exports.delete = async (customerId) => {
 
     let affectedRows = await customerRepo.deleteCustomer(customerId);
 
-    if (affectedRows == 0) {
+    if (affectedRows === 0) {
         throw new Error('No customer deleted.');
     }
 
@@ -44,11 +43,11 @@ exports.delete = async (customerId) => {
 exports.getAll = async () => {
     let fetchedRows = await customerRepo.getAll();
 
-    if (fetchedRows == 0) {
+    if (fetchedRows === 0) {
         throw new Error('No customers found.');
-    } else {
-        return fetchedRows;
     }
+
+    return fetchedRows;
 };
 
 exports.getById = async (customerId) => {
@@ -58,9 +57,9 @@ exports.getById = async (customerId) => {
 
     let fetchedRow = await customerRepo.getById(customerId);
 
-    if (fetchedRow == 0) {
+    if (fetchedRow === 0) {
         throw new Error('No customer found.');
-    } else {
-        return fetchedRow;
     }
+
+    return fetchedRow;
 };

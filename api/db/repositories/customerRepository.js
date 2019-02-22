@@ -2,16 +2,12 @@ const Customers = require('./../dbHelper').Customers;
 
 exports.Customers = Customers;
 
-exports.createCustomer = (customerData) => {
-    return new Promise((resolve, reject) => {
-        Customers.create(customerData)
-            .then((createdCustomer) => {
-                resolve(createdCustomer);
-            })
-            .catch((error) => {
-                reject(error);
-            })
-    });
+exports.createCustomer = async (customerData) => {
+    try {
+        return await Customers.create(customerData);
+    } catch (error) {
+        throw new Error(error);
+    }
 };
 
 exports.updateCustomer = async (customerId, updatedCustomerData) => {
@@ -48,9 +44,9 @@ exports.getAll = async () => {
     if (allCustomers === null || allCustomers === undefined) { 
         throw new Error('Customers table is empty. REPO');
     }
-    
+
     return allCustomers;
-}
+};
 
 exports.getById = async (customerId) => {
     let requestedCustomer;
@@ -64,6 +60,6 @@ exports.getById = async (customerId) => {
     if (requestedCustomer === null || requestedCustomer === undefined) {
         throw new Error('Customer with given ID doesn\'t exists');
     }
-
+    
     return requestedCustomer;
 };
