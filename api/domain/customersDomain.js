@@ -21,9 +21,9 @@ exports.update = async (customerId, updatedCustomerData) => {
 
     if (affectedRows === 0) {
         throw new Error('No customer updated.');
-    } else {
-        return affectedRows;
     }
+    
+    return affectedRows;
 };
 
 exports.delete = async (customerId) => {
@@ -35,9 +35,9 @@ exports.delete = async (customerId) => {
 
     if (affectedRows === 0) {
         throw new Error('No customer deleted.');
-    } else {
-        return affectedRows;
     }
+
+    return affectedRows;
 };
 
 exports.getAll = async () => {
@@ -45,9 +45,9 @@ exports.getAll = async () => {
 
     if (fetchedRows === 0) {
         throw new Error('No customers found.');
-    } else {
-        return fetchedRows;
     }
+
+    return fetchedRows;
 };
 
 exports.getById = async (customerId) => {
@@ -59,7 +59,7 @@ exports.getById = async (customerId) => {
 
     if (fetchedRow === 0) {
         throw new Error('No customer found.');
-    } else {
-        return fetchedRow;
     }
+
+    return fetchedRow;
 };
