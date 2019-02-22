@@ -8,12 +8,10 @@ exports.create = async (customerData) => {
     }
 
     try {
-        newCustomer = await customerRepo.createCustomer(customerData);
+        return newCustomer = await customerRepo.createCustomer(customerData);
     } catch (error) {
         throw new Error(error);
     }
-
-    return newCustomer;
 };
 
 exports.update = async (customerId, updatedCustomerData) => {
