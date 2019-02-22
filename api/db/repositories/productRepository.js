@@ -4,22 +4,26 @@ const Prices = require('../dbHelper').Prices;
 exports.Products = Products;
 
 exports.createProduct = async (productData) => {
+    let newProduct;
+
     if (productData === null || productData === undefined) {
         throw new Error('Provide Product object to create new Product.');
     }
 
     try {
-        return await Products.create(productData, { include: [Products.Price], as: 'personId'});
+        newProduct = await Products.create(productData, { include: [Products.Price], as: 'personId'});
     } catch (error) {
         throw new Error(error);
     }
+
+    return newProduct;
 };
 
-//TODO
-exports.updateProduct = (productId, updatedProduct) => {
+
+exports.updateProduct = (productId, updatedProductData) => {
     return new Promise((resolve, reject) => {
-        let priceUpdatePromise = Prices.update(updatedProduct.price, { where: { id: updatedProduct.priceId } });
-        let productUpdatePromise = Products.update(updatedProduct, { where: { id: productId } });
+        let priceUpdatePromise = Prices.update(updatedProductData.price, { where: { id: updatedProductData.priceId } });
+        let productUpdatePromise = Products.update(updatedProductData, { where: { id: productId } });
 
         Promise.all([priceUpdatePromise, productUpdatePromise]).then((results) => {
             let totalAffectedRows = 0;
@@ -32,7 +36,18 @@ exports.updateProduct = (productId, updatedProduct) => {
     });
 };
 
-//TODO
+// exports.updateProduct = async (productId, updatedProductData) => {    
+//     let productUpdate = await Products.update(updatedProductData, { where: { id: productId } });
+    
+//     let priceUpdate = await Prices.update(updatedProductData.price, { where: { id: updatedProductData.priceId } });
+
+//     try {
+//         Promise.all([productUpdate, priceUpdate])
+//     } catch (error) {
+//         throw new Error(error);
+//     }
+// };
+
 exports.deleteProduct = (productId) => {
     return new Promise((resolve, reject) => {
         let affectedRows = 0;
@@ -61,6 +76,25 @@ exports.deleteProduct = (productId) => {
     });
 };
 
+// exports.deleteProduct = async (productId) => {
+//     let affectedRows = 0;
+//     let priceId;
+
+//     const requestedProduct = await Products.findById(productId);
+
+//     if (requestedProduct === null || requestedProduct === undefined) {
+//         throw new Error('Product with given ID doesn\'t exist');
+//     }
+
+//     try {
+//         priceId = product.priceId;
+
+//         return Products.destroy({ where: { id: productId }, cascade: true });
+//     } catch (error) {
+//         throw new Error(error);
+//     }
+// };
+
 exports.getAll = async () => {
     let allProducts;
 
@@ -72,9 +106,9 @@ exports.getAll = async () => {
 
     if (allProducts === null || allProducts === undefined) {
         throw new Error('Products table is empty. REPO');
-    } else {
-        return allProducts;
     }
+
+    return allProducts;
 };
 
 exports.getById = async (productId) => {
@@ -88,7 +122,7 @@ exports.getById = async (productId) => {
 
     if (requestedProduct === null || requestedProduct === undefined) {
         throw new Error('Product with given ID doesn\'t exist')
-    } else {
-        return requestedProduct;
     }
+
+    return requestedProduct;
 };
