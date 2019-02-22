@@ -2,8 +2,6 @@ const productRepo = require('../db/repositories/productRepository');
 const pricesDomain = require('./pricesDomain');
 
 exports.create = async (productData) => {
-    let newProduct;
-
     if (!productData.name || !/\S/.test(productData.name)) {
         throw new Error('Name can\'t be empty');
     } else if (productData.price === null || productData.price === undefined) {
@@ -11,12 +9,10 @@ exports.create = async (productData) => {
     }
 
     try {
-        newProduct = await productRepo.createProduct(productData);
+        return await productRepo.createProduct(productData);
     } catch (error) {
         throw new Error(error);
     }
-
-    return newProduct;
 };
 
 exports.update = async (productId, updatedProductData) => {
