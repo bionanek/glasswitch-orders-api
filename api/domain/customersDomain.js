@@ -3,7 +3,6 @@ const { RequestValidationError } = require('@helpers/errors');
 
 exports.create = async (customerData) => {
     if (!customerData.name || !/\S/.test(customerData.name)) {
-
         throw new RequestValidationError('Name can\'t be empy');
     }
 
