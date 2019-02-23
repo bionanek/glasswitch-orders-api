@@ -3,87 +3,84 @@ const Prices = require('@db/dbHelper').Prices;
 
 exports.Products = Products;
 
-exports.createProduct = (productData) => {
-    return new Promise((resolve, reject) => {
-        Products.create(productData, { include: [Products.Price], as: 'personId' })
-            .then((createdProduct) => {
-                resolve(createdProduct);
-            })
-            .catch((error) => {
-                reject(error);
-            });
-    });
+exports.createProduct = async (productData) => {
+    try {
+        return await Products.create(productData, { include: [Products.Price], as: 'productId'});
+    } catch (error) {
+        throw new Error(error);
+    }
 };
 
-exports.updateProduct = (productId, updatedProduct) => {
-    return new Promise((resolve, reject) => {
-        let priceUpdatePromise = Prices.update(updatedProduct.price, { where: { id: updatedProduct.priceId } });
-        let productUpdatePromise = Products.update(updatedProduct, { where: { id: productId } });
+exports.updateProduct = async (productId, updatedProductData) => {    
+    let productUpdate = await Products.update(updatedProductData, { where: { id: productId } }); 
+    let priceUpdate = await Prices.update(updatedProductData.price, { where: { id: updatedProductData.priceId } });
 
-        Promise.all([priceUpdatePromise, productUpdatePromise]).then((results) => {
-            let totalAffectedRows = 0;
-            results.forEach((rowsAffectedInCall) => totalAffectedRows += parseInt(rowsAffectedInCall));
-            
-            resolve(totalAffectedRows);
-        }).catch((error) =>{
-            reject(error);
-        });
-    });
+    try {
+        let totalAffectedRows = parseInt(productUpdate) + parseInt(priceUpdate);
+        return totalAffectedRows;
+    } catch (error) {
+        throw new Error(error);
+    }
 };
 
-exports.deleteProduct = (productId) => {
-    return new Promise((resolve, reject) => {
-        let affectedRows = 0;
-        let priceId;
-        
-        Products.findById(productId)
+exports.deleteProduct = async (productId) => {
+    let affectedRows = 0;
+    let priceId;
+
+    const requestedProduct = await Products.findById(productId);
+
+    if (requestedProduct === null || requestedProduct === undefined) {
+        throw new Error('Product with given ID doesn\'t exist');
+    }
+
+    try {
+        return await Products.findById(productId)
             .then((product) => {
-                if (product === null || product === undefined) {
-                    return reject({ message: 'Product with given ID doesn\'t exist' });
-                }
-
                 priceId = product.priceId;
                 return Products.destroy({ where: { id: productId }, cascade: true });
             })
             .then((removedRows) => {
                 affectedRows += removedRows;
-                return Prices.destroy({ where: { id: priceId } });
+                return Prices.destroy({ where: { id: priceId } });            
             })
             .then((removedRows) => {
                 affectedRows += removedRows;
-                resolve(affectedRows);
+                return affectedRows;
             })
-            .catch((error) => {
-                reject(error);
-            });
-    });
+    } catch (error) {
+        throw new Error(error);
+    }
 };
 
-exports.getAll = () => {
-    return new Promise((resolve, reject) => {
-        Products.findAll({ include: [Products.Price] })
-            .map(el => el.get({ plain: true }))
-            .then((products) => {
-                resolve(products);
-            })
-            .catch((error) => {
-                reject(error)
-            });
-    });
+exports.getAll = async () => {
+    let allProducts;
+
+    try {
+        allProducts = await Products.findAll({ include: [Products.Price] })
+            .map(el => el.get({ plain: true }));
+    } catch (error) {
+        throw new Error(error);
+    }
+
+    if (allProducts === null || allProducts === undefined) {
+        throw new Error('Products table is empty. REPO');
+    }
+
+    return allProducts;
 };
 
-exports.getById = (productId) => {
-    return new Promise((resolve, reject) => {
-        Products.findById(productId, { include: [Products.Price] })
-            .then(product => {
-                if (product == null) {
-                    reject('Product with given ID doesn\'t exist');
-                }
+exports.getById = async (productId) => {
+    let requestedProduct;
 
-                resolve(product);
-            })
-            .catch(error => {
-                reject(error);
-            })
-    });
+    try {
+        requestedProduct = await Products.findById(productId, { include: [Products.Price] });
+    } catch (error) {
+        throw new Error(error);
+    }
+
+    if (requestedProduct === null || requestedProduct === undefined) {
+        throw new Error('Product with given ID doesn\'t exist')
+    }
+
+    return requestedProduct;
 };
