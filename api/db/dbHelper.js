@@ -1,8 +1,8 @@
 const config = require('config');
 const Sequelize = require('sequelize');
-var PricesDataModel = require('@models/priceDataModel').priceDataModel;
-var ProductsDataModel = require('@models/productDataModel').productDataModel;
-var CustomersDataModel = require('@models/customerDataModel').customerDataModel;
+var PricesDataModel = require('./models/priceDataModel').priceDataModel;
+var ProductsDataModel = require('./models/productDataModel').productDataModel;
+var CustomersDataModel = require('./models/customerDataModel').customerDataModel;
 
 let sequelize;
 

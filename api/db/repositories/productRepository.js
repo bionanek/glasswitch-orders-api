@@ -1,5 +1,5 @@
-const Products = require('@db/dbHelper').Products;
-const Prices = require('@db/dbHelper').Prices;
+const Products = require('../dbHelper').Products;
+const Prices = require('../dbHelper').Prices;
 
 exports.Products = Products;
 
