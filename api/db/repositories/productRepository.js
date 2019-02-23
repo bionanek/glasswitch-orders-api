@@ -11,36 +11,17 @@ exports.createProduct = async (productData) => {
     }
 };
 
-exports.updateProduct = (productId, updatedProductData) => {
-    return new Promise((resolve, reject) => {
-        let priceUpdatePromise = Prices.update(updatedProductData.price, { where: { id: updatedProductData.priceId } });
-        let productUpdatePromise = Products.update(updatedProductData, { where: { id: productId } });
+exports.updateProduct = async (productId, updatedProductData) => {    
+    let productUpdate = await Products.update(updatedProductData, { where: { id: productId } }); 
+    let priceUpdate = await Prices.update(updatedProductData.price, { where: { id: updatedProductData.priceId } });
 
-        Promise.all([priceUpdatePromise, productUpdatePromise]).then((results) => {
-            let totalAffectedRows = 0;
-            results.forEach((rowsAffectedInCall) => totalAffectedRows += parseInt(rowsAffectedInCall));
-            
-            resolve(totalAffectedRows);
-        }).catch((error) =>{
-            reject(error);
-        });
-    });
+    try {
+        let totalAffectedRows = parseInt(productUpdate) + parseInt(priceUpdate);
+        return totalAffectedRows;
+    } catch (error) {
+        throw new Error(error);
+    }
 };
-
-// exports.updateProduct = async (productId, updatedProductData) => {    
-//     let productUpdate = await Products.update(updatedProductData, { where: { id: productId } }); 
-//     let priceUpdate = await Prices.update(updatedProductData.price, { where: { id: updatedProductData.priceId } });
-
-//     try {
-//         Promise.all([productUpdate, priceUpdate]).then((results) => {
-//             let totalAffectedRows = 0;
-//             results.forEach((rowsAffectedInCall) => totalAffectedRows += parseInt(rowsAffectedInCall));
-//             resolve(totalAffectedRows);
-//         });
-//     } catch (error) {
-//         throw new Error(error);
-//     }
-// };
 
 exports.deleteProduct = async (productId) => {
     let affectedRows = 0;
@@ -60,7 +41,7 @@ exports.deleteProduct = async (productId) => {
             })
             .then((removedRows) => {
                 affectedRows += removedRows;
-                return Prices.destroy({ where: { id: priceId } });
+                return Prices.destroy({ where: { id: priceId } });            
             })
             .then((removedRows) => {
                 affectedRows += removedRows;
