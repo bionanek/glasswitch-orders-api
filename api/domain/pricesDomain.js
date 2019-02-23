@@ -1,4 +1,4 @@
-const priceRepo = require('../db/repositories/priceRepository');
+const priceRepo = require('@repos/priceRepository');
 
 exports.create = (priceData) => {
     return new Promise((resolve, reject) => {

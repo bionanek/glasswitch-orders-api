@@ -1,4 +1,4 @@
-const Customers = require('./../dbHelper').Customers;
+const Customers = require('@db/dbHelper').Customers;
 
 exports.Customers = Customers;
 

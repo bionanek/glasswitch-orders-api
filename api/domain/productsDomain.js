@@ -1,5 +1,5 @@
-const productRepo = require('../db/repositories/productRepository');
-const pricesDomain = require('./pricesDomain');
+const productRepo = require('@repos/productRepository');
+const pricesDomain = require('@domains/pricesDomain');
 
 exports.create = (productData) => {
     return new Promise(async (resolve, reject) => {
