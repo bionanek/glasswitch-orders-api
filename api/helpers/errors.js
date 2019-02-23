@@ -18,6 +18,17 @@ class RequestValidationError extends Error {
     }
 }
 
+class ArgumentIsNotIntError extends Error {
+    constructor(message) {
+        super(message);
+
+        this.name = "ArgumentIsNotIntError";
+        this.message = message;
+        this.code = 400;
+    }
+}
+
 module.exports = {
+    ArgumentIsNotIntError,
     RequestValidationError
 };
