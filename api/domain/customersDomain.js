@@ -1,10 +1,8 @@
 const customerRepo = require('@repos/customerRepository');
-const { RequestValidationError } = require('@helpers/errors');
+const { CustomerValidation } = require('@validation/customerValidation');
 
 exports.create = async (customerData) => {
-    if (!customerData.name || !/\S/.test(customerData.name)) {
-        throw new RequestValidationError('Name can\'t be empy');
-    }
+    CustomerValidation.CustomerNameError(customerData);
 
     try {
         return await customerRepo.createCustomer(customerData);
@@ -14,29 +12,21 @@ exports.create = async (customerData) => {
 };
 
 exports.update = async (customerId, updatedCustomerData) => {
-    if (updatedCustomerData === null) {
-        throw new Erorr('Provide values to update.');
-    }
+    CustomerValidation.CustomerUpdateError(updatedCustomerData);
 
     let affectedRows = await customerRepo.updateCustomer(customerId, updatedCustomerData);
 
-    if (affectedRows === 0) {
-        throw new Error('No customer updated.');
-    }
+    CustomerValidation.CustomerAffectedRowsError(affectedRows);
     
     return affectedRows;
 };
 
 exports.delete = async (customerId) => {
-    if (isNaN(customerId)) {
-        throw new Error('Customer ID must be an integer. Given ID: ' + customerId);
-    }
+    CustomerValidation.CustomerIdError(customerId);
 
     let affectedRows = await customerRepo.deleteCustomer(customerId);
 
-    if (affectedRows === 0) {
-        throw new Error('No customer deleted.');
-    }
+    CustomerValidation.CustomerAffectedRowsError(affectedRows);
 
     return affectedRows;
 };
@@ -44,23 +34,17 @@ exports.delete = async (customerId) => {
 exports.getAll = async () => {
     let fetchedRows = await customerRepo.getAll();
 
-    if (fetchedRows === 0) {
-        throw new Error('No customers found.');
-    }
+    CustomerValidation.CustomerFetchedRowsError(fetchedRows);
 
     return fetchedRows;
 };
 
 exports.getById = async (customerId) => {
-    if (isNaN(customerId)) {
-        throw new Error('Customer ID must be an integer. Given ID: ' + customerId);
-    }
+    CustomerValidation.CustomerIdError(customerId);
 
     let fetchedRow = await customerRepo.getById(customerId);
 
-    if (fetchedRow === 0) {
-        throw new Error('No customer found.');
-    }
+    CustomerValidation.CustomerFetchedRowsError(fetchedRow);
 
     return fetchedRow;
 };
