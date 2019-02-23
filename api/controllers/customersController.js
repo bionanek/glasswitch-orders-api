@@ -1,4 +1,4 @@
-const customersDomain = require('./../domain/customersDomain');
+const customersDomain = require('@domains/customersDomain');
 
 exports.create = (request, response, next) => {
     let customerData = request.body;
@@ -8,10 +8,7 @@ exports.create = (request, response, next) => {
             response.status(200).json(customer);
         })
         .catch((error) => {
-            response.status(500).json({
-                message: error.message,
-                trace: error.trace
-            });
+            response.status(error.code).json(error);
         });
 };
 
