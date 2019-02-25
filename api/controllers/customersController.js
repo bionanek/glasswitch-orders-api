@@ -1,15 +1,14 @@
 const customersDomain = require('@domains/customersDomain');
 
-exports.create = (request, response, next) => {
+exports.create = async (request, response, next) => {
     let customerData = request.body;
-
-    customersDomain.create(customerData)
-        .then((customer) => {
-            response.status(200).json(customer);
-        })
-        .catch((error) => {
-            response.status(error.code).json(error);
-        });
+    
+    try {
+        const customer = await customersDomain.create(customerData);
+        response.status(200).json(customer);
+    } catch (error) {
+        response.status(error.code).json(error);
+    }
 };
 
 exports.update = async (request, response, next) => {
@@ -26,10 +25,7 @@ exports.update = async (request, response, next) => {
         const affectedRows = await customersDomain.update(customerId, updateCustomerData);
         response.status(200).json(affectedRows);
     } catch (error) {
-        response.status(404).json({
-            message: error.message,
-            trace: error.trace
-        });
+        response.status(error.code).json(error);
     }
 };
 
@@ -40,35 +36,24 @@ exports.delete = async (request, response, next) => {
         const affectedRows = await customersDomain.delete(customerId);
         response.status(200).json(affectedRows);
     } catch (error) {
-        response.status(404).json({
-            message: error.message,
-            trace: error.trace
-        });
+        response.status(error.code).json(error);
     }
 };
 
-exports.getAll = (request, response, next) => {
-    customersDomain.getAll()
-        .then((customers) => {
-            response.status(200).json(customers);
-        })
-        .catch((error) => {
-            response.status(400).json({
-                message: error.message,
-                trace: error.trace
-            });
-        });
+exports.getAll = async (request, response, next) => {
+    try {
+        let customers = await customersDomain.getAll();
+        response.status(200).json(customers);
+    } catch (error) {
+        response.status(error.code).json(error);
+    }
 };
 
-exports.getById = (request, response, next) => {
-    customersDomain.getById(request.params.customerId)
-        .then((customerId) => {
-            response.status(200).json(customerId);
-        })
-        .catch((error) => {
-            response.status(400).json({
-                message: error.message,
-                trace: error.trace
-            });
-        });
+exports.getById = async (request, response, next) => {
+    try {
+        let customers = await customersDomain.getById(request.params.customerId);
+        response.status(200).json(customers);
+    } catch (error) {
+        response.status(error.code).json(error);
+    }
 };
