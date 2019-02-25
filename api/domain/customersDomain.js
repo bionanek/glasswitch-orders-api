@@ -2,8 +2,6 @@ const customerRepo = require('@repos/customerRepository');
 const { CustomerValidation } = require('@validation/customerValidation');
 
 exports.create = async (customerData) => {
-    CustomerValidation.CustomerNameError(customerData);
-
     try {
         return await customerRepo.createCustomer(customerData);
     } catch (error) {
@@ -12,21 +10,21 @@ exports.create = async (customerData) => {
 };
 
 exports.update = async (customerId, updatedCustomerData) => {
-    CustomerValidation.CustomerUpdateError(updatedCustomerData);
-
     let affectedRows = await customerRepo.updateCustomer(customerId, updatedCustomerData);
 
-    CustomerValidation.CustomerAffectedRowsError(affectedRows);
-    
+    if (affectedRows === 0) {
+        throw new Error('No customer updated.');
+    }
+
     return affectedRows;
 };
 
 exports.delete = async (customerId) => {
-    CustomerValidation.CustomerIdError(customerId);
-
     let affectedRows = await customerRepo.deleteCustomer(customerId);
 
-    CustomerValidation.CustomerAffectedRowsError(affectedRows);
+    if (affectedRows === 0) {
+        throw new Error('No customer deleted.');
+    }
 
     return affectedRows;
 };
@@ -34,17 +32,19 @@ exports.delete = async (customerId) => {
 exports.getAll = async () => {
     let fetchedRows = await customerRepo.getAll();
 
-    CustomerValidation.CustomerFetchedRowsError(fetchedRows);
+    if (fetchedRows === 0) {
+        throw new Error('No customers found.');
+    }
 
     return fetchedRows;
 };
 
 exports.getById = async (customerId) => {
-    CustomerValidation.CustomerIdError(customerId);
-
     let fetchedRow = await customerRepo.getById(customerId);
 
-    CustomerValidation.CustomerFetchedRowsError(fetchedRow);
+    if (fetchedRow === 0) {
+            throw new Error('No customer found.');
+    }
 
     return fetchedRow;
 };

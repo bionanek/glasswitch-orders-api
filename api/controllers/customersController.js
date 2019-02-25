@@ -1,6 +1,8 @@
 const customersDomain = require('@domains/customersDomain');
+const { CustomerValidation } = require('@validation/customerValidation');
 
 exports.create = (request, response, next) => {
+    CustomerValidation.Validate(request);
     let customerData = request.body;
 
     customersDomain.create(customerData)
@@ -16,11 +18,7 @@ exports.update = async (request, response, next) => {
     const updateCustomerData = request.body;
     const customerId = request.params.customerId;
 
-    if (isNaN(customerId)) {
-        return response.status(400).json({
-            message: 'Customer ID must be an Integer'
-        });
-    }
+    CustomerValidation.Validate(updateCustomerData);
 
     try {
         const affectedRows = await customersDomain.update(customerId, updateCustomerData);
