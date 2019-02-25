@@ -43,7 +43,7 @@ exports.getById = async (customerId) => {
     let fetchedRow = await customerRepo.getById(customerId);
 
     if (fetchedRow === 0) {
-            throw new Error('No customer found.');
+        throw new Error('No customer found.');
     }
 
     return fetchedRow;
