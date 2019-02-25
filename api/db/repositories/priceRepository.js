@@ -1,4 +1,4 @@
-const Prices = require('../dbHelper').Prices;
+const Prices = require('@db/dbHelper').Prices;
 
 exports.Prices = Prices;
 

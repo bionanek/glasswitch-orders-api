@@ -1,5 +1,5 @@
-const productRepo = require('../db/repositories/productRepository');
-const pricesDomain = require('./pricesDomain');
+const productRepo = require('@repos/productRepository');
+const pricesDomain = require('@domains/pricesDomain');
 
 exports.create = async (productData) => {
     if (!productData.name || !/\S/.test(productData.name)) {

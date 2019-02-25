@@ -1,4 +1,4 @@
-const productsDomain = require('../domain/productsDomain');
+const productsDomain = require('@domains/productsDomain');
 
 exports.create = (request, response, next) => {
     var productData = request.body;

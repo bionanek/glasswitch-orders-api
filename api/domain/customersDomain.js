@@ -1,8 +1,9 @@
-const customerRepo = require('./../db/repositories/customerRepository');
+const customerRepo = require('@repos/customerRepository');
+const { RequestValidationError } = require('@helpers/errors');
 
 exports.create = async (customerData) => {
     if (!customerData.name || !/\S/.test(customerData.name)) {
-        throw new Error('Name can\'t be empty');
+        throw new RequestValidationError('Name can\'t be empy');
     }
 
     try {

@@ -1,4 +1,4 @@
-const customersDomain = require('./../domain/customersDomain');
+const customersDomain = require('@domains/customersDomain');
 
 exports.create = async (request, response, next) => {
     let customerData = request.body;
