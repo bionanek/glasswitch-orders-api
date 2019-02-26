@@ -1,5 +1,6 @@
 const customerRepo = require('@repos/customerRepository');
-const { CustomerValidation } = require('@validation/customerValidation');
+const { IdNotFound } = require('@helpers/errors');
+const { RecordsEmptyError } = require('@validation/customerValidation');
 
 exports.create = async (customerData) => {
     try {
@@ -23,7 +24,7 @@ exports.delete = async (customerId) => {
     let affectedRows = await customerRepo.deleteCustomer(customerId);
 
     if (affectedRows === 0) {
-        throw new Error('No customer deleted.');
+        throw new RecordsEmptyError('No customer deleted.');
     }
 
     return affectedRows;
@@ -32,19 +33,20 @@ exports.delete = async (customerId) => {
 exports.getAll = async () => {
     let fetchedRows = await customerRepo.getAll();
 
-    if (fetchedRows === 0) {
-        throw new Error('No customers found.');
+    //IF TABLE IS EMPTY STILL RETURNS INSTEAD OF THROWING AN ERROR
+    if (fetchedRows === [0]) {
+        throw new RecordsEmptyError('No customers found.');
     }
 
     return fetchedRows;
 };
 
 exports.getById = async (customerId) => {
-    let fetchedRow = await customerRepo.getById(customerId);
+    try {
+        const fetchedRow = await customerRepo.getById(customerId);
 
-    if (fetchedRow === 0) {
-        throw new Error('No customer found.');
+        return fetchedRow;
+    } catch (error) {
+        throw new IdNotFound('Customer with given ID doesn\'t exists.');
     }
-
-    return fetchedRow;
 };

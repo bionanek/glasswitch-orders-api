@@ -28,10 +28,11 @@ exports.update = async (request, response, next) => {
 
 exports.delete = async (request, response, next) => {
     try {
-        await CustomerValidation.Validate(request);
+        CustomerValidation.Validate(request);
 
         const customerId = request.params.customerId;
         const affectedRows = await customersDomain.delete(customerId);
+        
         response.status(200).json(affectedRows);
     } catch (error) {
         response.status(error.code).json(error);
@@ -49,8 +50,7 @@ exports.getAll = async (request, response, next) => {
 
 exports.getById = async (request, response, next) => {
     try {
-        await CustomerValidation.Validate(request);
-
+        CustomerValidation.Validate(request);
         let customer = await customersDomain.getById(request.params.customerId);
         response.status(200).json(customer);
     } catch (error) {

@@ -14,38 +14,38 @@ class CustomerValidation {
                 // CustomerValidation.ValidateUpdate(request.body);
                 break;
             case "DELETE":
-                // CustomerValidation.ValidateId(request.body);
+                CustomerValidation.ValidateId(request.params.customerId);
                 break;
         }
     }
 
     static ValidateCreate(customerData) {
-        Validation.NameValidate(customerData);
+        Validation.NameValidation(customerData);
     }
 
     static ValidateId(customerId) {
-        Validation.IdValidate(customerId);
+        Validation.IdValidation(customerId);
     }
     
     static ValidateUpdate(updatedCustomerData) {
-        Validation.UpdateValidate(updatedCustomerData);
+        Validation.UpdateValidation(updatedCustomerData);
     }
 }
 
 class Validation {
-    static NameValidate(customerData) {
+    static NameValidation(customerData) {
         if (!customerData.name || !/\S/.test(customerData.name)) {
             throw new RequestValidationError('Name can\'t be empty');
         }
     }
 
-    static IdValidate(customerId) {
+    static IdValidation(customerId) {
         if (isNaN(customerId)) {
             throw new ArgumentIsNotIntError('Customer ID must be an integer. Given ID: ' + customerId);
         }
     }
 
-    static UpdateValidate(updatedCustomerData) {
+    static UpdateValidation(updatedCustomerData) {
         if (updatedCustomerData === "" || updatedCustomerData === null || updatedCustomerData === undefined) {
             throw new UpdateError('Provide values to update.');
         }
