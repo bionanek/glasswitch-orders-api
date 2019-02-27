@@ -1,10 +1,7 @@
 const customersDomain = require('@domains/customersDomain');
-const { CustomerValidation } = require('@validation/customerValidation');
 
 exports.create = async (request, response, next) => {
     try {
-        // CustomerValidation.Validate(request);
-
         const customerData = request.body;
         const customer = await customersDomain.create(customerData);
 
@@ -16,8 +13,6 @@ exports.create = async (request, response, next) => {
 
 exports.update = async (request, response, next) => {
     try {
-        CustomerValidation.Validate(request);
-
         const updateCustomerData = request.body;
         const customerId = request.params.customerId;
         const affectedRows = await customersDomain.update(customerId, updateCustomerData);
@@ -30,8 +25,6 @@ exports.update = async (request, response, next) => {
 
 exports.delete = async (request, response, next) => {
     try {
-        CustomerValidation.Validate(request);
-
         const customerId = request.params.customerId;
         const affectedRows = await customersDomain.delete(customerId);
         
@@ -52,8 +45,6 @@ exports.getAll = async (request, response, next) => {
 
 exports.getById = async (request, response, next) => {
     try {
-        CustomerValidation.Validate(request);
-
         let customer = await customersDomain.getById(request.params.customerId);
 
         response.status(200).json(customer);

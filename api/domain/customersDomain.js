@@ -1,5 +1,6 @@
 const customerRepo = require('@repos/customerRepository');
 const { IdNotFound } = require('@helpers/errors');
+const { SequelizeError } = require('@helpers/errors');
 
 exports.create = async (customerData) => {
     try {
@@ -17,6 +18,9 @@ exports.update = async (customerId, updatedCustomerData) => {
 
         return affectedRows;
     } catch (error) {
+        if (error.name.includes("Sequelize")) {
+            throw new SequelizeError('Field cannot be null.');
+        }
         throw new IdNotFound('Customer with given ID doesn\'t exists. No customer was updated.');
     }
 };

@@ -1,7 +1,8 @@
 const { RequestValidationError } = require('@helpers/errors');
 const { ArgumentIsNotIntError } = require('@helpers/errors');
+const { UpdateError } = require('@helpers/errors');
 
-class CustomerValidation { 
+class CustomerValidation {
     static Validate(request, response, next) {
         try {
             switch (request.method) {
@@ -12,8 +13,7 @@ class CustomerValidation {
                     CustomerValidation.ValidateId(request.params.customerId);
                     break;
                 case "PATCH":
-                    CustomerValidation.ValidateId(request.params.customerId);
-                    CustomerValidation.ValidateUpdate(request.body);
+                    CustomerValidation.ValidateUpdate(request);
                     break;
                 case "DELETE":
                     CustomerValidation.ValidateId(request.params.customerId);
@@ -27,29 +27,58 @@ class CustomerValidation {
 
     static ValidateCreate(customerData) {
         CustomerValidation.ValidateAllFieldsUndefined(customerData);
-
-        // if (!customerData.name || !/\S/.test(customerData.name)) {
-        //     throw new RequestValidationError('Name can\'t be empty');
-        // }
+        CustomerValidation.ValidateAllFieldsEmpty(customerData);
     }
 
     static ValidateAllFieldsUndefined(customerData) {
         if (!customerData.name
             || !customerData.email
-            || !customerData.vatNumber) {
-            throw new RequestValidationError('One or more request fields are missing.');
+            || !customerData.vatNumber
+            || !customerData.delivery_street
+            || !customerData.delivery_city
+            || !customerData.delivery_country
+            || !customerData.billing_street
+            || !customerData.billing_city
+            || !customerData.billing_country) {
+                throw new RequestValidationError('One or more request fields are missing.');
         }
     }
 
-    static ValidateId(customerId) {
-        if (isNaN(customerId)) {
-            throw new ArgumentIsNotIntError('Customer ID must be an integer. Given ID: ' + customerId);
+    static ValidateAllFieldsEmpty(customerData) {
+        if (!/\S/.test(customerData.name)
+            || !/\S/.test(customerData.email)
+            || !/\S/.test(customerData.vatNumber)
+            || !/\S/.test(customerData.delivery_street)
+            || !/\S/.test(customerData.delivery_city)
+            || !/\S/.test(customerData.delivery_country)
+            || !/\S/.test(customerData.billing_street)
+            || !/\S/.test(customerData.billing_city)
+            || !/\S/.test(customerData.billing_country)) {
+                throw new RequestValidationError('One or more request fields are empty.');
         }
     }
 
-    static ValidateUpdate(updatedCustomerData) {
-        if (updatedCustomerData === "" || updatedCustomerData === null || updatedCustomerData === undefined) {
-            throw new UpdateError('Provide values to update.');
+    static ValidateId(id) {
+        if (isNaN(id)) {
+            throw new ArgumentIsNotIntError('Customer ID must be an integer. Given ID: ' + id);
+        }
+    }
+
+    static ValidateUpdate(request) {
+        CustomerValidation.ValidateId(request.params.customerId);
+
+        const updatedCustomerData = request.body;
+
+        if (!/\S/.test(updatedCustomerData.name)    
+            || !/\S/.test(updatedCustomerData.email)
+            || !/\S/.test(updatedCustomerData.vatNumber)
+            || !/\S/.test(updatedCustomerData.delivery_street)
+            || !/\S/.test(updatedCustomerData.delivery_city)
+            || !/\S/.test(updatedCustomerData.delivery_country)
+            || !/\S/.test(updatedCustomerData.billing_street)
+            || !/\S/.test(updatedCustomerData.billing_city)
+            || !/\S/.test(updatedCustomerData.billing_country)) {
+            throw new UpdateError('One or more updated fields are empty.');
         }
     }
 }

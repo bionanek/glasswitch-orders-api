@@ -1,3 +1,23 @@
+class SequelizeError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "SequelizeError";
+        this.message = message;
+        this.code = 500;
+    }
+
+    toJSON() {
+        return {
+            error: {
+                errorCode: this.code,
+                name: this.name,
+                message: this.message,
+                stacktrace: this.stack
+            }
+        }
+    }
+}
+
 class RequestValidationError extends Error {
     constructor(message) {
         super(message);
@@ -82,5 +102,6 @@ module.exports = {
     ArgumentIsNotIntError,
     RequestValidationError,
     UpdateError,
-    IdNotFound
+    IdNotFound,
+    SequelizeError
 };
