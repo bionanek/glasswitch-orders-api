@@ -1,6 +1,5 @@
 const customerRepo = require('@repos/customerRepository');
 const { IdNotFound } = require('@helpers/errors');
-const { RecordsEmptyError } = require('@validation/customerValidation');
 
 exports.create = async (customerData) => {
     try {
@@ -11,34 +10,35 @@ exports.create = async (customerData) => {
 };
 
 exports.update = async (customerId, updatedCustomerData) => {
-    let affectedRows = await customerRepo.updateCustomer(customerId, updatedCustomerData);
+    try {
+        await customerRepo.getById(customerId);
 
-    if (affectedRows === 0) {
-        throw new Error('No customer updated.');
+        const affectedRows = await customerRepo.updateCustomer(customerId, updatedCustomerData);
+
+        return affectedRows;
+    } catch (error) {
+        throw new IdNotFound('Customer with given ID doesn\'t exists. No customer was updated.');
     }
-
-    return affectedRows;
 };
 
 exports.delete = async (customerId) => {
-    let affectedRows = await customerRepo.deleteCustomer(customerId);
+    try {
+        const affectedRows = await customerRepo.deleteCustomer(customerId);
 
-    if (affectedRows === 0) {
-        throw new RecordsEmptyError('No customer deleted.');
+        return affectedRows;
+    } catch (error) {
+        throw new IdNotFound('Customer with given ID doesn\'t exists. No customer was deleted.');
     }
-
-    return affectedRows;
 };
 
 exports.getAll = async () => {
-    let fetchedRows = await customerRepo.getAll();
+    try {
+        const fetchedRows = await customerRepo.getAll();
 
-    //IF TABLE IS EMPTY STILL RETURNS INSTEAD OF THROWING AN ERROR
-    if (fetchedRows === [0]) {
-        throw new RecordsEmptyError('No customers found.');
+        return fetchedRows;
+    } catch (error) {
+        throw new Error('No customers were found.')
     }
-
-    return fetchedRows;
 };
 
 exports.getById = async (customerId) => {

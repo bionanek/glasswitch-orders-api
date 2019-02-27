@@ -58,32 +58,12 @@ class UpdateError extends Error {
     }
 }
 
-class RecordsEmptyError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "RecordsEmpty";
-        this.message = message;
-        this.code = 400;
-    }
-
-    toJSON() {
-        return {
-            error: {
-                errorCode: this.code,
-                name: this.name,
-                message: this.message,
-                stacktrace: this.stack
-            }
-        }
-    }
-}
-
 class IdNotFound extends Error {
     constructor(message) {
         super(message);
         this.name = "IDError";
         this.message = message;
-        this.code = 400;
+        this.code = 404;
     }
 
     toJSON() {
@@ -102,6 +82,5 @@ module.exports = {
     ArgumentIsNotIntError,
     RequestValidationError,
     UpdateError,
-    IdNotFound,
-    RecordsEmptyError
+    IdNotFound
 };

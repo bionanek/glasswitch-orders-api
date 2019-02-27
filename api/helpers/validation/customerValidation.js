@@ -11,7 +11,8 @@ class CustomerValidation {
                 CustomerValidation.ValidateId(request.params.customerId);
                 break;
             case "PATCH":
-                // CustomerValidation.ValidateUpdate(request.body);
+                CustomerValidation.ValidateId(request.params.customerId);
+                CustomerValidation.ValidateUpdate(request.body);
                 break;
             case "DELETE":
                 CustomerValidation.ValidateId(request.params.customerId);
@@ -20,39 +21,23 @@ class CustomerValidation {
     }
 
     static ValidateCreate(customerData) {
-        Validation.NameValidation(customerData);
-    }
-
-    static ValidateId(customerId) {
-        Validation.IdValidation(customerId);
-    }
-    
-    static ValidateUpdate(updatedCustomerData) {
-        Validation.UpdateValidation(updatedCustomerData);
-    }
-}
-
-class Validation {
-    static NameValidation(customerData) {
         if (!customerData.name || !/\S/.test(customerData.name)) {
             throw new RequestValidationError('Name can\'t be empty');
         }
     }
 
-    static IdValidation(customerId) {
+    static ValidateId(customerId) {
         if (isNaN(customerId)) {
             throw new ArgumentIsNotIntError('Customer ID must be an integer. Given ID: ' + customerId);
         }
     }
 
-    static UpdateValidation(updatedCustomerData) {
+    static ValidateUpdate(updatedCustomerData) {
         if (updatedCustomerData === "" || updatedCustomerData === null || updatedCustomerData === undefined) {
             throw new UpdateError('Provide values to update.');
         }
     }
 }
-
-
 
 module.exports = {
     CustomerValidation,
