@@ -1,28 +1,43 @@
 const { RequestValidationError } = require('@helpers/errors');
 const { ArgumentIsNotIntError } = require('@helpers/errors');
 
-class CustomerValidation {
-    static Validate(request) {
-        switch(request.method) {
-            case "POST":
-                CustomerValidation.ValidateCreate(request.body);
-                break;
-            case "GET":
-                CustomerValidation.ValidateId(request.params.customerId);
-                break;
-            case "PATCH":
-                CustomerValidation.ValidateId(request.params.customerId);
-                CustomerValidation.ValidateUpdate(request.body);
-                break;
-            case "DELETE":
-                CustomerValidation.ValidateId(request.params.customerId);
-                break;
+class CustomerValidation { 
+    static Validate(request, response, next) {
+        try {
+            switch (request.method) {
+                case "POST":
+                    CustomerValidation.ValidateCreate(request.body);
+                    break;
+                case "GET":
+                    CustomerValidation.ValidateId(request.params.customerId);
+                    break;
+                case "PATCH":
+                    CustomerValidation.ValidateId(request.params.customerId);
+                    CustomerValidation.ValidateUpdate(request.body);
+                    break;
+                case "DELETE":
+                    CustomerValidation.ValidateId(request.params.customerId);
+                    break;
+            }
+            next();
+        } catch (error) {
+            return response.status(error.code).json(error);
         }
     }
 
     static ValidateCreate(customerData) {
-        if (!customerData.name || !/\S/.test(customerData.name)) {
-            throw new RequestValidationError('Name can\'t be empty');
+        CustomerValidation.ValidateAllFieldsUndefined(customerData);
+
+        // if (!customerData.name || !/\S/.test(customerData.name)) {
+        //     throw new RequestValidationError('Name can\'t be empty');
+        // }
+    }
+
+    static ValidateAllFieldsUndefined(customerData) {
+        if (!customerData.name
+            || !customerData.email
+            || !customerData.vatNumber) {
+            throw new RequestValidationError('One or more request fields are missing.');
         }
     }
 
@@ -40,5 +55,5 @@ class CustomerValidation {
 }
 
 module.exports = {
-    CustomerValidation,
+    CustomerValidation
 };

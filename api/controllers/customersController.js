@@ -3,7 +3,7 @@ const { CustomerValidation } = require('@validation/customerValidation');
 
 exports.create = async (request, response, next) => {
     try {
-        CustomerValidation.Validate(request);
+        // CustomerValidation.Validate(request);
 
         const customerData = request.body;
         const customer = await customersDomain.create(customerData);
@@ -12,7 +12,7 @@ exports.create = async (request, response, next) => {
     } catch (error) {
         response.status(error.code).json(error);
     }
-};
+}; 
 
 exports.update = async (request, response, next) => {
     try {
