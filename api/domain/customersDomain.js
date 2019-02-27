@@ -1,11 +1,8 @@
 const customerRepo = require('@repos/customerRepository');
-const { RequestValidationError } = require('@helpers/errors');
+const { IdNotFound } = require('@helpers/errors');
+const { SequelizeError } = require('@helpers/errors');
 
 exports.create = async (customerData) => {
-    if (!customerData.name || !/\S/.test(customerData.name)) {
-        throw new RequestValidationError('Name can\'t be empy');
-    }
-
     try {
         return await customerRepo.createCustomer(customerData);
     } catch (error) {
@@ -14,53 +11,46 @@ exports.create = async (customerData) => {
 };
 
 exports.update = async (customerId, updatedCustomerData) => {
-    if (updatedCustomerData === null) {
-        throw new Erorr('Provide values to update.');
-    }
+    try {
+        await customerRepo.getById(customerId);
 
-    let affectedRows = await customerRepo.updateCustomer(customerId, updatedCustomerData);
+        const affectedRows = await customerRepo.updateCustomer(customerId, updatedCustomerData);
 
-    if (affectedRows === 0) {
-        throw new Error('No customer updated.');
+        return affectedRows;
+    } catch (error) {
+        if (error.name.includes("Sequelize")) {
+            throw new SequelizeError('Field cannot be null.');
+        }
+        throw new IdNotFound('Customer with given ID doesn\'t exists. No customer was updated.');
     }
-    
-    return affectedRows;
 };
 
 exports.delete = async (customerId) => {
-    if (isNaN(customerId)) {
-        throw new Error('Customer ID must be an integer. Given ID: ' + customerId);
+    try {
+        const affectedRows = await customerRepo.deleteCustomer(customerId);
+
+        return affectedRows;
+    } catch (error) {
+        throw new IdNotFound('Customer with given ID doesn\'t exists. No customer was deleted.');
     }
-
-    let affectedRows = await customerRepo.deleteCustomer(customerId);
-
-    if (affectedRows === 0) {
-        throw new Error('No customer deleted.');
-    }
-
-    return affectedRows;
 };
 
 exports.getAll = async () => {
-    let fetchedRows = await customerRepo.getAll();
+    try {
+        const fetchedRows = await customerRepo.getAll();
 
-    if (fetchedRows === 0) {
-        throw new Error('No customers found.');
+        return fetchedRows;
+    } catch (error) {
+        throw new Error('No customers were found.')
     }
-
-    return fetchedRows;
 };
 
 exports.getById = async (customerId) => {
-    if (isNaN(customerId)) {
-        throw new Error('Customer ID must be an integer. Given ID: ' + customerId);
+    try {
+        const fetchedRow = await customerRepo.getById(customerId);
+
+        return fetchedRow;
+    } catch (error) {
+        throw new IdNotFound('Customer with given ID doesn\'t exists.');
     }
-
-    let fetchedRow = await customerRepo.getById(customerId);
-
-    if (fetchedRow === 0) {
-        throw new Error('No customer found.');
-    }
-
-    return fetchedRow;
 };

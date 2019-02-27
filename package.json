@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "export NODE_ENV=test && mocha api/tests/**/**.test.js",
-    "start": "export NODE_ENV=dev && nodemon server.js"
+    "test": "set NODE_ENV=test && mocha api/tests/**/**.test.js",
+    "start": "set NODE_ENV=dev&& nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -45,12 +45,13 @@
     "mocha": "^5.2.0"
   },
   "_moduleAliases": {
-    "@root"       : ".",
-    "@helpers"    : "./api/helpers",
-    "@domains"    : "./api/domain",
+    "@root": ".",
+    "@helpers": "./api/helpers",
+    "@domains": "./api/domain",
     "@controllers": "./api/controllers",
-    "@repos"      : "./api/db/repositories",
-    "@models"     : "./api/db/models",
-    "@db"         : "./api/db"
+    "@repos": "./api/db/repositories",
+    "@models": "./api/db/models",
+    "@db": "./api/db",
+    "@validation": "./api/helpers/validation"
   }
 }

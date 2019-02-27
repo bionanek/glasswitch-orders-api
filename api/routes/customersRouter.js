@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const { CustomerValidation } = require('@validation/customerValidation');
 
 const CustomersController = require('@controllers/customersController');
 
 router.get('/', CustomersController.getAll);
-router.get('/:customerId', CustomersController.getById);
-router.post('/', CustomersController.create);
-router.patch('/:customerId', CustomersController.update);
-router.delete('/:customerId', CustomersController.delete);
+router.get('/:customerId', CustomerValidation.Validate, CustomersController.getById);
+router.post('/', CustomerValidation.Validate, CustomersController.create);
+router.patch('/:customerId', CustomerValidation.Validate, CustomersController.update);
+router.delete('/:customerId', CustomerValidation.Validate, CustomersController.delete);
 
 module.exports = router;
