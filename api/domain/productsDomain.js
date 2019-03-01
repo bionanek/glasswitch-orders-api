@@ -1,13 +1,9 @@
 const productRepo = require('@repos/productRepository');
 const pricesDomain = require('@domains/pricesDomain');
+const { IdNotFound } = require('@helpers/errors');
+const { SequelizeError } = require('@helpers/errors');
 
 exports.create = async (productData) => {
-    if (!productData.name || !/\S/.test(productData.name)) {
-        throw new Error('Name can\'t be empty');
-    } else if (productData.price === null || productData.price === undefined) {
-        throw new Error('Price has to be provided for a product.');
-    }
-
     try {
         return await productRepo.createProduct(productData);
     } catch (error) {
@@ -16,53 +12,46 @@ exports.create = async (productData) => {
 };
 
 exports.update = async (productId, updatedProductData) => {
-    if (updatedProductData === null || updatedProductData === undefined) {
-        throw new Error('Provide values to update.');
+    try {
+        await productRepo.getById(productId);
+
+        const affectedRows = await productRepo.updateProduct(productId, updatedProductData);
+
+        return affectedRows;
+    } catch (error) {
+        if (error.name.includes("Sequelize")) {
+            throw new SequelizeError('Field cannot be null.');
+        }
+        throw new IdNotFound('Product with given ID doesn\'t exists. No product was updated.');
     }
-
-    let affectedRows = await productRepo.updateProduct(productId, updatedProductData);
-
-    if (affectedRows === 0) {
-        throw new Error('No product updated.');
-    }
-
-    return affectedRows;
 };
 
 exports.delete = async (productId) => {
-    if (isNaN(productId)) {
-        throw new Error('Product ID must be an integer. Given ID: ' + productId);
+    try {
+        const affectedRows = await productRepo.deleteProduct(productId);
+
+        return affectedRows;
+    } catch (error) {
+        throw new IdNotFound('Product with given ID doesn\'t exists. No product was deleted.');
     }
-
-    let affectedRows = await productRepo.deleteProduct(productId);
-
-    if (affectedRows === 0) {
-        throw new Error('No product deleted.');
-    }
-
-    return affectedRows;
 };
 
 exports.getAll = async () => {
-    let fetchedRows = await productRepo.getAll();
+    try {
+        const fetchedRows = await productRepo.getAll();
 
-    if (fetchedRows === 0) {
-        throw new Error('No products found.');
+        return fetchedRows;
+    } catch (error) {
+        throw new Error('No products were found.')
     }
-
-    return fetchedRows;
 };
 
 exports.getById = async (productId) => {
-    if (isNaN(productId)) {
-        throw new Error('Product ID must be an integer. Given ID: ' + productId)
+    try {
+        const fetchedRow = await productRepo.getById(productId);
+
+        return fetchedRow;
+    } catch (error) {
+        throw new IdNotFound('Product with given ID doesn\'t exists.');
     }
-
-    let fetchedRow = await productRepo.getById(productId);
-
-    if (fetchedRow === 0) {
-        throw new Error('No product found.');
-    }
-
-    return fetchedRow;
 };

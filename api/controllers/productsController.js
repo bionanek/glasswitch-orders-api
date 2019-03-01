@@ -5,7 +5,7 @@ exports.create = async (request, response, next) => {
         const productData = request.body;
         const product = await productsDomain.create(productData);
 
-        response.status(200).json(customer);
+        response.status(200).json(product);
     } catch (error) {
         response.status(error.code).json(error);
     }
@@ -17,7 +17,7 @@ exports.update = async (request, response, next) => {
         const productId = request.params.productId;
         const affectedRows = await productsDomain.update(productId, updatedProductData);
 
-        response.status(200).json(customer);
+        response.status(200).json(affectedRows);
     } catch (error) {
         response.status(error.code).json(error);
     }
