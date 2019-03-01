@@ -15,9 +15,7 @@ exports.update = async (productId, updatedProductData) => {
     try {
         await productRepo.getById(productId);
 
-        const affectedRows = await productRepo.updateProduct(productId, updatedProductData);
-
-        return affectedRows;
+        return await productRepo.updateProduct(productId, updatedProductData);
     } catch (error) {
         if (error.name.includes("Sequelize")) {
             throw new SequelizeError('Field cannot be null.');
@@ -28,9 +26,7 @@ exports.update = async (productId, updatedProductData) => {
 
 exports.delete = async (productId) => {
     try {
-        const affectedRows = await productRepo.deleteProduct(productId);
-
-        return affectedRows;
+        return await productRepo.deleteProduct(productId);
     } catch (error) {
         throw new IdNotFound('Product with given ID doesn\'t exists. No product was deleted.');
     }
@@ -38,9 +34,7 @@ exports.delete = async (productId) => {
 
 exports.getAll = async () => {
     try {
-        const fetchedRows = await productRepo.getAll();
-
-        return fetchedRows;
+        return await productRepo.getAll();
     } catch (error) {
         throw new Error('No products were found.')
     }
@@ -48,9 +42,7 @@ exports.getAll = async () => {
 
 exports.getById = async (productId) => {
     try {
-        const fetchedRow = await productRepo.getById(productId);
-
-        return fetchedRow;
+        return await productRepo.getById(productId);
     } catch (error) {
         throw new IdNotFound('Product with given ID doesn\'t exists.');
     }

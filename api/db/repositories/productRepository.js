@@ -18,9 +18,7 @@ exports.updateProduct = async (productId, updatedProductData) => {
         const priceUpdate = await Prices.update(updatedProductData.price, 
             { where: { id: updatedProductData.priceId } });
 
-        const totalAffectedRows = parseInt(productUpdate) + parseInt(priceUpdate);
-        
-        return totalAffectedRows;
+        return parseInt(productUpdate) + parseInt(priceUpdate);
     } catch (error) {
         throw new Error(error);
     }
