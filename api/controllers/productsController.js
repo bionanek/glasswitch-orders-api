@@ -1,77 +1,55 @@
 const productsDomain = require('@domains/productsDomain');
 
-exports.create = (request, response, next) => {
-    var productData = request.body;
+exports.create = async (request, response, next) => {
+    try {
+        const productData = request.body;
+        const product = await productsDomain.create(productData);
 
-    productsDomain.create(productData)
-        .then(product => {
-            response.status(200).json(product);
-        })
-        .catch(error => {
-            response.status(400).json({
-                message: error.message,
-                trace: error.trace
-            });
-        })
+        response.status(200).json(customer);
+    } catch (error) {
+        response.status(error.code).json(error);
+    }
 };
 
-exports.update = (request, response, next) => {
-    const productId = request.params.productId;
+exports.update = async (request, response, next) => {
+    try {
+        const updatedProductData = request.body;
+        const productId = request.params.productId;
+        const affectedRows = await productsDomain.update(productId, updatedProductData);
 
-    productsDomain.update(productId, request.body)
-        .then((affectedRows) => {
-            response.status(200).json(affectedRows);
-        })
-        .catch((error) => {
-            response.status(500).json({
-                message: error.message,
-                trace: error.trace
-            });
-        });
+        response.status(200).json(customer);
+    } catch (error) {
+        response.status(error.code).json(error);
+    }
 };
 
-exports.delete = (request, response, next) => {
-    const productId = request.params.productId;
-
-    productsDomain.delete(productId)
-        .then((numberOfRemovedRows) => {
-            response.status(200).json(numberOfRemovedRows);
-        })
-        .catch((error) => {
-            console.log('controller');
-            console.log(error);
-            response.status(500).json({
-                message: error.message,
-                trace: error.trace
-            });
-        });
+exports.delete = async (request, response, next) => {
+    try {
+        const productId = request.params.productId;
+        const affectedRows = await productsDomain.delete(productId);
+        
+        response.status(200).json(affectedRows);
+    } catch (error) {
+        response.status(error.code).json(error);
+    }
 };
 
-exports.getAll = (request, response, next) => {
-    productsDomain.getAll()
-        .then((products) => {
-            response.status(200).json(products);
-        })
-        .catch((error) => {
-            console.log(error);
-            response.status(400).json({
-                message: error.message,
-                trace: error.trace
-            });
-        });
+exports.getAll = async (request, response, next) => {
+    try {
+        let products = await productsDomain.getAll();
+
+        response.status(200).json(products);
+    } catch (error) {
+        response.status(error.code).json(error);
+    }
 };
 
-exports.getById = (request, response, next) => {
-    productsDomain.getById(request.params.productId)
-        .then((product) => {
-            response.status(200).json(product);
-        })
-        .catch((error) => {
-            console.log(error);
+exports.getById = async (request, response, next) => {
+    try {
+        let product = await productsDomain.getById(request.params.productId);
 
-            response.status(400).json({
-                message: error.message,
-                trace: error.trace
-            });
-        });
+        response.status(200).json(product);
+    } catch (error) {
+        response.status(error.code).json(error);
+    }
 };
