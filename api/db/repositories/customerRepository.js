@@ -1,4 +1,5 @@
 const Customers = require('@db/dbHelper').Customers;
+const { CustomerValidation } = require('@validation/customerValidation');
 
 exports.Customers = Customers;
 
@@ -12,54 +13,46 @@ exports.createCustomer = async (customerData) => {
 
 exports.updateCustomer = async (customerId, updatedCustomerData) => {
     try {
-        return Customers.update(updatedCustomerData, { where: { id: customerId } });
+        const requestedCustomer = await Customers.findById(customerId);
+
+        CustomerValidation.ValidateIdExists(requestedCustomer);
+
+        return Customers.update(updatedCustomerData, 
+            { where: { id: customerId } });
     } catch (error) {
         throw new Error(error);
     }
 };
 
 exports.deleteCustomer = async (customerId) => {
-    const requestedCustomer = await Customers.findById(customerId);
-
-    if (requestedCustomer === null || requestedCustomer === undefined) {
-        throw new Error('Customer with given ID doesn\'t exist');
-    }
-
     try {
-        return Customers.destroy({ where: { id: customerId }, cascade: true });
+        const requestedCustomer = await Customers.findById(customerId);
+
+        CustomerValidation.ValidateIdExists(requestedCustomer);
+
+        return Customers.destroy(
+            { where: { id: customerId }, cascade: true });
     } catch (error) {
         throw new Error(error);
     }
 };
 
 exports.getAll = async () => {
-    let allCustomers;
-
     try {
-        allCustomers = await Customers.findAll();
+        return await Customers.findAll();
     } catch (error) {
         throw new Error(error);
     }
-
-    if (allCustomers === null || allCustomers === undefined) { 
-        throw new Error('Customers table is empty. REPO');
-    }
-
-    return allCustomers;
 };
 
 exports.getById = async (customerId) => {
-    let requestedCustomer;
-
     try {
-        requestedCustomer = await Customers.findById(customerId);
+        const requestedCustomer = await Customers.findById(customerId);
+
+        CustomerValidation.ValidateIdExists(requestedCustomer);
+
+        return requestedCustomer;
     } catch (error) {
         throw new Error(error);
     }
-
-    if (requestedCustomer === null || requestedCustomer === undefined) {
-        throw new Error('Customer with given ID doesn\'t exists');
-    }
-    
-    return requestedCustomer;
 };

@@ -14,9 +14,7 @@ exports.update = async (customerId, updatedCustomerData) => {
     try {
         await customerRepo.getById(customerId);
 
-        const affectedRows = await customerRepo.updateCustomer(customerId, updatedCustomerData);
-
-        return affectedRows;
+        return await customerRepo.updateCustomer(customerId, updatedCustomerData);
     } catch (error) {
         if (error.name.includes("Sequelize")) {
             throw new SequelizeError('Field cannot be null.');
@@ -27,9 +25,7 @@ exports.update = async (customerId, updatedCustomerData) => {
 
 exports.delete = async (customerId) => {
     try {
-        const affectedRows = await customerRepo.deleteCustomer(customerId);
-
-        return affectedRows;
+        return await customerRepo.deleteCustomer(customerId);
     } catch (error) {
         throw new IdNotFound('Customer with given ID doesn\'t exists. No customer was deleted.');
     }
@@ -37,9 +33,7 @@ exports.delete = async (customerId) => {
 
 exports.getAll = async () => {
     try {
-        const fetchedRows = await customerRepo.getAll();
-
-        return fetchedRows;
+        return await customerRepo.getAll();
     } catch (error) {
         throw new Error('No customers were found.')
     }
@@ -47,9 +41,7 @@ exports.getAll = async () => {
 
 exports.getById = async (customerId) => {
     try {
-        const fetchedRow = await customerRepo.getById(customerId);
-
-        return fetchedRow;
+        return await customerRepo.getById(customerId);
     } catch (error) {
         throw new IdNotFound('Customer with given ID doesn\'t exists.');
     }
