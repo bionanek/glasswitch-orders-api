@@ -37,6 +37,7 @@ exports.delete = async (request, response, next) => {
 exports.getAll = async (request, response, next) => {
     try {
         let customers = await customersDomain.getAll();
+        
         response.status(200).json(customers);
     } catch (error) {
         response.status(error.code).json(error);
