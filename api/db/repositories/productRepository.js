@@ -1,5 +1,6 @@
 const Products = require('@db/dbHelper').Products;
 const Prices = require('@db/dbHelper').Prices;
+const { IdNotFound } = require('@helpers/errors');
 
 exports.Products = Products;
 
@@ -13,6 +14,10 @@ exports.createProduct = async (productData) => {
 
 exports.updateProduct = async (productId, updatedProductData) => {
     try {
+        const requestedProduct = await Products.findById(productId);
+
+        Validate.ValidateIdExists(requestedProduct);
+
         const productUpdate = await Products.update(updatedProductData, 
             { where: { id: productId } });
         const priceUpdate = await Prices.update(updatedProductData.price, 
@@ -26,6 +31,10 @@ exports.updateProduct = async (productId, updatedProductData) => {
 
 exports.deleteProduct = async (productId) => {
     try {
+        const requestedProduct = await Products.findById(productId);
+
+        Validate.ValidateIdExists(requestedProduct);
+
         let affectedRows = 0;
         let priceId;
 
@@ -63,8 +72,18 @@ exports.getById = async (productId) => {
         const requestedProduct = await Products.findById(productId, 
             { include: [Products.Price] });
 
+        Validate.ValidateIdExists(requestedProduct);
+
         return requestedProduct;
     } catch (error) {
         throw new Error(error);
     }
 };
+
+class Validate {
+    static ValidateIdExists(requestedProduct) {
+        if (requestedProduct === null || requestedProduct === undefined) {
+            throw new IdNotFound('Product with given ID doesn\'t exists.');
+        }
+    }
+}
