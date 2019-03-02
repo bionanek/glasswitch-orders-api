@@ -11,29 +11,24 @@ exports.createProduct = async (productData) => {
     }
 };
 
-exports.updateProduct = async (productId, updatedProductData) => {    
-    let productUpdate = await Products.update(updatedProductData, { where: { id: productId } }); 
-    let priceUpdate = await Prices.update(updatedProductData.price, { where: { id: updatedProductData.priceId } });
-
+exports.updateProduct = async (productId, updatedProductData) => {
     try {
-        let totalAffectedRows = parseInt(productUpdate) + parseInt(priceUpdate);
-        return totalAffectedRows;
+        const productUpdate = await Products.update(updatedProductData, 
+            { where: { id: productId } });
+        const priceUpdate = await Prices.update(updatedProductData.price, 
+            { where: { id: updatedProductData.priceId } });
+
+        return parseInt(productUpdate) + parseInt(priceUpdate);
     } catch (error) {
         throw new Error(error);
     }
 };
 
 exports.deleteProduct = async (productId) => {
-    let affectedRows = 0;
-    let priceId;
-
-    const requestedProduct = await Products.findById(productId);
-
-    if (requestedProduct === null || requestedProduct === undefined) {
-        throw new Error('Product with given ID doesn\'t exist');
-    }
-
     try {
+        let affectedRows = 0;
+        let priceId;
+
         return await Products.findById(productId)
             .then((product) => {
                 priceId = product.priceId;
@@ -53,34 +48,23 @@ exports.deleteProduct = async (productId) => {
 };
 
 exports.getAll = async () => {
-    let allProducts;
-
     try {
-        allProducts = await Products.findAll({ include: [Products.Price] })
+        const allProducts = await Products.findAll({ include: [Products.Price] })
             .map(el => el.get({ plain: true }));
+
+        return allProducts;
     } catch (error) {
         throw new Error(error);
     }
-
-    if (allProducts === null || allProducts === undefined) {
-        throw new Error('Products table is empty. REPO');
-    }
-
-    return allProducts;
 };
 
 exports.getById = async (productId) => {
-    let requestedProduct;
-
     try {
-        requestedProduct = await Products.findById(productId, { include: [Products.Price] });
+        const requestedProduct = await Products.findById(productId, 
+            { include: [Products.Price] });
+
+        return requestedProduct;
     } catch (error) {
         throw new Error(error);
     }
-
-    if (requestedProduct === null || requestedProduct === undefined) {
-        throw new Error('Product with given ID doesn\'t exist')
-    }
-
-    return requestedProduct;
 };
