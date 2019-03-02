@@ -32,14 +32,9 @@ class ProductValidation {
 
     static ValidateAllFieldsUndefined(productData) {
         if (!productData.name
-            || !productData.description
             || !productData.type
             || !productData.category
-            || !productData.width
-            || !productData.height
-            || !productData.depth
-            || !productData.image
-            || !productData.price) {
+            || !productData.image) {
                 throw new RequestValidationError('One or more request fields are missing.');
             }
     }
