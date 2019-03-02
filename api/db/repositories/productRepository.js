@@ -1,6 +1,7 @@
 const Products = require('@db/dbHelper').Products;
 const Prices = require('@db/dbHelper').Prices;
 const { IdNotFound } = require('@helpers/errors');
+const { Validate } = require('@repos/validators/validators');
 
 exports.Products = Products;
 
@@ -79,11 +80,3 @@ exports.getById = async (productId) => {
         throw new Error(error);
     }
 };
-
-class Validate {
-    static ValidateIdExists(requestedProduct) {
-        if (requestedProduct === null || requestedProduct === undefined) {
-            throw new IdNotFound('Product with given ID doesn\'t exists.');
-        }
-    }
-}
