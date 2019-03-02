@@ -1,58 +1,38 @@
 const Customers = require('@db/dbHelper').Customers;
-const { CustomerValidation } = require('@validation/customerValidation');
+const { Validate } = require('@repos/validators/validators');
 
 exports.Customers = Customers;
 
 exports.createCustomer = async (customerData) => {
-    try {
-        return await Customers.create(customerData);
-    } catch (error) {
-        throw new Error(error);
-    }
+    return await Customers.create(customerData);
 };
 
 exports.updateCustomer = async (customerId, updatedCustomerData) => {
-    try {
-        const requestedCustomer = await Customers.findById(customerId);
+    const requestedCustomer = await Customers.findById(customerId);
 
-        CustomerValidation.ValidateIdExists(requestedCustomer);
+    Validate.ValidateIdExists(requestedCustomer);
 
-        return Customers.update(updatedCustomerData, 
-            { where: { id: customerId } });
-    } catch (error) {
-        throw new Error(error);
-    }
+    return Customers.update(updatedCustomerData, 
+        { where: { id: customerId } });
 };
 
 exports.deleteCustomer = async (customerId) => {
-    try {
-        const requestedCustomer = await Customers.findById(customerId);
+    const requestedCustomer = await Customers.findById(customerId);
 
-        CustomerValidation.ValidateIdExists(requestedCustomer);
+    Validate.ValidateIdExists(requestedCustomer);
 
-        return Customers.destroy(
-            { where: { id: customerId }, cascade: true });
-    } catch (error) {
-        throw new Error(error);
-    }
+    return Customers.destroy(
+        { where: { id: customerId }, cascade: true });
 };
 
 exports.getAll = async () => {
-    try {
-        return await Customers.findAll();
-    } catch (error) {
-        throw new Error(error);
-    }
+    return await Customers.findAll();
 };
 
 exports.getById = async (customerId) => {
-    try {
-        const requestedCustomer = await Customers.findById(customerId);
+    const requestedCustomer = await Customers.findById(customerId);
 
-        CustomerValidation.ValidateIdExists(requestedCustomer);
+    Validate.ValidateIdExists(requestedCustomer);
 
-        return requestedCustomer;
-    } catch (error) {
-        throw new Error(error);
-    }
+    return requestedCustomer;
 };
