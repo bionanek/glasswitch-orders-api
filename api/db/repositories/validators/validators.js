@@ -1,7 +1,7 @@
 class Validate {
-    static ValidateIdExists(requestedProduct) {
-        if (requestedProduct === null || requestedProduct === undefined) {
-            throw new IdNotFound('Product with given ID doesn\'t exists.');
+    static ValidateIdExists(requestedItem) {
+        if (requestedItem === null || requestedItem === undefined) {
+            throw new IdNotFound('Given ID doesn\'t exists.');
         }
     }
 }

@@ -10,13 +10,13 @@ class CustomerValidation {
                     CustomerValidation.ValidateCreate(request.body);
                     break;
                 case "GET":
-                    CustomerValidation.ValidateId(request.params.customerId);
+                    CustomerValidation.ValidateIdIsNaN(request.params.customerId);
                     break;
                 case "PATCH":
                     CustomerValidation.ValidateUpdate(request);
                     break;
                 case "DELETE":
-                    CustomerValidation.ValidateId(request.params.customerId);
+                    CustomerValidation.ValidateIdIsNaN(request.params.customerId);
                     break;
             }
             next();
@@ -58,14 +58,14 @@ class CustomerValidation {
         }
     }
 
-    static ValidateId(id) {
+    static ValidateIdIsNaN(id) {
         if (isNaN(id)) {
             throw new ArgumentIsNotIntError('Customer ID must be an integer. Given ID: ' + id);
         }
     }
 
     static ValidateUpdate(request) {
-        CustomerValidation.ValidateId(request.params.customerId);
+        CustomerValidation.ValidateIdIsNaN(request.params.customerId);
 
         const updatedCustomerData = request.body;
 
@@ -79,6 +79,12 @@ class CustomerValidation {
             || !/\S/.test(updatedCustomerData.billing_city)
             || !/\S/.test(updatedCustomerData.billing_country)) {
             throw new UpdateError('One or more updated fields are empty.');
+        }
+    }
+
+    static ValidateIdExists(id) {
+        if (id === null || id === undefined) {
+            throw new Error();
         }
     }
 }
