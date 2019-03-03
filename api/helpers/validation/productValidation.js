@@ -1,6 +1,7 @@
 const { RequestValidationError } = require('@helpers/errors');
 const { ArgumentIsNotIntError } = require('@helpers/errors');
 const { UpdateError } = require('@helpers/errors');
+const { PriceValidation } = require('@validation/priceValidation');
 
 class ProductValidation {
     static Validate(request, response, next) {
@@ -28,6 +29,7 @@ class ProductValidation {
     static ValidateCreate(productData) {
         ProductValidation.ValidateAllFieldsUndefined(productData);
         ProductValidation.ValidateAllFieldsEmpty(productData);
+        PriceValidation.Validate(productData.price);
     }
 
     static ValidateAllFieldsUndefined(productData) {
