@@ -66,6 +66,10 @@ class ProductValidation {
 
         const updatedProductData = request.body;
 
+        if (updatedProductData.price) {
+            PriceValidation.Validate(updatedProductData.price);
+        }
+
         if (!/\S/.test(updatedProductData.name)
             || !/\S/.test(updatedProductData.description)
             || !/\S/.test(updatedProductData.type)
