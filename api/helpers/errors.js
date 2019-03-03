@@ -58,6 +58,26 @@ class ArgumentIsNotIntError extends Error {
     }
 }
 
+class ArgumentIsNotNumberError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "ArgumentIsNotNumberError";
+        this.message = message;
+        this.code = 400;
+    }
+
+    toJSON() {
+        return {
+            error: {
+                errorCode: this.code,
+                name: this.name,
+                message: this.message,
+                stacktrace: this.stack
+            }
+        }
+    }
+}
+
 class UpdateError extends Error {
     constructor(message) {
         super(message);
@@ -100,6 +120,7 @@ class IdNotFound extends Error {
 
 module.exports = {
     ArgumentIsNotIntError,
+    ArgumentIsNotNumberError,
     RequestValidationError,
     UpdateError,
     IdNotFound,
