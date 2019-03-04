@@ -1,6 +1,10 @@
-const { RequestValidationError } = require('@helpers/errors');
-const { ArgumentIsNotIntError } = require('@helpers/errors');
-const { UpdateError } = require('@helpers/errors');
+// const { RequestValidationError } = require('@helpers/errors');
+// const { ArgumentIsNotIntError } = require('@helpers/errors');
+// const { UpdateError } = require('@helpers/errors');
+
+const { RequestValidationError } = require('../errors');
+const { ArgumentIsNotIntError } = require('../errors');
+const { UpdateError } = require('../errors');
 
 class CustomerValidation {
     static Validate(request, response, next) {
