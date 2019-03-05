@@ -1,6 +1,7 @@
 const { RequestValidationError } = require('@helpers/errors');
-const { ArgumentIsNotIntError } = require('@helpers/errors');
+const { ArgumentIsIncorrectType } = require('@helpers/errors');
 const { UpdateError } = require('@helpers/errors');
+const { PriceValidation } = require('@validation/priceValidation');
 
 class ProductValidation {
     static Validate(request, response, next) {
@@ -28,6 +29,7 @@ class ProductValidation {
     static ValidateCreate(productData) {
         ProductValidation.ValidateAllFieldsUndefined(productData);
         ProductValidation.ValidateAllFieldsEmpty(productData);
+        PriceValidation.Validate(productData.price);
     }
 
     static ValidateAllFieldsUndefined(productData) {
@@ -56,7 +58,7 @@ class ProductValidation {
 
     static ValidateId(id) {
         if (isNaN(id)) {
-            throw new ArgumentIsNotIntError('Product ID must be an integer. Given ID: ' + id);
+            throw new ArgumentIsIncorrectType('Product ID must be an integer. Given ID: ' + id);
         }
     }
 
@@ -64,6 +66,10 @@ class ProductValidation {
         ProductValidation.ValidateId(request.params.productId);
 
         const updatedProductData = request.body;
+
+        if (updatedProductData.price) {
+            PriceValidation.Validate(updatedProductData.price);
+        }
 
         if (!/\S/.test(updatedProductData.name)
             || !/\S/.test(updatedProductData.description)
