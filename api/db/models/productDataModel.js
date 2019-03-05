@@ -7,21 +7,15 @@ exports.productDataModel = {
         autoIncrement: true
     },
     name: { type: Types.STRING, allowNull: false },
-    description: Types.STRING,
+    description: { type: Types.STRING, allowNull: true },
     type: { type: Types.STRING, allowNull: false },
     category: { 
         type: Types.STRING,
         allowNull: false,
         defaultValue: ''
      },
-    width: Types.DOUBLE,
-    height: Types.DOUBLE,
-    depth: Types.DOUBLE,
-    image: Types.STRING,
-    // Product_priceID: { 
-    //     type: Types.INTEGER, 
-    //     allowNull: false, 
-    //     references: { model: 'prices', key: 'id' },
-    //     cascadeDelete: true 
-    // }
+    width: { type: Types.DOUBLE, allowNull: true },
+    height: { type: Types.DOUBLE, allowNull: true },
+    depth: { type: Types.DOUBLE, allowNull: true },
+    image: { type: Types.STRING, allowNull: false }
 };

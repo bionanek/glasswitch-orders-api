@@ -1,65 +1,38 @@
 const Customers = require('@db/dbHelper').Customers;
+const { Validate } = require('@repos/validators/validators');
 
 exports.Customers = Customers;
 
 exports.createCustomer = async (customerData) => {
-    try {
-        return await Customers.create(customerData);
-    } catch (error) {
-        throw new Error(error);
-    }
+    return await Customers.create(customerData);
 };
 
 exports.updateCustomer = async (customerId, updatedCustomerData) => {
-    try {
-        return Customers.update(updatedCustomerData, { where: { id: customerId } });
-    } catch (error) {
-        throw new Error(error);
-    }
+    const requestedCustomer = await Customers.findById(customerId);
+
+    Validate.ValidateIdExists(requestedCustomer);
+
+    return Customers.update(updatedCustomerData, 
+        { where: { id: customerId } });
 };
 
 exports.deleteCustomer = async (customerId) => {
     const requestedCustomer = await Customers.findById(customerId);
 
-    if (requestedCustomer === null || requestedCustomer === undefined) {
-        throw new Error('Customer with given ID doesn\'t exist');
-    }
+    Validate.ValidateIdExists(requestedCustomer);
 
-    try {
-        return Customers.destroy({ where: { id: customerId }, cascade: true });
-    } catch (error) {
-        throw new Error(error);
-    }
+    return Customers.destroy(
+        { where: { id: customerId }, cascade: true });
 };
 
 exports.getAll = async () => {
-    let allCustomers;
-
-    try {
-        allCustomers = await Customers.findAll();
-    } catch (error) {
-        throw new Error(error);
-    }
-
-    if (allCustomers === null || allCustomers === undefined) { 
-        throw new Error('Customers table is empty. REPO');
-    }
-
-    return allCustomers;
+    return await Customers.findAll();
 };
 
 exports.getById = async (customerId) => {
-    let requestedCustomer;
+    const requestedCustomer = await Customers.findById(customerId);
 
-    try {
-        requestedCustomer = await Customers.findById(customerId);
-    } catch (error) {
-        throw new Error(error);
-    }
+    Validate.ValidateIdExists(requestedCustomer);
 
-    if (requestedCustomer === null || requestedCustomer === undefined) {
-        throw new Error('Customer with given ID doesn\'t exists');
-    }
-    
     return requestedCustomer;
 };
