@@ -34,7 +34,8 @@ class ProductValidation {
         if (!productData.name
             || !productData.type
             || !productData.category
-            || !productData.image) {
+            || !productData.image
+            || !productData.price) {
                 throw new RequestValidationError('One or more request fields are missing.');
             }
     }
