@@ -1,5 +1,5 @@
 const { RequestValidationError } = require('@helpers/errors');
-const { ArgumentIsNotNumberError } = require('@helpers/errors');
+const { ArgumentIsIncorrectType } = require('@helpers/errors');
 
 class PriceValidation {
     static Validate(priceObject) {
@@ -22,7 +22,7 @@ class PriceValidation {
         if (isNaN(this.priceObject.pln) ||
             isNaN(this.priceObject.eur) ||
             isNaN(this.priceObject.usd)) {
-                throw new ArgumentIsNotNumberError('One of given price currencies is not a number.')
+                throw new ArgumentIsIncorrectType('One of given price currencies is not a number.')
             }
     }
 }

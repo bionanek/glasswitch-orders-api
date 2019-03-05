@@ -38,30 +38,10 @@ class RequestValidationError extends Error {
     }
 }
 
-class ArgumentIsNotIntError extends Error {
+class ArgumentIsIncorrectType extends Error {
     constructor(message) {
         super(message);
-        this.name = "ArgumentIsNotIntError";
-        this.message = message;
-        this.code = 400;
-    }
-
-    toJSON() {
-        return {
-            error: {
-                errorCode: this.code,
-                name: this.name,
-                message: this.message,
-                stacktrace: this.stack
-            }
-        }
-    }
-}
-
-class ArgumentIsNotNumberError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "ArgumentIsNotNumberError";
+        this.name = "ArgumentIsIncorrectType";
         this.message = message;
         this.code = 400;
     }
@@ -119,8 +99,7 @@ class IdNotFound extends Error {
 }
 
 module.exports = {
-    ArgumentIsNotIntError,
-    ArgumentIsNotNumberError,
+    ArgumentIsIncorrectType,
     RequestValidationError,
     UpdateError,
     IdNotFound,
