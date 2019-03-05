@@ -1,10 +1,10 @@
 const assert = require('chai').assert;
+const expect = require('chai').expect;
 
-const customerValidation = require('../../helpers/validation/customerValidation');
+const { CustomerValidation } = require('../../helpers/validation/customerValidation');
 
 describe('ValidateCreate', () => {
     it('Should pass creation of a customer', () => {
-
         var customerTestObject = {
             name: 'Customer',
             email: 'customer@email.com',
@@ -19,9 +19,15 @@ describe('ValidateCreate', () => {
             billing_country: 'Billing Country',
             billing_postCode: null
         };
+        var createdCustomer = CustomerValidation.ValidateCreate(customerTestObject);
+        assert.equal(customerTestObject, createdCustomer, 'WTF');
 
-        let result = customerValidation.ValidateCreate(customerTestObject);
+        //expected undefined to equal { Object (name, email, ...) }
+        // expect(createdCustomer).to.equal(customerTestObject);
 
-        assert.equal(result, customerTestObject);
+        //expected { Object (name, email, ...) } to equal undefined
+        // expect(customerTestObject).to.equal(createdCustomer);
+
+        // expect(CustomerValidation.ValidateCreate(customerTestObject)).to.be.true;
     });
 });
