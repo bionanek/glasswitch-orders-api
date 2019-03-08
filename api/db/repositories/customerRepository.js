@@ -1,5 +1,5 @@
 const Customers = require('@db/dbHelper').Customers;
-const { Verificate } = require('@repos/validators/validators');
+const { Verificate } = require('@repos/verification/verificate');
 
 exports.Customers = Customers;
 

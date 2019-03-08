@@ -9,5 +9,5 @@ class Verificate {
 }
 
 module.exports = {
-    Validate
+    Verificate
 }
