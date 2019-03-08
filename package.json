@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "link-module-alias",
     "testMac": "export NODE_ENV=test && mocha api/tests/**/**.test.js",
     "startMac": "export NODE_ENV=dev && nodemon server.js",
     "startWin": "set NODE_ENV=dev&& nodemon server.js",
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "link-module-alias": "^1.1.6",
     "mocha": "^5.2.0"
   },
   "_moduleAliases": {
@@ -54,6 +56,7 @@
     "@repos": "./api/db/repositories",
     "@models": "./api/db/models",
     "@db": "./api/db",
-    "@validation": "./api/helpers/validation"
+    "@validation": "./api/routes/validation",
+    "@verify": "./api/db/repositories/verification"
   }
 }
