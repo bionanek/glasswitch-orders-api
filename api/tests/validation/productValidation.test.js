@@ -1,13 +1,13 @@
 const expect = require('chai').expect;
 
-const { ProductValidation } = require('../../routes/validation/productValidation');
-const { Verificate } = require('../../db/repositories/verification/verificate');
+const { ProductValidation } = require('@validation/productValidation');
+const { Verificate } = require('@verify/verificate');
 
 const { 
     RequestValidationError,
     ArgumentIsIncorrectType,
     IdNotFound,
-    UpdateError } = require('../../helpers/errors');
+    UpdateError } = require('@helpers/errors');
 
 describe('Products: ValidateCreate', () => {
     it('Should pass creation of a product.', () => {
