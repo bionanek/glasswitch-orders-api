@@ -1,6 +1,11 @@
-const { RequestValidationError } = require('@helpers/errors');
-const { ArgumentIsIncorrectType } = require('@helpers/errors');
-const { UpdateError } = require('@helpers/errors');
+// const { RequestValidationError } = require('@helpers/errors');
+// const { ArgumentIsNotIntError } = require('@helpers/errors');
+// const { UpdateError } = require('@helpers/errors');
+
+const { 
+    RequestValidationError,
+    ArgumentIsIncorrectType,
+    UpdateError } = require('../../helpers/errors');
 
 class CustomerValidation {
     static Validate(request, response, next) {
@@ -60,7 +65,7 @@ class CustomerValidation {
 
     static ValidateIdIsNaN(id) {
         if (isNaN(id)) {
-            throw new ArgumentIsIncorrectType('Customer ID must be an integer. Given ID: ' + id);
+            throw new ArgumentIsIncorrectType('Customer ID must be an integer.');
         }
     }
 
