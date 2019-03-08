@@ -26,9 +26,11 @@ describe('ValidateCreate', () => {
             billing_country: 'Billing Country',
             billing_postCode: null
         };
-        var bindCustomerCreate = CustomerValidation.ValidateCreate.bind(CustomerValidation, customerTestObject);
+        var bindCustomerCreate = CustomerValidation.ValidateCreate
+                                    .bind(CustomerValidation, customerTestObject);
 
-        expect(bindCustomerCreate).to.not.throw(RequestValidationError);
+        expect(bindCustomerCreate)
+            .to.not.throw(RequestValidationError);
     });
 
     it('Should throw an error about missing field/s.', () => {
@@ -41,9 +43,12 @@ describe('ValidateCreate', () => {
             billing_country: 'Billing Country',
             billing_postCode: null
         };
-        var bindCustomerCreate = CustomerValidation.ValidateAllFieldsUndefined.bind(CustomerValidation, customerTestObject);
+        var bindCustomerCreate = CustomerValidation.ValidateAllFieldsUndefined
+                                    .bind(CustomerValidation, customerTestObject);
 
-        expect(bindCustomerCreate).to.throw(RequestValidationError).to.has.property('message', 'One or more request fields are missing.');
+        expect(bindCustomerCreate)
+            .to.throw(RequestValidationError)
+            .to.has.property('message', 'One or more request fields are missing.');
     });
 
     it('Should throw an error about empty field/s.', () => {
@@ -61,9 +66,12 @@ describe('ValidateCreate', () => {
             billing_country: 'Billing Country',
             billing_postCode: null
         };
-        var bindCustomerCreate = CustomerValidation.ValidateAllFieldsEmpty.bind(CustomerValidation, customerTestObject);
+        var bindCustomerCreate = CustomerValidation.ValidateAllFieldsEmpty
+                                    .bind(CustomerValidation, customerTestObject);
 
-        expect(bindCustomerCreate).to.throw(RequestValidationError).to.has.property('message', 'One or more request fields are empty.');
+        expect(bindCustomerCreate)
+            .to.throw(RequestValidationError)
+            .to.has.property('message', 'One or more request fields are empty.');
     });
 });
 
@@ -71,17 +79,22 @@ describe('ValidateIsNaN', () => {
     it('Should pass that given ID is a number.', () => {
         var customerId = 1;
 
-        var bindIdIsNaN = CustomerValidation.ValidateIdIsNaN.bind(CustomerValidation, customerId);
+        var bindIdIsNaN = CustomerValidation.ValidateIdIsNaN
+                            .bind(CustomerValidation, customerId);
 
-        expect(bindIdIsNaN).to.not.throw(ArgumentIsIncorrectType);
+        expect(bindIdIsNaN)
+            .to.not.throw(ArgumentIsIncorrectType);
     });
 
     it('Should throw an error that given ID is not a number.', () => {
         var customerId = 'dupa';
 
-        var bindIdIsNaN = CustomerValidation.ValidateIdIsNaN.bind(CustomerValidation, customerId);
+        var bindIdIsNaN = CustomerValidation.ValidateIdIsNaN
+                            .bind(CustomerValidation, customerId);
 
-        expect(bindIdIsNaN).to.throw(ArgumentIsIncorrectType).to.has.property('message', 'Customer ID must be an integer.');
+        expect(bindIdIsNaN)
+            .to.throw(ArgumentIsIncorrectType)
+            .to.has.property('message', 'Customer ID must be an integer.');
     });
 });
 
@@ -89,22 +102,27 @@ describe('ValidateIdExists', () => {
     it('Should pass that given ID exists.', () => {
         var customerId = 1;
 
-        var bindIdNotFound = Verificate.IdExists.bind(CustomerValidation, customerId);
+        var bindIdNotFound = Verificate.IdExists
+                                .bind(CustomerValidation, customerId);
 
-        expect(bindIdNotFound).to.not.throw(IdNotFound);
+        expect(bindIdNotFound)
+            .to.not.throw(IdNotFound);
     });
 
     it('Should pass that given ID doesn\'t exist.', () => {
         var customerId = null;
 
-        var bindIdNotFound = Verificate.IdExists.bind(CustomerValidation, customerId);
+        var bindIdNotFound = Verificate.IdExists
+                                .bind(CustomerValidation, customerId);
 
-        expect(bindIdNotFound).to.throw(IdNotFound).to.has.property('message', 'Given ID doesn\'t exist.');
+        expect(bindIdNotFound)
+            .to.throw(IdNotFound)
+            .to.has.property('message', 'Given ID doesn\'t exist.');
     });
 });
 
 describe('ValidateUpdate', () => {
-    it('Should pass an update.', () => {
+    it('Should pass the update.', () => {
         var customerTestObject = {
             name: 'Customer',
             email: 'customer@email.com',
@@ -119,9 +137,11 @@ describe('ValidateUpdate', () => {
             billing_country: 'Billing Country',
             billing_postCode: null
         };
-        var bindCustomerUpdate = CustomerValidation.ValidateUpdate.bind(CustomerValidation, customerTestObject);
+        var bindCustomerUpdate = CustomerValidation.ValidateUpdate
+                                    .bind(CustomerValidation, customerTestObject);
 
-        expect(bindCustomerUpdate).to.not.throw(UpdateError);
+        expect(bindCustomerUpdate)
+            .to.not.throw(UpdateError);
     });
 
     it('Should throw an error about empty field/s.', () => {
@@ -136,8 +156,10 @@ describe('ValidateUpdate', () => {
             body: customerTestObject
         }
 
-        var bindCustomerUpdate = CustomerValidation.ValidateUpdate.bind(CustomerValidation, request);
+        var bindCustomerUpdate = CustomerValidation.ValidateUpdate
+                                    .bind(CustomerValidation, request);
 
-        expect(bindCustomerUpdate).to.throw(UpdateError);
+        expect(bindCustomerUpdate)
+            .to.throw(UpdateError);
     });
 });
