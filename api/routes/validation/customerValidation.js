@@ -2,10 +2,10 @@
 // const { ArgumentIsNotIntError } = require('@helpers/errors');
 // const { UpdateError } = require('@helpers/errors');
 
-const { RequestValidationError } = require('../errors');
-const { ArgumentIsIncorrectType } = require('../errors');
-const { UpdateError } = require('../errors');
-const { IdNotFound } = require('../errors');
+const { 
+    RequestValidationError,
+    ArgumentIsIncorrectType,
+    UpdateError } = require('../../helpers/errors');
 
 class CustomerValidation {
     static Validate(request, response, next) {

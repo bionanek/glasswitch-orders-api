@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 
-const { CustomerValidation } = require('../../helpers/validation/customerValidation');
+const { CustomerValidation } = require('../../routes/validation/customerValidation');
 const { Verificate } = require('../../db/repositories/verification/verificate');
 
 const { 
