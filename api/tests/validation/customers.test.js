@@ -1,6 +1,8 @@
 const expect = require('chai').expect;
 
 const { CustomerValidation } = require('../../helpers/validation/customerValidation');
+const { Verificate } = require('../../db/repositories/verification/verificate');
+
 const { RequestValidationError } = require('../../helpers/errors');
 const { ArgumentIsIncorrectType } = require('../../helpers/errors');
 const { IdNotFound } = require('../../helpers/errors');
@@ -85,7 +87,7 @@ describe('ValidateIdExists', () => {
     it('Should pass that given ID exists.', () => {
         var customerId = 1;
 
-        var bindIdNotFound = CustomerValidation.ValidateIdExists.bind(CustomerValidation, customerId);
+        var bindIdNotFound = Verificate.IdExists.bind(CustomerValidation, customerId);
 
         expect(bindIdNotFound).to.not.throw(IdNotFound);
     });
@@ -93,9 +95,9 @@ describe('ValidateIdExists', () => {
     it('Should pass that given ID doesn\'t exist.', () => {
         var customerId = null;
 
-        var bindIdNotFound = CustomerValidation.ValidateIdExists.bind(CustomerValidation, customerId);
+        var bindIdNotFound = Verificate.IdExists.bind(CustomerValidation, customerId);
 
-        expect(bindIdNotFound).to.throw(IdNotFound).to.has.property('message', 'Customer with given ID doesn\'t exist.');
+        expect(bindIdNotFound).to.throw(IdNotFound).to.has.property('message', 'Given ID doesn\'t exist.');
     });
 });
 
@@ -123,10 +125,17 @@ describe('ValidateUpdate', () => {
     // -TypeError: Cannot read property 'customerId' of undefined
     it('Should throw an error about empty field/s.', () => {
         var customerTestObject = {
-            customerId: 1,
             name: ''
         };
-        var bindCustomerUpdate = CustomerValidation.ValidateUpdate.bind(CustomerValidation, customerTestObject);
+
+        var request = {
+            params: {
+                customerId: 1
+            },
+            body: customerTestObject
+        }
+
+        var bindCustomerUpdate = CustomerValidation.ValidateUpdate.bind(CustomerValidation, request);
 
         expect(bindCustomerUpdate).to.throw(UpdateError);
     });
