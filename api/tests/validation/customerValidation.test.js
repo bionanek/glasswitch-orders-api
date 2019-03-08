@@ -3,10 +3,12 @@ const expect = require('chai').expect;
 const { CustomerValidation } = require('../../helpers/validation/customerValidation');
 const { Verificate } = require('../../db/repositories/verification/verificate');
 
-const { RequestValidationError } = require('../../helpers/errors');
-const { ArgumentIsIncorrectType } = require('../../helpers/errors');
-const { IdNotFound } = require('../../helpers/errors');
-const { UpdateError } = require('../../helpers/errors');
+const { 
+    RequestValidationError,
+    ArgumentIsIncorrectType,
+    IdNotFound,
+    UpdateError
+} = require('../../helpers/errors');
 
 describe('ValidateCreate', () => {
     it('Should pass creation of a customer.', () => {
