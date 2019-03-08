@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "export NODE_ENV=test && mocha api/tests/**/**.test.js",
-    "start": "export NODE_ENV=dev && nodemon server.js"
+    "postinstall": "link-module-alias",
+    "testMac": "export NODE_ENV=test && mocha api/tests/**/**.test.js",
+    "startMac": "export NODE_ENV=dev && nodemon server.js",
+    "startWin": "set NODE_ENV=dev&& nodemon server.js",
+    "testWin": "set NODE_ENV=test&& mocha api/tests/**/**.test.js"
   },
   "repository": {
     "type": "git",
@@ -27,17 +30,33 @@
   },
   "homepage": "https://github.com/bionanek/glasswitch-orders-api#readme",
   "dependencies": {
+    "@types/module-alias": "^2.0.0",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
-    "config": "^2.0.1",
+    "config": "^2.0.2",
     "express": "^4.16.4",
+    "jshint": "^2.10.1",
+    "module-alias": "^2.2.0",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.4",
+    "nodemon": "^1.18.10",
     "sequelize": "^4.41.1",
     "sinon": "^7.1.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "link-module-alias": "^1.1.6",
     "mocha": "^5.2.0"
+  },
+  "_moduleAliases": {
+    "@root": ".",
+    "@helpers": "./api/helpers",
+    "@domains": "./api/domain",
+    "@controllers": "./api/controllers",
+    "@repos": "./api/db/repositories",
+    "@models": "./api/db/models",
+    "@db": "./api/db",
+    "@validation": "./api/routes/validation",
+    "@verify": "./api/db/repositories/verification"
   }
 }

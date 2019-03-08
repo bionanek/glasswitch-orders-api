@@ -1,22 +1,22 @@
-const productsDomain = require('@domains/productsDomain');
+const customersDomain = require('@domains/customersDomain');
 
 exports.create = async (request, response, next) => {
     try {
-        const productData = request.body;
-        const product = await productsDomain.create(productData);
+        const customerData = request.body;
+        const customer = await customersDomain.create(customerData);
 
-        response.status(200).json(product);
+        response.status(200).json(customer);
     } catch (error) {
         response.status(error.code).json(error);
     }
-};
+}; 
 
 exports.update = async (request, response, next) => {
     try {
-        const updatedProductData = request.body;
-        const productId = request.params.productId;
-        const affectedRows = await productsDomain.update(productId, updatedProductData);
-
+        const updateCustomerData = request.body;
+        const customerId = request.params.customerId;
+        const affectedRows = await customersDomain.update(customerId, updateCustomerData);
+        
         response.status(200).json(affectedRows);
     } catch (error) {
         response.status(error.code).json(error);
@@ -25,8 +25,8 @@ exports.update = async (request, response, next) => {
 
 exports.delete = async (request, response, next) => {
     try {
-        const productId = request.params.productId;
-        const affectedRows = await productsDomain.delete(productId);
+        const customerId = request.params.customerId;
+        const affectedRows = await customersDomain.delete(customerId);
         
         response.status(200).json(affectedRows);
     } catch (error) {
@@ -36,9 +36,9 @@ exports.delete = async (request, response, next) => {
 
 exports.getAll = async (request, response, next) => {
     try {
-        let products = await productsDomain.getAll();
-
-        response.status(200).json(products);
+        let customers = await customersDomain.getAll();
+        
+        response.status(200).json(customers);
     } catch (error) {
         response.status(error.code).json(error);
     }
@@ -46,9 +46,9 @@ exports.getAll = async (request, response, next) => {
 
 exports.getById = async (request, response, next) => {
     try {
-        let product = await productsDomain.getById(request.params.productId);
+        let customer = await customersDomain.getById(request.params.customerId);
 
-        response.status(200).json(product);
+        response.status(200).json(customer);
     } catch (error) {
         response.status(error.code).json(error);
     }
