@@ -1,10 +1,10 @@
 // const expect = require('chai').expect;
 
-// const DbHelper = require('../../db/dbHelper');
+// const DbHelper = require('@db/dbHelper');
 // const ProductDb = DbHelper.Products;
 // const PriceDb = DbHelper.Prices;
 // const Sequelize = DbHelper.Sequelize;
-// const productDomain = require('../../domain/productsDomain');
+// const productDomain = require('@domain/productsDomain');
 
 // describe('Products', () => {
 //     let price;

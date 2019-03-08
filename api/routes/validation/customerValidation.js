@@ -1,11 +1,7 @@
-// const { RequestValidationError } = require('@helpers/errors');
-// const { ArgumentIsNotIntError } = require('@helpers/errors');
-// const { UpdateError } = require('@helpers/errors');
-
 const { 
     RequestValidationError,
     ArgumentIsIncorrectType,
-    UpdateError } = require('../../helpers/errors');
+    UpdateError } = require('@helpers/errors');
 
 class CustomerValidation {
     static Validate(request, response, next) {

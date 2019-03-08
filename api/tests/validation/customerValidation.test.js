@@ -1,16 +1,16 @@
 const expect = require('chai').expect;
 
-const { CustomerValidation } = require('../../routes/validation/customerValidation');
-const { Verificate } = require('../../db/repositories/verification/verificate');
+const { CustomerValidation } = require('@validation/customerValidation');
+const { Verificate } = require('@verify/verificate');
 
 const { 
     RequestValidationError,
     ArgumentIsIncorrectType,
     IdNotFound,
     UpdateError
-} = require('../../helpers/errors');
+} = require('@helpers/errors');
 
-describe('ValidateCreate', () => {
+describe('Customers: ValidateCreate', () => {
     it('Should pass creation of a customer.', () => {
         var customerTestObject = {
             name: 'Customer',
@@ -75,7 +75,7 @@ describe('ValidateCreate', () => {
     });
 });
 
-describe('ValidateIsNaN', () => {
+describe('Customers: ValidateIsNaN', () => {
     it('Should pass that given ID is a number.', () => {
         var customerId = 1;
 
@@ -98,7 +98,7 @@ describe('ValidateIsNaN', () => {
     });
 });
 
-describe('ValidateIdExists', () => {
+describe('Customers: ValidateIdExists', () => {
     it('Should pass that given ID exists.', () => {
         var customerId = 1;
 
@@ -121,7 +121,7 @@ describe('ValidateIdExists', () => {
     });
 });
 
-describe('ValidateUpdate', () => {
+describe('Customers: ValidateUpdate', () => {
     it('Should pass the update.', () => {
         var customerTestObject = {
             name: 'Customer',
