@@ -13,7 +13,7 @@ exports.productDataModel = {
         type: Types.STRING,
         allowNull: false,
         defaultValue: ''
-     },
+    },
     width: { type: Types.DOUBLE, allowNull: true },
     height: { type: Types.DOUBLE, allowNull: true },
     depth: { type: Types.DOUBLE, allowNull: true },

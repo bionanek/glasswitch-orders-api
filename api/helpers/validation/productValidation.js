@@ -1,7 +1,12 @@
-const { RequestValidationError } = require('@helpers/errors');
-const { ArgumentIsIncorrectType } = require('@helpers/errors');
-const { UpdateError } = require('@helpers/errors');
-const { PriceValidation } = require('@validation/priceValidation');
+// const { RequestValidationError } = require('@helpers/errors');
+// const { ArgumentIsIncorrectType } = require('@helpers/errors');
+// const { UpdateError } = require('@helpers/errors');
+
+const { RequestValidationError } = require('../errors');
+const { ArgumentIsIncorrectType } = require('../errors');
+const { UpdateError } = require('../errors');
+
+const { PriceValidation } = require('../validation/priceValidation');
 
 class ProductValidation {
     static Validate(request, response, next) {
@@ -56,9 +61,9 @@ class ProductValidation {
             }
     }
 
-    static ValidateId(id) {
+    static ValidateIdIsNaN(id) {
         if (isNaN(id)) {
-            throw new ArgumentIsIncorrectType('Product ID must be an integer. Given ID: ' + id);
+            throw new ArgumentIsIncorrectType('Product ID must be an integer.');
         }
     }
 
