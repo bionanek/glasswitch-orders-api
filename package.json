@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "set NODE_ENV=test && mocha api/tests/**/**.test.js",
-    "start": "set NODE_ENV=dev&& nodemon server.js"
+    "testMac": "export NODE_ENV=test && mocha api/tests/**/**.test.js",
+    "startMac": "export NODE_ENV=dev && nodemon server.js",
+    "startWin": "set NODE_ENV=dev&& nodemon server.js",
+    "testWin": "set NODE_ENV=test&& mocha api/tests/**/**.test.js"
   },
   "repository": {
     "type": "git",
