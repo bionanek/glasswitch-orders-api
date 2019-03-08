@@ -122,7 +122,6 @@ describe('ValidateUpdate', () => {
         expect(bindCustomerUpdate).to.not.throw(UpdateError);
     });
 
-    // -TypeError: Cannot read property 'customerId' of undefined
     it('Should throw an error about empty field/s.', () => {
         var customerTestObject = {
             name: ''
