@@ -1,5 +1,5 @@
 const Customers = require('@db/dbHelper').Customers;
-const { Validate } = require('@repos/validators/validators');
+const { Verificate } = require('@repos/validators/validators');
 
 exports.Customers = Customers;
 
@@ -10,7 +10,7 @@ exports.createCustomer = async (customerData) => {
 exports.updateCustomer = async (customerId, updatedCustomerData) => {
     const requestedCustomer = await Customers.findById(customerId);
 
-    Validate.ValidateIdExists(requestedCustomer);
+    Verificate.IdVerification(requestedCustomer);
 
     return Customers.update(updatedCustomerData, 
         { where: { id: customerId } });
@@ -19,7 +19,7 @@ exports.updateCustomer = async (customerId, updatedCustomerData) => {
 exports.deleteCustomer = async (customerId) => {
     const requestedCustomer = await Customers.findById(customerId);
 
-    Validate.ValidateIdExists(requestedCustomer);
+    Verificate.IdVerification(requestedCustomer);
 
     return Customers.destroy(
         { where: { id: customerId }, cascade: true });
@@ -32,7 +32,7 @@ exports.getAll = async () => {
 exports.getById = async (customerId) => {
     const requestedCustomer = await Customers.findById(customerId);
 
-    Validate.ValidateIdExists(requestedCustomer);
+    Verificate.IdVerification(requestedCustomer);
 
     return requestedCustomer;
 };
