@@ -1,5 +1,5 @@
 const { RequestValidationError } = require('@helpers/errors');
-const { ArgumentIsNotIntError } = require('@helpers/errors');
+const { ArgumentIsIncorrectType } = require('@helpers/errors');
 const { UpdateError } = require('@helpers/errors');
 
 class CustomerValidation {
@@ -10,13 +10,13 @@ class CustomerValidation {
                     CustomerValidation.ValidateCreate(request.body);
                     break;
                 case "GET":
-                    CustomerValidation.ValidateId(request.params.customerId);
+                    CustomerValidation.ValidateIdIsNaN(request.params.customerId);
                     break;
                 case "PATCH":
                     CustomerValidation.ValidateUpdate(request);
                     break;
                 case "DELETE":
-                    CustomerValidation.ValidateId(request.params.customerId);
+                    CustomerValidation.ValidateIdIsNaN(request.params.customerId);
                     break;
             }
             next();
@@ -58,14 +58,14 @@ class CustomerValidation {
         }
     }
 
-    static ValidateId(id) {
+    static ValidateIdIsNaN(id) {
         if (isNaN(id)) {
-            throw new ArgumentIsNotIntError('Customer ID must be an integer. Given ID: ' + id);
+            throw new ArgumentIsIncorrectType('Customer ID must be an integer. Given ID: ' + id);
         }
     }
 
     static ValidateUpdate(request) {
-        CustomerValidation.ValidateId(request.params.customerId);
+        CustomerValidation.ValidateIdIsNaN(request.params.customerId);
 
         const updatedCustomerData = request.body;
 

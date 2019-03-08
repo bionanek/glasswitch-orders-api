@@ -1,13 +1,9 @@
 const priceRepo = require('@repos/priceRepository');
 
-exports.create = (priceData) => {
-    return new Promise((resolve, reject) => {
-        priceRepo.createPrice(priceData)
-            .then((createdPrice) => {
-                resolve(createdPrice);
-            })
-            .catch((error) => {
-                reject(error);
-            })
-    });
+exports.create = async (priceData) => {
+    try {
+        return await priceRepo.createPrice(priceData);
+    } catch (error) {
+        throw new Error(error);
+    }
 }
