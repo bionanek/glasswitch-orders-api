@@ -3,8 +3,9 @@
 // const { UpdateError } = require('@helpers/errors');
 
 const { RequestValidationError } = require('../errors');
-const { ArgumentIsNotIntError } = require('../errors');
+const { ArgumentIsIncorrectType } = require('../errors');
 const { UpdateError } = require('../errors');
+const { IdNotFound } = require('../errors');
 
 class CustomerValidation {
     static Validate(request, response, next) {
@@ -64,7 +65,7 @@ class CustomerValidation {
 
     static ValidateIdIsNaN(id) {
         if (isNaN(id)) {
-            throw new ArgumentIsNotIntError('Customer ID must be an integer. Given ID: ' + id);
+            throw new ArgumentIsIncorrectType('Customer ID must be an integer.');
         }
     }
 
@@ -88,7 +89,7 @@ class CustomerValidation {
 
     static ValidateIdExists(id) {
         if (id === null || id === undefined) {
-            throw new Error();
+            throw new IdNotFound('Customer with given ID doesn\'t exist.');
         }
     }
 }

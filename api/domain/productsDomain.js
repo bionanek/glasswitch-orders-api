@@ -20,7 +20,7 @@ exports.update = async (productId, updatedProductData) => {
         if (error.name.includes("Sequelize")) {
             throw new SequelizeError('Field cannot be null.');
         }
-        throw new IdNotFound('Product with given ID doesn\'t exists. No product was updated.');
+        throw new IdNotFound('Product with given ID doesn\'t exist. No product was updated.');
     }
 };
 
@@ -28,7 +28,7 @@ exports.delete = async (productId) => {
     try {
         return await productRepo.deleteProduct(productId);
     } catch (error) {
-        throw new IdNotFound('Product with given ID doesn\'t exists. No product was deleted.');
+        throw new IdNotFound('Product with given ID doesn\'t exist. No product was deleted.');
     }
 };
 
@@ -44,6 +44,6 @@ exports.getById = async (productId) => {
     try {
         return await productRepo.getById(productId);
     } catch (error) {
-        throw new IdNotFound('Product with given ID doesn\'t exists.');
+        throw new IdNotFound('Product with given ID doesn\'t exist.');
     }
 };
