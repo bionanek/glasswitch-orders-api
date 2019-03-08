@@ -1,7 +1,7 @@
 const Products = require('@db/dbHelper').Products;
 const Prices = require('@db/dbHelper').Prices;
 const { IdNotFound } = require('@helpers/errors');
-const { Validate } = require('@repos/validators/validators');
+const { Validate } = require('@repos/verification/verificate');
 
 exports.Products = Products;
 

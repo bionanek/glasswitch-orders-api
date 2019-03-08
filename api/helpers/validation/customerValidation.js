@@ -81,12 +81,6 @@ class CustomerValidation {
             throw new UpdateError('One or more updated fields are empty.');
         }
     }
-
-    static ValidateIdExists(id) {
-        if (id === null || id === undefined) {
-            throw new Error();
-        }
-    }
 }
 
 module.exports = {
