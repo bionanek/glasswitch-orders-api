@@ -1,10 +1,7 @@
-// const { RequestValidationError } = require('@helpers/errors');
-// const { ArgumentIsIncorrectType } = require('@helpers/errors');
-// const { UpdateError } = require('@helpers/errors');
-
-const { RequestValidationError } = require('../errors');
-const { ArgumentIsIncorrectType } = require('../errors');
-const { UpdateError } = require('../errors');
+const { 
+    RequestValidationError,
+    ArgumentIsIncorrectType,
+    UpdateError } = require('../../helpers/errors');
 
 const { PriceValidation } = require('../validation/priceValidation');
 
@@ -68,7 +65,7 @@ class ProductValidation {
     }
 
     static ValidateUpdate(request) {
-        ProductValidation.ValidateId(request.params.productId);
+        ProductValidation.ValidateIdIsNaN(request.params.productId);
 
         const updatedProductData = request.body;
 

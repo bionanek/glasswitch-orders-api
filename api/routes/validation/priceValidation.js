@@ -1,5 +1,6 @@
-const { RequestValidationError } = require('../errors');
-const { ArgumentIsIncorrectType } = require('../errors');
+const { 
+    RequestValidationError,
+    ArgumentIsIncorrectType } = require('../../helpers/errors');
 
 class PriceValidation {
     static Validate(priceObject) {
