@@ -19,7 +19,7 @@ class ProductValidation {
                     ProductValidation.ValidateUpdate(request);
                     break;
                 case "DELETE":
-                    ProductValidation.ValidateId(request.params.productId);
+                    ProductValidation.ValidateIdIsNaN(request.params.productId);
                     break;
             }   
             next();

@@ -60,6 +60,6 @@ exports.getSearchResults = async (request, response) => {
 
         response.status(200).json(filteredProducts);
     } catch (erorr) {
-
+        response.status(error.code).json(error);
     }
 };

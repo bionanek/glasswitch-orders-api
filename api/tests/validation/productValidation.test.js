@@ -143,11 +143,9 @@ describe('Products: ValidateSearchQuery', () => {
     it('Should pass validation with correct request query', () => {
         const searchRequest = {
                 search: "search query"
-        }
-        
+        };   
 
-        const bindValidateSearchQuery = ProductValidation.ValidateSearchQuery.bind(ProductValidation, searchRequest);
-        
+        const bindValidateSearchQuery = ProductValidation.ValidateSearchQuery.bind(ProductValidation, searchRequest); 
         expect(bindValidateSearchQuery)
             .to.not.throw(RequestValidationError);
     })
