@@ -13,18 +13,34 @@ class ProductValidation {
                     ProductValidation.ValidateCreate(request.body);
                     break;
                 case "GET":
-                    ProductValidation.ValidateId(request.params.productId);
+                    ProductValidation.ValidateGet(request);
                     break;
                 case "PATCH":
                     ProductValidation.ValidateUpdate(request);
                     break;
                 case "DELETE":
-                    ProductValidation.ValidateId(request.params.productId);
+                    ProductValidation.ValidateIdIsNaN(request.params.productId);
                     break;
-            }
+            }   
             next();
         } catch (error) {
             return response.status(error.code).json(error);
+        }
+    }
+
+    static ValidateGet(request) {
+        if (request.query) {
+            ProductValidation.ValidateSearchQuery(request.query);
+        }
+
+        if (request.params.productId) {
+            ProductValidation.ValidateIdIsNaN(request.params.productId);
+        }
+    }
+
+    static ValidateSearchQuery(query) {
+        if (!query.search) {
+            throw new RequestValidationError('Search query is missing \'search\' field. Correct query should looke like this: \'/products/search?search=yourRequestedSearchPhrase\'');
         }
     }
 
