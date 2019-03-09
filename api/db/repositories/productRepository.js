@@ -55,15 +55,6 @@ exports.getById = async (productId) => {
     return requestedProduct;
 };
 
-// name: { type: Types.STRING, allowNull: false },
-//     description: { type: Types.STRING, allowNull: true },
-//     type: { type: Types.STRING, allowNull: false },
-//     category: { 
-//         type: Types.STRING,
-//         allowNull: false,
-//         defaultValue: ''
-//     },
-
 exports.getSearchResults = async (searchPhrase) => {
     const likeOperator = { [Op.like]: `%${searchPhrase}%`};
     const searchResults = await Products.findAll({
