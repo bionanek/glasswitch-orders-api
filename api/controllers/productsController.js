@@ -36,7 +36,7 @@ exports.delete = async (request, response, next) => {
 
 exports.getAll = async (request, response, next) => {
     try {
-        let products = await productsDomain.getAll();
+        const products = await productsDomain.getAll();
 
         response.status(200).json(products);
     } catch (error) {
@@ -46,10 +46,20 @@ exports.getAll = async (request, response, next) => {
 
 exports.getById = async (request, response, next) => {
     try {
-        let product = await productsDomain.getById(request.params.productId);
+        const product = await productsDomain.getById(request.params.productId);
 
         response.status(200).json(product);
     } catch (error) {
+        response.status(error.code).json(error);
+    }
+};
+
+exports.getSearchResults = async (request, response) => {
+    try {
+        const filteredProducts = await productsDomain.getSearchResults(request.query.search);
+
+        response.status(200).json(filteredProducts);
+    } catch (erorr) {
         response.status(error.code).json(error);
     }
 };

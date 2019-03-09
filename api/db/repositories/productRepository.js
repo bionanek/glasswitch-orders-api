@@ -1,7 +1,8 @@
 const Products = require('@db/dbHelper').Products;
 const Prices = require('@db/dbHelper').Prices;
-const { IdNotFound } = require('@helpers/errors');
+const Sequelize = require('@db/dbHelper').Sequelize;
 const { Validate } = require('@repos/verification/verificate');
+const Op = Sequelize.Op;
 
 exports.Products = Products;
 
@@ -52,4 +53,20 @@ exports.getById = async (productId) => {
     Validate.ValidateIdExists(requestedProduct);
 
     return requestedProduct;
+};
+
+exports.getSearchResults = async (searchPhrase) => {
+    const likeOperator = { [Op.like]: `%${searchPhrase}%`};
+    const searchResults = await Products.findAll({
+        where: {
+            [Op.or]: [
+                { name: likeOperator },
+                { description: likeOperator },
+                { category: likeOperator },
+                { type: likeOperator }
+            ]
+        }
+    });
+
+    return searchResults;
 };
