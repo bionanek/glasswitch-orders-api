@@ -28,7 +28,7 @@ Products.Price = Products.belongsTo(Prices, { onDelete: 'cascade' });
 Orders.Customers = Orders.belongsTo(Customers, { onDelete: 'cascade' });
 Customers.Orders = Customers.hasMany(Orders, { as: 'Orders' });
 
-sequelize.sync({ force: true });
+sequelize.sync({ force: false });
 
 exports.Prices = Prices;
 exports.Products = Products;
