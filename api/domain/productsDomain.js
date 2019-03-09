@@ -47,3 +47,7 @@ exports.getById = async (productId) => {
         throw new IdNotFound('Product with given ID doesn\'t exist.');
     }
 };
+
+exports.getSearchResults = async (searchPhrase) => {
+    return await productRepo.getSearchResults(searchPhrase);
+};

@@ -24,7 +24,7 @@ var Customers = sequelize.define('customer', CustomersDataModel, {freezeTableNam
 
 Products.Price = Products.belongsTo(Prices, { onDelete: 'cascade' });
 
-sequelize.sync({ force: true });
+sequelize.sync({ force: false });
 
 exports.Prices = Prices;
 exports.Products = Products;
