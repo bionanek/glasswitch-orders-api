@@ -124,6 +124,33 @@ describe('Products: ValidateIdExists', () => {
     });
 });
 
+describe('Products: ValidateSearchQuery', () => {
+    it('Should throw error when query parameter has wrong name', () => {
+        const badSearchRequest = {
+            query: {
+                parameter: "search query"
+            }
+        };
+
+        const bindValidateSearchQuery = ProductValidation.ValidateSearchQuery.bind(ProductValidation, badSearchRequest);
+        
+        expect(bindValidateSearchQuery)
+            .to.throw(RequestValidationError)
+            .to.has.property('message', 
+                'Search query is missing \'search\' field. Correct query should looke like this: \'/products/search?search=yourRequestedSearchPhrase\'');
+    });
+
+    it('Should pass validation with correct request query', () => {
+        const searchRequest = {
+                search: "search query"
+        };   
+
+        const bindValidateSearchQuery = ProductValidation.ValidateSearchQuery.bind(ProductValidation, searchRequest); 
+        expect(bindValidateSearchQuery)
+            .to.not.throw(RequestValidationError);
+    })
+});
+
 describe('Products: ValidateUpdate', () => {
     it('Should pass the update.', () => {
         var productTestObject = {
