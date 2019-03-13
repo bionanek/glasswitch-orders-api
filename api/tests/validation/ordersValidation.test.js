@@ -13,7 +13,18 @@ const {
 describe('Orders: ValidateCreate', () => {
     it('Should pass creation of an order.', () => {
         var orderTestObject = {
-
+            productsCount: 1,
+            shippingCost: null,
+            shippingCompany: null,
+            orderCost: 1,
+            currency: usd,
+            settledPayment: false,
+            notes: null,
+            email: "email",
+            confirmationSent: false,
+            proformaSent: false,
+            invoiceSent: false,
+            deadline: '12.10.2021'
         };
         var bindOrderCreate = OrderValidation.ValidateCreate
                                 .bind(OrderValidation, orderTestObject);
