@@ -63,14 +63,6 @@ class OrderValidation {
 
         const updatedOrderData = request.body;
 
-        if (!updatedOrderData.productsCount
-            || !updatedOrderData.productsTotalPrice
-            || !updatedOrderData.currency
-            || !updatedOrderData.email
-            || !updatedOrderData.deadline) {
-            throw new UpdateError('One or more request fields are missing.');
-        }
-
         if (!/\S/.test(updatedOrderData.productsCount)
             || !/\S/.test(updatedOrderData.productsTotalPrice)
             || !/\S/.test(updatedOrderData.currency)
