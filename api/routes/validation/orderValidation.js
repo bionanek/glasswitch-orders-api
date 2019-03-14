@@ -34,13 +34,9 @@ class OrderValidation {
 
     static ValidateAllFieldsUndefined(orderData) {
         if (!orderData.productsCount
-            || !orderData.orderCost
+            || !orderData.productsTotalPrice
             || !orderData.currency
-            || !orderData.settledPayment
             || !orderData.email
-            || !orderData.confirmationSent
-            || !orderData.proformaSent
-            || !orderData.invoiceSent
             || !orderData.deadline) {
             throw new RequestValidationError('One or more request fields are missing.');
         }
@@ -48,13 +44,9 @@ class OrderValidation {
 
     static ValidateAllFieldsEmpty(orderData) {
         if (!/\S/.test(orderData.productsCount)
-            || !/\S/.test(orderData.orderCost)
+            || !/\S/.test(orderData.productsTotalPrice)
             || !/\S/.test(orderData.currency)
-            || !/\S/.test(orderData.settledPayment)
             || !/\S/.test(orderData.email)
-            || !/\S/.test(orderData.confirmationSent)
-            || !/\S/.test(orderData.proformaSent)
-            || !/\S/.test(orderData.invoiceSent)
             || !/\S/.test(orderData.deadline)) {
             throw new RequestValidationError('One or more request fields are empty.');
         }
@@ -71,8 +63,21 @@ class OrderValidation {
 
         const updatedOrderData = request.body;
 
-        OrderValidation.ValidateAllFieldsUndefined(updatedOrderData);
-        OrderValidation.ValidateAllFieldsEmpty(updatedOrderData);
+        if (!updatedOrderData.productsCount
+            || !updatedOrderData.productsTotalPrice
+            || !updatedOrderData.currency
+            || !updatedOrderData.email
+            || !updatedOrderData.deadline) {
+            throw new UpdateError('One or more request fields are missing.');
+        }
+
+        if (!/\S/.test(updatedOrderData.productsCount)
+            || !/\S/.test(updatedOrderData.productsTotalPrice)
+            || !/\S/.test(updatedOrderData.currency)
+            || !/\S/.test(updatedOrderData.email)
+            || !/\S/.test(updatedOrderData.deadline)) {
+            throw new UpdateError('One or more request fields are empty.');
+        }
     }
 }
 
