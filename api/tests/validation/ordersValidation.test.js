@@ -16,14 +16,14 @@ describe('Orders: ValidateCreate', () => {
             productsCount: 1,
             shippingCost: null,
             shippingCompany: null,
-            orderCost: 1,
-            currency: usd,
-            settledPayment: false,
+            productsTotalPrice: 1,
+            currency: 'usd',
             notes: null,
-            email: "email",
+            email: 'email',
             confirmationSent: false,
             proformaSent: false,
             invoiceSent: false,
+            settledPayment: false,
             deadline: '12.10.2021'
         };
         var bindOrderCreate = OrderValidation.ValidateCreate
@@ -35,7 +35,15 @@ describe('Orders: ValidateCreate', () => {
 
     it('Should throw an error about missing field/s.', () => {
         var orderTestObject = {
-
+            productsCount: 1,
+            shippingCost: null,
+            shippingCompany: null,
+            notes: null,
+            confirmationSent: false,
+            proformaSent: false,
+            invoiceSent: false,
+            settledPayment: false,
+            deadline: '12.10.2021'
         };
         var bindOrderCreate = OrderValidation.ValidateAllFieldsUndefined
                                 .bind(OrderValidation, orderTestObject);
@@ -47,7 +55,18 @@ describe('Orders: ValidateCreate', () => {
 
     it('Should throw an error about empty field/s.', () => {
         var orderTestObject = {
-
+            productsCount: 1,
+            shippingCost: null,
+            shippingCompany: null,
+            productsTotalPrice: 1,
+            currency: '',
+            notes: null,
+            email: '',
+            confirmationSent: false,
+            proformaSent: false,
+            invoiceSent: false,
+            settledPayment: false,
+            deadline: '12.10.2021'
         };
         var bindOrderCreate = OrderValidation.ValidateAllFieldsEmpty
                                 .bind(OrderValidation, orderTestObject);
@@ -77,7 +96,7 @@ describe('Orders: ValidateIsNaN', () => {
 
         expect(bindIdIsNaN)
             .to.throw(ArgumentIsIncorrectType)
-            .to.has.property('message', 'Customer ID must be an integer.');
+            .to.has.property('message', 'Order ID must be an integer.');
     });
 });
 
@@ -107,7 +126,18 @@ describe('Orders: ValidateIdExists', () => {
 describe('Orders: ValidateUpdate', () => {
     it('Should pass the update.', () => {
         var orderTestObject = {
-
+            productsCount: 1,
+            shippingCost: null,
+            shippingCompany: null,
+            productsTotalPrice: 1,
+            currency: 'usd',
+            notes: null,
+            email: 'email',
+            confirmationSent: false,
+            proformaSent: false,
+            invoiceSent: false,
+            settledPayment: false,
+            deadline: '12.10.2021'
         };
         var bindOrderUpdate = OrderValidation.ValidateUpdate
                                 .bind(OrderValidation, orderTestObject);
@@ -118,7 +148,18 @@ describe('Orders: ValidateUpdate', () => {
 
     it('Should throw an error about empty field/s.', () => {
         var orderTestObject = {
-            
+            productsCount: 1,
+            shippingCost: null,
+            shippingCompany: null,
+            productsTotalPrice: 1,
+            currency: '',
+            notes: null,
+            email: '',
+            confirmationSent: false,
+            proformaSent: false,
+            invoiceSent: false,
+            settledPayment: false,
+            deadline: '12.10.2021'
         };
 
         var request = {
