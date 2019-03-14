@@ -12,13 +12,13 @@ class OrderValidation {
                     OrderValidation.ValidateCreate(request.body);
                     break;
                 case "GET":
-                    OrderValidation.ValidateIdIsNaN(request.params.customerId);
+                    OrderValidation.ValidateIdIsNaN(request.params.orderId);
                     break;
                 case "PATCH":
                     OrderValidation.ValidateUpdate(request);
                     break;
                 case "DELETE":
-                    OrderValidation.ValidateIdIsNaN(request.params.customerId);
+                    OrderValidation.ValidateIdIsNaN(request.params.orderId);
                     break;
             }
             next();
@@ -71,17 +71,8 @@ class OrderValidation {
 
         const updatedOrderData = request.body;
 
-        if (!/\S/.test(updatedOrderData.productsCount)
-            || !/\S/.test(updatedOrderData.orderCost)
-            || !/\S/.test(updatedOrderData.currency)
-            || !/\S/.test(updatedOrderData.settledPayment)
-            || !/\S/.test(updatedOrderData.email)
-            || !/\S/.test(updatedOrderData.confirmationSent)
-            || !/\S/.test(updatedOrderData.proformaSent)
-            || !/\S/.test(updatedOrderData.invoiceSent)
-            || !/\S/.test(updatedOrderData.deadline)) {
-            throw new UpdateError('One or more updated fields are empty.');
-        }
+        Validate.ValidateAllFieldsUndefined(updatedOrderData);
+        Validate.ValidateAllFieldsEmpty(updatedOrderData);
     }
 }
 
