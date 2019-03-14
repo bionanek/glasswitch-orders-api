@@ -48,7 +48,7 @@ describe('Customers: ValidateCreate', () => {
 
         expect(bindCustomerCreate)
             .to.throw(RequestValidationError)
-            .to.has.property('message', 'One or more request fields are missing.');
+            .to.has.property('message', 'One or more request fields are missing. Missing field: \'name\'.');
     });
 
     it('Should throw an error about empty field/s.', () => {
@@ -71,7 +71,7 @@ describe('Customers: ValidateCreate', () => {
 
         expect(bindCustomerCreate)
             .to.throw(RequestValidationError)
-            .to.has.property('message', 'One or more request fields are empty.');
+            .to.has.property('message', 'One or more request fields are empty. Empty field: \'name\'.');
     });
 });
 
