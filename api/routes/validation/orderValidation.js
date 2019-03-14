@@ -71,8 +71,8 @@ class OrderValidation {
 
         const updatedOrderData = request.body;
 
-        Validate.ValidateAllFieldsUndefined(updatedOrderData);
-        Validate.ValidateAllFieldsEmpty(updatedOrderData);
+        OrderValidation.ValidateAllFieldsUndefined(updatedOrderData);
+        OrderValidation.ValidateAllFieldsEmpty(updatedOrderData);
     }
 }
 
