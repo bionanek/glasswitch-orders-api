@@ -43,7 +43,7 @@ describe('Customers: ValidateCreate', () => {
             billing_country: 'Billing Country',
             billing_postCode: null
         };
-        var bindCustomerCreate = CustomerValidation.ValidateAllFieldsUndefined
+        var bindCustomerCreate = CustomerValidation.ValidateUndefined
                                     .bind(CustomerValidation, customerTestObject);
 
         expect(bindCustomerCreate)
@@ -66,7 +66,7 @@ describe('Customers: ValidateCreate', () => {
             billing_country: 'Billing Country',
             billing_postCode: null
         };
-        var bindCustomerCreate = CustomerValidation.ValidateAllFieldsEmpty
+        var bindCustomerCreate = CustomerValidation.ValidateEmpty
                                     .bind(CustomerValidation, customerTestObject);
 
         expect(bindCustomerCreate)

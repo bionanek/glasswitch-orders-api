@@ -29,27 +29,33 @@ class CustomerValidation {
     }
 
     static ValidateCreate(customerData) {
-        CustomerValidation.ValidateAllFieldsUndefined(customerData);
-        CustomerValidation.ValidateAllFieldsEmpty(customerData);
+        CustomerValidation.ValidateUndefined(customerData);
+        CustomerValidation.ValidateEmpty(customerData);
     }
 
-    static ValidateAllFieldsUndefined(customerData) {
-        this.ValidateNotNullFieldsWithCallback(customerData, (testedValue, badFieldName) => {
+    static ValidateUndefined(customerData) {
+        this.ValidateNotNullFields(customerData, (testedValue, badFieldName) => {
             if(testedValue === undefined) {
                 throw new RequestValidationError(`One or more request fields are missing. Missing field: '${badFieldName}'.`);
             }
         })
     }
 
-    static ValidateAllFieldsEmpty(customerData) {
-        this.ValidateNotNullFieldsWithCallback(customerData, (testedValue, badFieldName) => {
+    static ValidateEmpty(customerData, requestMethod = null) {
+        this.ValidateNotNullFields(customerData, (testedValue, badFieldName) => {
             if(!/\S/.test(testedValue)) {
-                throw new RequestValidationError(`One or more request fields are empty. Empty field: '${badFieldName}'.`);
+                const errorMsg = `One or more request fields are empty. Empty field: '${badFieldName}'.`;
+
+                if (requestMethod === null) {
+                    throw new RequestValidationError(errorMsg);
+                } else if (requestMethod === "PATCH") {
+                    throw new UpdateError(errorMsg);
+                }
             }
         })
     }
 
-    static ValidateNotNullFieldsWithCallback(data, callback) {
+    static ValidateNotNullFields(data, callback) {
         for (var objectProperty in customerDataModel) {
             const testedFieldObject = customerDataModel[objectProperty];
             
@@ -68,7 +74,7 @@ class CustomerValidation {
 
     static ValidateUpdate(request) {
         CustomerValidation.ValidateIdIsNaN(request.params.customerId);
-        this.ValidateAllFieldsEmpty(request.body); // TODO: is throwing wrong error, fix test for that
+        this.ValidateEmpty(request.body, "PATCH");
     }
 }
 
