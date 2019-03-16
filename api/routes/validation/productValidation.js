@@ -2,10 +2,11 @@ const {
     RequestValidationError,
     ArgumentIsIncorrectType,
     UpdateError } = require('@helpers/errors');
-
+const { productDataModel } = require('@models/productDataModel');
 const { PriceValidation } = require('@validation/priceValidation');
 
 class ProductValidation {
+
     static Validate(request, response, next) {
         try {
             switch (request.method) {
@@ -45,33 +46,42 @@ class ProductValidation {
     }
 
     static ValidateCreate(productData) {
-        ProductValidation.ValidateAllFieldsUndefined(productData);
-        ProductValidation.ValidateAllFieldsEmpty(productData);
+        ProductValidation.ValidateUndefined(productData);
+        ProductValidation.ValidateEmpty(productData);
         PriceValidation.Validate(productData.price);
     }
 
-    static ValidateAllFieldsUndefined(productData) {
-        if (!productData.name
-            || !productData.type
-            || !productData.category
-            || !productData.image
-            || !productData.price) {
-                throw new RequestValidationError('One or more request fields are missing.');
+    static ValidateUndefined(productData) {
+        ProductValidation.ValidateNotNullFields(productData, (testedValue, badFieldName) => {
+            if (testedValue === undefined) {
+                throw new RequestValidationError(`One or more request fields are missing. Missing field: '${badFieldName}'.`);
             }
+        });
     }
 
-    static ValidateAllFieldsEmpty(productData) {
-        if (!/\S/.test(productData.name)
-            || !/\S/.test(productData.description)
-            || !/\S/.test(productData.type)
-            || !/\S/.test(productData.category)
-            || !/\S/.test(productData.width)
-            || !/\S/.test(productData.height)
-            || !/\S/.test(productData.depth)
-            || !/\S/.test(productData.image)
-            || !/\S/.test(productData.price)) {
-                throw new RequestValidationError('One or more request fields are empty.');
+    static ValidateEmpty(productData, requestMethod = null) {
+        ProductValidation.ValidateNotNullFields(productData, (testedValue, badFieldName) => {
+            if (!/\S/.test(testedValue)) {
+                const errorMsg = `One or more request fields are empty. Empty field: '${badFieldName}'.`;
+
+                if (requestMethod === null) {
+                    throw new RequestValidationError(errorMsg);
+                } else if (requestMethod === "PATCH") {
+                    throw new UpdateError(errorMsg);
+                }
             }
+        });
+    }
+
+    static ValidateNotNullFields(data, callback) {
+        for (var objectProperty in productDataModel) {
+            const testedFieldObject = productDataModel[objectProperty];
+            
+            if (testedFieldObject.allowNull != undefined 
+                && testedFieldObject.allowNull === false) {
+                    callback(data[objectProperty], objectProperty.toString());
+            }
+        }
     }
 
     static ValidateIdIsNaN(id) {
@@ -82,23 +92,7 @@ class ProductValidation {
 
     static ValidateUpdate(request) {
         ProductValidation.ValidateIdIsNaN(request.params.productId);
-
-        const updatedProductData = request.body;
-
-        if (updatedProductData.price) {
-            PriceValidation.Validate(updatedProductData.price);
-        }
-
-        if (!/\S/.test(updatedProductData.name)
-            || !/\S/.test(updatedProductData.description)
-            || !/\S/.test(updatedProductData.type)
-            || !/\S/.test(updatedProductData.category)
-            || !/\S/.test(updatedProductData.width)
-            || !/\S/.test(updatedProductData.height)
-            || !/\S/.test(updatedProductData.depth)
-            || !/\S/.test(updatedProductData.image)) {
-                throw new UpdateError('One or more updated fields are empty.');
-            }
+        ProductValidation.ValidateEmpty(request.body, "PATCH");
     }
 }
 
