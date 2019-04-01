@@ -1,5 +1,4 @@
 const productRepo = require('@repos/productRepository');
-const pricesDomain = require('@domains/pricesDomain');
 const { IdNotFound } = require('@helpers/errors');
 const { SequelizeError } = require('@helpers/errors');
 
