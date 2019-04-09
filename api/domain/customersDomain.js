@@ -1,5 +1,5 @@
 const customerRepo = require('@repos/customerRepository');
-const { Verification, ResourceEnum } = require('@verify/verification');
+const { Verification, Resources } = require('@verify/verification');
 const { IdNotFound, SequelizeError } = require('@helpers/errors');
 
 exports.create = async (customerData) => {
@@ -12,7 +12,7 @@ exports.create = async (customerData) => {
 
 exports.update = async (customerId, updatedCustomerData) => {
     try {
-        await Verification.IdExists(ResourceEnum.Customer, customerId);
+        await Verification.IdExists(Resources.Customers, customerId);
         
         return await customerRepo.updateCustomer(customerId, updatedCustomerData);
     } catch (error) {
@@ -25,7 +25,7 @@ exports.update = async (customerId, updatedCustomerData) => {
 
 exports.delete = async (customerId) => {
     try {
-        await Verification.IdExists(ResourceEnum.Customer, customerId);
+        await Verification.IdExists(Resources.Customers, customerId);
 
         return await customerRepo.deleteCustomer(customerId);
     } catch (error) {
@@ -43,7 +43,7 @@ exports.getAll = async () => {
 
 exports.getById = async (customerId) => {
     try {
-        await Verification.IdExists(ResourceEnum.Customer, customerId);
+        await Verification.IdExists(Resources.Customers, customerId);
 
         return await customerRepo.getById(customerId);
     } catch (error) {
