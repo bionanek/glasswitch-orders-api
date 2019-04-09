@@ -1,6 +1,6 @@
 const productRepo = require('@repos/productRepository');
-const { IdNotFound } = require('@helpers/errors');
-const { SequelizeError } = require('@helpers/errors');
+const { IdNotFound, SequelizeError } = require('@helpers/errors');
+const { Verification, Resources } = require('@verify/verification');
 
 exports.create = async (productData) => {
     try {
@@ -12,7 +12,7 @@ exports.create = async (productData) => {
 
 exports.update = async (productId, updatedProductData) => {
     try {
-        await productRepo.getById(productId);
+        await Verification.IdExists(Resources.Products, productId);
 
         return await productRepo.updateProduct(productId, updatedProductData);
     } catch (error) {
@@ -25,6 +25,8 @@ exports.update = async (productId, updatedProductData) => {
 
 exports.delete = async (productId) => {
     try {
+        await Verification.IdExists(Resources.Products, productId);
+
         return await productRepo.deleteProduct(productId);
     } catch (error) {
         throw new IdNotFound('Product with given ID doesn\'t exist. No product was deleted.');
@@ -41,6 +43,8 @@ exports.getAll = async () => {
 
 exports.getById = async (productId) => {
     try {
+        await Verification.IdExists(Resources.Products, productId);
+        
         return await productRepo.getById(productId);
     } catch (error) {
         throw new IdNotFound('Product with given ID doesn\'t exist.');
