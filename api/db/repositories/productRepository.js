@@ -1,21 +1,16 @@
 const Products = require('@db/dbHelper').Products;
 const Prices = require('@db/dbHelper').Prices;
 const Sequelize = require('@db/dbHelper').Sequelize;
-const { Verification } = require('@repos/verification/verification');
 
 const Op = Sequelize.Op;
-
 exports.Products = Products;
 
 exports.createProduct = async (productData) => {
-    return await Products.create(productData, { include: [Products.Price], as: 'productId'});
+    return await Products.create(productData, 
+        { include: [Products.Price], as: 'productId'});
 };
 
 exports.updateProduct = async (productId, updatedProductData) => {
-    const requestedProduct = await Products.findById(productId);
-
-    Verification.IdExists(requestedProduct);
-
     const productUpdate = await Products.update(updatedProductData, 
         { where: { id: productId } });
     const priceUpdate = await Prices.update(updatedProductData.price, 
@@ -25,12 +20,8 @@ exports.updateProduct = async (productId, updatedProductData) => {
 };
 
 exports.deleteProduct = async (productId) => {
-    const requestedProduct = await Products.findById(productId);
-
-    Verification.IdExists(requestedProduct);
-
     let affectedRows = 0; 
-    const priceId = requestedProduct.priceId;
+    const priceId = await Products.findById(productId).priceId;
 
     affectedRows += await Products.destroy(
         { where: { id: productId }, cascade: true });
@@ -41,19 +32,13 @@ exports.deleteProduct = async (productId) => {
 };
 
 exports.getAll = async () => {
-    const allProducts = await Products.findAll({ include: [Products.Price] })
-        .map(el => el.get({ plain: true }));
-
-    return allProducts;
+    return await Products.findAll(
+        { include: [Products.Price] }).map(el => el.get({ plain: true }));
 };
 
 exports.getById = async (productId) => {
-    const requestedProduct = await Products.findById(productId, 
+    return await Products.findById(productId, 
         { include: [Products.Price] });
-        
-    Verification.IdExists(requestedProduct);
-
-    return requestedProduct;
 };
 
 exports.getSearchResults = async (searchPhrase) => {
