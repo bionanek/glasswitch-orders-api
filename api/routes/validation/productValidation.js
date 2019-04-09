@@ -6,7 +6,6 @@ const { productDataModel } = require('@models/productDataModel');
 const { PriceValidation } = require('@validation/priceValidation');
 
 class ProductValidation {
-
     static Validate(request, response, next) {
         try {
             switch (request.method) {
@@ -30,7 +29,7 @@ class ProductValidation {
     }
 
     static ValidateGet(request) {
-        if (request.query) {
+        if (!request.query) {
             ProductValidation.ValidateSearchQuery(request.query);
         }
 
@@ -41,7 +40,8 @@ class ProductValidation {
 
     static ValidateSearchQuery(query) {
         if (!query.search) {
-            throw new RequestValidationError('Search query is missing \'search\' field. Correct query should looke like this: \'/products/search?search=yourRequestedSearchPhrase\'');
+            throw new RequestValidationError(
+                'Search query is missing \'search\' field. Correct query should looke like this: \'/products/search?search=yourRequestedSearchPhrase\'');
         }
     }
 

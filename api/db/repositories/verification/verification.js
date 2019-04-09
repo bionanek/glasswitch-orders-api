@@ -2,17 +2,17 @@ const Customers = require('@db/dbHelper').Customers;
 const { IdNotFound } = require('@helpers/errors');
 
 class Verification {
-    static async DataChecker (checkedInfo, requestedId) {
-        switch (checkedInfo) {
+    static async IdExists (resource, requestedId) {
+        switch (resource) {
             case 'customer':
                 const requestedCustomer = await Customers.findById(requestedId);
 
-                this.IdExists(requestedCustomer);
+                this.ResourceIsNull(requestedCustomer);
                 break;
         }
     }
 
-    static IdExists(requestedItem) {
+    static ResourceIsNull(requestedItem) {
         if (requestedItem === null || requestedItem === undefined) {
             throw new IdNotFound('ID NOT FOUND');
         }

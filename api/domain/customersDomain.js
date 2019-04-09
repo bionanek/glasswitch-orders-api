@@ -13,7 +13,7 @@ exports.create = async (customerData) => {
 
 exports.update = async (customerId, updatedCustomerData) => {
     try {
-        await Verification.DataChecker('customer', customerId);
+        await Verification.IdExists('customer', customerId);
         
         return await customerRepo.updateCustomer(customerId, updatedCustomerData);
     } catch (error) {
@@ -26,7 +26,7 @@ exports.update = async (customerId, updatedCustomerData) => {
 
 exports.delete = async (customerId) => {
     try {
-        await Verification.DataChecker('customer', customerId);
+        await Verification.IdExists('customer', customerId);
 
         return await customerRepo.deleteCustomer(customerId);
     } catch (error) {
@@ -44,7 +44,7 @@ exports.getAll = async () => {
 
 exports.getById = async (customerId) => {
     try {
-        await Verification.DataChecker('customer', customerId);
+        await Verification.IdExists('customer', customerId);
 
         return await customerRepo.getById(customerId);
     } catch (error) {
