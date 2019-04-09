@@ -1,5 +1,4 @@
 const Customers = require('@db/dbHelper').Customers;
-const { Verificate } = require('@repos/verification/verificate');
 
 exports.Customers = Customers;
 
@@ -8,19 +7,11 @@ exports.createCustomer = async (customerData) => {
 };
 
 exports.updateCustomer = async (customerId, updatedCustomerData) => {
-    const requestedCustomer = await Customers.findById(customerId);
-
-    Verificate.IdExists(requestedCustomer);
-
     return Customers.update(updatedCustomerData, 
         { where: { id: customerId } });
 };
 
 exports.deleteCustomer = async (customerId) => {
-    const requestedCustomer = await Customers.findById(customerId);
-
-    Verificate.IdExists(requestedCustomer);
-
     return Customers.destroy(
         { where: { id: customerId }, cascade: true });
 };
@@ -30,9 +21,5 @@ exports.getAll = async () => {
 };
 
 exports.getById = async (customerId) => {
-    const requestedCustomer = await Customers.findById(customerId);
-
-    Verificate.IdExists(requestedCustomer);
-
-    return requestedCustomer;
+    return await Customers.findById(customerId);
 };

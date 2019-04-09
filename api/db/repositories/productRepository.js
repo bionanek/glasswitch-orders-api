@@ -1,7 +1,7 @@
 const Products = require('@db/dbHelper').Products;
 const Prices = require('@db/dbHelper').Prices;
 const Sequelize = require('@db/dbHelper').Sequelize;
-const { Verificate } = require('@repos/verification/verificate');
+const { Verification } = require('@repos/verification/verification');
 
 const Op = Sequelize.Op;
 
@@ -14,7 +14,7 @@ exports.createProduct = async (productData) => {
 exports.updateProduct = async (productId, updatedProductData) => {
     const requestedProduct = await Products.findById(productId);
 
-    Verificate.IdExists(requestedProduct);
+    Verification.IdExists(requestedProduct);
 
     const productUpdate = await Products.update(updatedProductData, 
         { where: { id: productId } });
@@ -27,7 +27,7 @@ exports.updateProduct = async (productId, updatedProductData) => {
 exports.deleteProduct = async (productId) => {
     const requestedProduct = await Products.findById(productId);
 
-    Verificate.IdExists(requestedProduct);
+    Verification.IdExists(requestedProduct);
 
     let affectedRows = 0; 
     const priceId = requestedProduct.priceId;
@@ -51,7 +51,7 @@ exports.getById = async (productId) => {
     const requestedProduct = await Products.findById(productId, 
         { include: [Products.Price] });
         
-    Verificate.IdExists(requestedProduct);
+    Verification.IdExists(requestedProduct);
 
     return requestedProduct;
 };

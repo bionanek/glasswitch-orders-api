@@ -1,4 +1,5 @@
 const customerRepo = require('@repos/customerRepository');
+const { Verification } = require('@verify/verification');
 const { IdNotFound } = require('@helpers/errors');
 const { SequelizeError } = require('@helpers/errors');
 
@@ -12,8 +13,8 @@ exports.create = async (customerData) => {
 
 exports.update = async (customerId, updatedCustomerData) => {
     try {
-        await customerRepo.getById(customerId);
-
+        await Verification.DataChecker('customer', customerId);
+        
         return await customerRepo.updateCustomer(customerId, updatedCustomerData);
     } catch (error) {
         if (error.name.includes("Sequelize")) {
@@ -25,6 +26,8 @@ exports.update = async (customerId, updatedCustomerData) => {
 
 exports.delete = async (customerId) => {
     try {
+        await Verification.DataChecker('customer', customerId);
+
         return await customerRepo.deleteCustomer(customerId);
     } catch (error) {
         throw new IdNotFound('Customer with given ID doesn\'t exist. No customer was deleted.');
@@ -41,6 +44,8 @@ exports.getAll = async () => {
 
 exports.getById = async (customerId) => {
     try {
+        await Verification.DataChecker('customer', customerId);
+
         return await customerRepo.getById(customerId);
     } catch (error) {
         throw new IdNotFound('Customer with given ID doesn\'t exist.');

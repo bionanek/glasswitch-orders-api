@@ -1,14 +1,13 @@
 const expect = require('chai').expect;
 
 const { CustomerValidation } = require('@validation/customerValidation');
-const { Verificate } = require('@verify/verificate');
+const { Verification } = require('@verify/verification');
 
 const { 
     RequestValidationError,
     ArgumentIsIncorrectType,
     IdNotFound,
-    UpdateError
-} = require('@helpers/errors');
+    UpdateError } = require('@helpers/errors');
 
 describe('Customers: ValidateCreate', () => {
     it('Should pass creation of a customer.', () => {
@@ -102,7 +101,7 @@ describe('Customers: ValidateIdExists', () => {
     it('Should pass that given ID exists.', () => {
         var customerId = 1;
 
-        var bindIdNotFound = Verificate.IdExists
+        var bindIdNotFound = Verification.IdExists
                                 .bind(CustomerValidation, customerId);
 
         expect(bindIdNotFound)
@@ -112,7 +111,7 @@ describe('Customers: ValidateIdExists', () => {
     it('Should pass that given ID doesn\'t exist.', () => {
         var customerId = null;
 
-        var bindIdNotFound = Verificate.IdExists
+        var bindIdNotFound = Verification.IdExists
                                 .bind(CustomerValidation, customerId);
 
         expect(bindIdNotFound)
