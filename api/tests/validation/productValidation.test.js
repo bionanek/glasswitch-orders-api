@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 
 const { ProductValidation } = require('@validation/productValidation');
-const { Verificate } = require('@verify/verificate');
+const { Verification } = require('@verify/verification');
 
 const { 
     RequestValidationError,
@@ -105,8 +105,8 @@ describe('Products: ValidateIdExists', () => {
     it('Should pass that given ID exists.', () => {
         var productId = 1;
 
-        var bindIdNotFound = Verificate.IdExists
-                                .bind(Verificate, productId);
+        var bindIdNotFound = Verification.IdExists
+                                .bind(Verification, productId);
 
         expect(bindIdNotFound)
             .to.not.throw(IdNotFound);
@@ -115,8 +115,8 @@ describe('Products: ValidateIdExists', () => {
     it('Should pass that given ID doesn\'t exist.', () => {
         var productId = null;
 
-        var bindIdNotFound = Verificate.IdExists
-                                .bind(Verificate, productId);
+        var bindIdNotFound = Verification.IdExists
+                                .bind(Verification, productId);
 
         expect(bindIdNotFound)
             .to.throw(IdNotFound)
