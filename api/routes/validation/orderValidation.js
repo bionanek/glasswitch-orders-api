@@ -37,7 +37,11 @@ class OrderValidation {
             || !orderData.productsTotalPrice
             || !orderData.currency
             || !orderData.email
-            || !orderData.deadline) {
+            || ! orderData.deadline
+            || orderData.confirmationSent === null
+            || orderData.proformaSent     === null
+            || orderData.invoiceSent      === null
+            || orderData.settledPayment   === null) {
             throw new RequestValidationError('One or more request fields are missing.');
         }
     }
