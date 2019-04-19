@@ -33,12 +33,12 @@ class OrderValidation {
     }
 
     static ValidateAllFieldsUndefined(orderData) {
-        if (!orderData.productsCount
-            || !orderData.productsTotalPrice
+        if (!orderData.productsTotalPrice
             || !orderData.currency
             || !orderData.email
             || !orderData.deadline
             || !orderData.customerId
+            || orderData.productsCount    === undefined
             || orderData.confirmationSent === undefined
             || orderData.proformaSent     === undefined
             || orderData.invoiceSent      === undefined
