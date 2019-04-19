@@ -1,20 +1,23 @@
 const orderRepo = require('@repos/orderRepository');
-
-const { 
-    IdNotFound, 
-    SequelizeError } = require('@helpers/errors');
+const { Verification, Resources } = require('@verify/verification');
+const { IdNotFound, SequelizeError } = require('@helpers/errors');
 
 exports.create = async (orderData) => {
     try {
+        await Verification.IdExists(Resources.Customers, orderData.customerId);
+
         return await orderRepo.createOrder(orderData);
     } catch (error) {
+        if (error.name.includes("IDError")) {
+            throw new IdNotFound('Customer has not been found!');
+        }
         throw new Error(error);
     }
 };
 
 exports.update = async (orderId, updatedOrderData) => {
     try {
-        await orderRepo.getById(orderId);
+        await Verification.IdExists(Resources.Orders, orderId);
 
         return await orderRepo.updateOrder(orderId, updatedOrderData);
     } catch (error) {
@@ -27,6 +30,8 @@ exports.update = async (orderId, updatedOrderData) => {
 
 exports.delete = async (orderId) => {
     try {
+        await Verification.IdExists(Resources.Orders, orderId);
+        
         return await orderRepo.deleteOrder(orderId);
     } catch (error) {
         throw new IdNotFound('Order with given ID doesn\'t exist. No order was deleted.');
@@ -43,6 +48,8 @@ exports.getAll = async () => {
 
 exports.getById = async (orderId) => {
     try {
+        await Verification.IdExists(Resources.Orders, orderId);
+
         return await orderRepo.getById(orderId);
     } catch (error) {
         throw new IdNotFound('Order with given ID doesn\'t exist.');

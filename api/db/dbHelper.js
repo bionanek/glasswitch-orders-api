@@ -25,11 +25,10 @@ var Customers = sequelize.define('customer', CustomersDataModel, {freezeTableNam
 var Orders = sequelize.define('order', OrdersDataModel, {freezeTableName: true});
 
 Products.Price = Products.belongsTo(Prices, { onDelete: 'cascade' });
-Orders.Customers = Orders.belongsTo(Customers, { onDelete: 'cascade' });
+Orders.Customer = Orders.belongsTo(Customers, { onDelete: 'cascade' });
 Customers.Orders = Customers.hasMany(Orders, { as: 'Orders' });
 
-Products.belongsToMany(Orders, {through: 'products_orders', foreignKey: 'productId'});
-Orders.belongsToMany(Products, {through: 'products_orders', foreignKey: 'orderId'});
+Orders.belongsToMany(Products, { as: 'productsId', through: 'products_orders' });
 
 sequelize.sync({ force: true });
 

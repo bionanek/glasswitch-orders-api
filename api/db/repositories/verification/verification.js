@@ -27,7 +27,7 @@ class Verification {
 
     static ResourceIsNull(requestedItem) {
         if (requestedItem === null || requestedItem === undefined) {
-            throw new IdNotFound('ID NOT FOUND');
+            throw new IdNotFound('ID has not been found!');
         }
     }
 }
