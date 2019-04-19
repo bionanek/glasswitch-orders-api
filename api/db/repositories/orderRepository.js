@@ -7,5 +7,11 @@ exports.createOrder = async (orderData) => {
 
 exports.getAll = async () => {
     return await Orders.findAll(
-        { include: [{ all: true }]}).map(el => el.get({ plain: true }));
+        { include: [Orders.Customer]})
+            .map(el => el.get({ plain: true }));
+};
+
+exports.getById = async (orderId) => {
+    return await Orders.findById(orderId, 
+        { include: [Orders.Customer] });
 };

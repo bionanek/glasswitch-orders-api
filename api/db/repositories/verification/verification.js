@@ -22,6 +22,12 @@ class Verification {
 
                 this.ResourceIsNull(requestedProduct);
                 break;
+
+            case Resources.Orders:
+                const requestedOrder = await Orders.findById(requestedId);
+
+                this.ResourceIsNull(requestedOrder);
+                break;
         }
     }
 
