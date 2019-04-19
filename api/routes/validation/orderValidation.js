@@ -8,7 +8,7 @@ class OrderValidation {
     static Validate(request, response, next) {
         try {
             switch (request.method) {
-                case "POST": 
+                case "POST":
                     OrderValidation.ValidateCreate(request.body);
                     break;
                 case "GET":
@@ -37,11 +37,12 @@ class OrderValidation {
             || !orderData.productsTotalPrice
             || !orderData.currency
             || !orderData.email
-            || ! orderData.deadline
-            || orderData.confirmationSent === null
-            || orderData.proformaSent     === null
-            || orderData.invoiceSent      === null
-            || orderData.settledPayment   === null) {
+            || !orderData.deadline
+            || !orderData.customerId
+            || orderData.confirmationSent === undefined
+            || orderData.proformaSent     === undefined
+            || orderData.invoiceSent      === undefined
+            || orderData.settledPayment   === undefined) {
             throw new RequestValidationError('One or more request fields are missing.');
         }
     }
@@ -64,7 +65,6 @@ class OrderValidation {
 
     static ValidateUpdate(request) {
         OrderValidation.ValidateIdIsNaN(request.params.orderId);
-
         const updatedOrderData = request.body;
 
         if (!/\S/.test(updatedOrderData.productsCount)

@@ -4,8 +4,13 @@ const { IdNotFound, SequelizeError } = require('@helpers/errors');
 
 exports.create = async (orderData) => {
     try {
+        await Verification.IdExists(Resources.Customers, orderData.customerId);
+
         return await orderRepo.createOrder(orderData);
     } catch (error) {
+        if (error.name.includes("IDError")) {
+            throw new IdNotFound('Customer has not been found!');
+        }
         throw new Error(error);
     }
 };
