@@ -55,3 +55,13 @@ exports.getById = async (orderId) => {
         throw new IdNotFound('Order with given ID doesn\'t exist.');
     }
 };
+
+exports.addProduct = async (order, productId, quantity) => {
+    try {
+        await Verification.IdExists(Resources.Products, productId)
+
+        return await orderRepo.addProduct(order, productId, quantity)
+    } catch (error) {
+        throw new IdNotFound('Product with given ID doesn\'t exist.')
+    }
+}

@@ -10,4 +10,6 @@ router.post('/', OrderValidation.Validate, OrdersController.create);
 router.patch('/:orderId', OrderValidation.Validate, OrdersController.update);
 router.delete('/:orderId', OrderValidation.Validate, OrdersController.delete);
 
+router.patch('/:orderId/product', OrdersController.addProduct)
+
 module.exports = router;

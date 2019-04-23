@@ -36,7 +36,7 @@ exports.delete = async (request, response, next) => {
 
 exports.getAll = async (request, response, next) => {
     try {
-        let customers = await customersDomain.getAll();
+        const customers = await customersDomain.getAll();
         
         response.status(200).json(customers);
     } catch (error) {
@@ -46,7 +46,7 @@ exports.getAll = async (request, response, next) => {
 
 exports.getById = async (request, response, next) => {
     try {
-        let customer = await customersDomain.getById(request.params.customerId);
+        const customer = await customersDomain.getById(request.params.customerId);
 
         response.status(200).json(customer);
     } catch (error) {

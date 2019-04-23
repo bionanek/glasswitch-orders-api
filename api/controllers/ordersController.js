@@ -53,3 +53,14 @@ exports.getById = async (request, response, next) => {
         response.status(error.code).json(error);
     }
 };
+
+exports.addProduct = async (request, response, next) => {
+    try {
+        const order = await ordersDomain.getById(request.params.orderId)
+        const product = await ordersDomain.addProduct(order, request.body.productId, request.body.quantity)
+        
+        response.status(200).json(product)
+    } catch (error) {
+        response.status(error.code).json(error);
+    }
+}

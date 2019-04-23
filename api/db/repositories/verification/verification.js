@@ -1,5 +1,6 @@
 const Customers = require('@db/dbHelper').Customers;
 const Products = require('@db/dbHelper').Products;
+const Orders = require('@db/dbHelper').Orders;
 const { IdNotFound } = require('@helpers/errors');
 
 var Resources = {
