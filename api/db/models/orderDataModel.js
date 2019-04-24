@@ -6,7 +6,7 @@ exports.orderDataModel = {
         primaryKey: true,
         autoIncrement: true
     },
-    productsCount:      { type: Types.INTEGER,   allowNull: false },
+    productsCount:      { type: Types.INTEGER },
     shippingCost:       { type: Types.DOUBLE,    allowNull: true  },
     shippingCompany:    { type: Types.STRING,    allowNull: true  },
     productsTotalPrice: { type: Types.DOUBLE,    allowNull: false },

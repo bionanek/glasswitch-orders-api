@@ -1,5 +1,6 @@
 const config = require('config');
 const Sequelize = require('sequelize');
+
 var PricesDataModel = require('@models/priceDataModel').priceDataModel;
 var ProductsDataModel = require('@models/productDataModel').productDataModel;
 var CustomersDataModel = require('@models/customerDataModel').customerDataModel;
@@ -19,18 +20,19 @@ function getSequelize() {
 
 sequelize = getSequelize();
 
-var Products = sequelize.define('product', ProductsDataModel, {freezeTableName: true});
-var Prices = sequelize.define('price', PricesDataModel, {freezeTableName: true})
-var Customers = sequelize.define('customer', CustomersDataModel, {freezeTableName: true});
-var Orders = sequelize.define('order', OrdersDataModel, {freezeTableName: true});
+var Products = sequelize.define('product', ProductsDataModel, { freezeTableName: true });
+var Prices = sequelize.define('price', PricesDataModel, { freezeTableName: true })
+var Customers = sequelize.define('customer', CustomersDataModel, { freezeTableName: true });
+var Orders = sequelize.define('order', OrdersDataModel, { freezeTableName: true });
+
+var ProductsOrders = sequelize.define('products_orders', { quantity: Sequelize.INTEGER })
 
 Products.Price = Products.belongsTo(Prices, { onDelete: 'cascade' });
 Orders.Customer = Orders.belongsTo(Customers, { onDelete: 'cascade' });
-Customers.Order = Customers.hasMany(Orders, { as: 'Orders' });
+Customers.Order = Customers.hasMany(Orders, { as: 'orders' });
 
-Orders.belongsToMany(Products, { as: 'products', through: 'products_orders' })
-// Orders.hasMany(Products, { as: 'products' })
-// Products.belongsToMany(Orders, { as: 'orders', through: 'products_orders' })
+Orders.belongsToMany(Products, { as: 'products', through: ProductsOrders, foreignKey: 'orderId' })
+Products.belongsToMany(Orders, { as: 'orders', through: ProductsOrders, foreignKey: 'productId' })
 
 sequelize.sync({ force: true });
 
@@ -39,3 +41,4 @@ exports.Products = Products;
 exports.Customers = Customers;
 exports.Orders = Orders;
 exports.Sequelize = sequelize;
+exports.ProductsOrders = ProductsOrders

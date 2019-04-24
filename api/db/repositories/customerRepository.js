@@ -7,12 +7,12 @@ exports.createCustomer = async (customerData) => {
 };
 
 exports.updateCustomer = async (customerId, updatedCustomerData) => {
-    return Customers.update(updatedCustomerData, 
+    return await Customers.update(updatedCustomerData, 
         { where: { id: customerId } });
 };
 
 exports.deleteCustomer = async (customerId) => {
-    return Customers.destroy(
+    return await Customers.destroy(
         { where: { id: customerId }, cascade: true });
 };
 
