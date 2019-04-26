@@ -33,8 +33,7 @@ class OrderValidation {
     }
 
     static ValidateAllFieldsUndefined(orderData) {
-        if (!orderData.productsTotalPrice
-            || !orderData.currency
+        if (!orderData.currency
             || !orderData.email
             || !orderData.deadline
             || !orderData.customerId
@@ -47,9 +46,8 @@ class OrderValidation {
     }
 
     static ValidateAllFieldsEmpty(orderData) {
-        if (!/\S/.test(orderData.productsTotalPrice)
-            || !/\S/.test(orderData.currency)
-            || !/\S/.test(orderData.email)
+        if (!/\S/.test(orderData.currency)
+            || !/\S/.test(updatedOrderData.email)
             || !/\S/.test(orderData.deadline)) {
                 throw new RequestValidationError('One or more request fields are empty.')
         }

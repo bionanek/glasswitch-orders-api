@@ -9,7 +9,7 @@ exports.orderDataModel = {
     productsCount:      { type: Types.INTEGER },
     shippingCost:       { type: Types.DOUBLE,    allowNull: true  },
     shippingCompany:    { type: Types.STRING,    allowNull: true  },
-    productsTotalPrice: { type: Types.DOUBLE,    allowNull: false },
+    productsTotalPrice: { type: Types.DOUBLE },
     currency:           { type: Types.STRING(3), allowNull: false },
     notes:              { type: Types.STRING,    allowNull: true  },
     email:              { type: Types.STRING,    allowNull: false },

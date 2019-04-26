@@ -27,12 +27,6 @@ exports.getById = async (orderId) => {
 }
 
 exports.addProduct = async (order, productId, quantity) => {
-    try {
-        order.dataValues.productsCount += quantity
-        this.updateOrder(order.dataValues.id, order.dataValues)
-
-        return await order.addProducts(productId, { through: { quantity: quantity } })
-    } catch (error) {
-        throw new Error(error)
-    }
+    return await order.addProducts(productId, 
+        { through: { quantity: quantity } })
 }
