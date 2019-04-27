@@ -61,7 +61,7 @@ exports.addProduct = async (order, productId, quantity) => {
     try {
         await Verification.IdExists(Resources.Orders, order.id)
         await Verification.IdExists(Resources.Products, productId)
-        await OrderCounters.TotalCount(order, productId, quantity)
+        await OrderCounters.AddCounters(order, productId, quantity)
 
         return await orderRepo.addProduct(order, productId, quantity)
     } catch (error) {
@@ -72,7 +72,7 @@ exports.addProduct = async (order, productId, quantity) => {
 exports.deleteProduct = async (order, productId) => {
     try {
         await Verification.IdExists(Resources.Orders, order.id)
-        await OrderCounters.DeleteCount(order, productId)
+        await OrderCounters.SubsCounters(order, productId)
 
         return await orderRepo.deleteProduct(order, productId)
     } catch (error) {
