@@ -59,10 +59,30 @@ exports.getById = async (orderId) => {
 
 exports.addProduct = async (order, productId, quantity) => {
     try {
+        await Verification.IdExists(Resources.Orders, order.id)
         await Verification.IdExists(Resources.Products, productId)
         await OrderCounters.TotalCount(order, productId, quantity)
 
         return await orderRepo.addProduct(order, productId, quantity)
+    } catch (error) {
+        throw new IdNotFound('Product with given ID doesn\'t exist.')
+    }
+}
+
+exports.deleteProduct = async (order, productId) => {
+    try {
+        await Verification.IdExists(Resources.Orders, order.id)
+        await OrderCounters.DeleteCount(order, productId)
+
+        return await orderRepo.deleteProduct(order, productId)
+    } catch (error) {
+        throw new IdNotFound('Product with given ID doesn\'t exist.')
+    }
+}
+
+exports.changeQuantity = async (order, productId, quantity) => {
+    try {
+
     } catch (error) {
         throw new IdNotFound('Product with given ID doesn\'t exist.')
     }

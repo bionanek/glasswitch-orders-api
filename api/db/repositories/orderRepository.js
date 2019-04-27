@@ -2,7 +2,7 @@ const Orders = require('@db/dbHelper').Orders
 
 exports.createOrder = async (orderData) => {
     return await Orders.create(orderData,
-            { include: [{ all: true }]})
+        { include: [{ all: true }]})
 }
 
 exports.updateOrder = async (orderId, updatedOrderData) => {
@@ -28,5 +28,15 @@ exports.getById = async (orderId) => {
 
 exports.addProduct = async (order, productId, quantity) => {
     return await order.addProducts(productId, 
+        { through: { quantity: quantity } })
+}
+
+exports.deleteProduct = async (order, productId) => {
+    return await order.removeProducts(productId)
+}
+
+exports.changeQuantity = async (order, productId, quantity) => {
+    // ???
+    return await order.setProducts(productId, 
         { through: { quantity: quantity } })
 }

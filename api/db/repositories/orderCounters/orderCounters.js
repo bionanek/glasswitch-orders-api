@@ -27,6 +27,28 @@ class OrderCounters {
         order.dataValues.productsCount += quantity
         await orderRepo.updateOrder(order.id, order.dataValues)
     }
+
+    static async DeleteCount(order, productId) {
+        const product = await productRepo.getById(productId)
+        const requestedProduct = await order.getProducts({ where: { id: productId } })
+
+        switch (order.currency) {
+            case 'pln':
+                order.dataValues.productsTotalPrice -= product.price.pln * requestedProduct[0].name
+                break;
+
+            case 'eur':
+                order.dataValues.productsTotalPrice -= product.price.eur * quantity
+                break;
+
+            case 'usd':
+                order.dataValues.productsTotalPrice -= product.price.usd * quantity
+                break;
+        }
+
+        order.dataValues.productsCount -= quantity
+        await orderRepo.updateOrder(order.id, order.dataValues)
+    }
 }
 
 module.exports = {

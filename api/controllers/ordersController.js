@@ -64,3 +64,22 @@ exports.addProduct = async (request, response, next) => {
         response.status(error.code).json(error)
     }
 }
+
+exports.deleteProduct = async (request, response, next) => {
+    try {
+        const order = await ordersDomain.getById(request.params.orderId)
+        const product = await ordersDomain.deleteProduct(order, request.body.productId)
+
+        response.status(200).json(product)
+    } catch (error) {
+        response.status(error.code).json(error)
+    }
+}
+
+exports.changeQuantity = async (request, response, next) => {
+    try {
+
+    } catch (error) {
+        
+    }
+}

@@ -47,7 +47,7 @@ class OrderValidation {
 
     static ValidateAllFieldsEmpty(orderData) {
         if (!/\S/.test(orderData.currency)
-            || !/\S/.test(updatedOrderData.email)
+            || !/\S/.test(orderData.email)
             || !/\S/.test(orderData.deadline)) {
                 throw new RequestValidationError('One or more request fields are empty.')
         }
@@ -63,8 +63,12 @@ class OrderValidation {
         OrderValidation.ValidateIdIsNaN(request.params.orderId)
         const updatedOrderData = request.body
 
-        if (!/\S/.test(updatedOrderData.productsTotalPrice)
-            || !/\S/.test(updatedOrderData.currency)
+        if (updatedOrderData.productsCount
+            || updatedOrderData.productsTotalPrice) {
+                throw new UpdateError('You cannot change products counter and total price manually.')
+        }
+
+        if (!/\S/.test(updatedOrderData.currency)
             || !/\S/.test(updatedOrderData.email)
             || !/\S/.test(updatedOrderData.deadline)) {
                 throw new UpdateError('One or more request fields are empty.')
