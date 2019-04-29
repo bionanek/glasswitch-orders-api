@@ -64,8 +64,9 @@ class OrderValidation {
         const updatedOrderData = request.body
 
         if (updatedOrderData.productsCount
-            || updatedOrderData.productsTotalPrice) {
-                throw new UpdateError('You cannot change products counter and total price manually.')
+            || updatedOrderData.productsTotalPrice
+            || updatedOrderData.customerId) {
+                throw new UpdateError('You cannot change three props manually! These are customerId, productsCount & productsTotalPrice.')
         }
 
         if (!/\S/.test(updatedOrderData.currency)
@@ -76,12 +77,12 @@ class OrderValidation {
     }
 
     static ValidateAddProducts(request, response, next) {
-        const productsData = request.body
+        // const productsData = request.body
 
-        if (!productsData.productId
-            || !productsData.quantity) {
-                throw new RequestValidationError('One or more request fields are missing.')
-        }
+        // if (!productsData.productId
+        //     || !productsData.quantity) {
+        //         throw new RequestValidationError('One or more request fields are missing.')
+        // }
         next()
     }
 }

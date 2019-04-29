@@ -4,33 +4,31 @@ const productRepo = require('@repos/productRepository')
 class OrderCounters {
     static async AddCounters(order, productId, quantity) {
         const product = await productRepo.getById(productId)
-
-        let productsCount = order.dataValues.productsCount
-        let productsTotalPrice = order.dataValues.productsTotalPrice
-        const pln = product.price.pln
-        const eur = product.price.eur
-        const usd = product.price.usd
+        
+        const orderDataValues = order.dataValues
+        let productsCount = orderDataValues.productsCount
+        let productsTotalPrice = orderDataValues.productsTotalPrice
 
         switch (order.currency) {
             case 'pln':
-                productsTotalPrice += pln * quantity
+                productsTotalPrice += product.price.pln * quantity
                 break;
 
             case 'eur':
-                productsTotalPrice += eur * quantity
+                productsTotalPrice += product.price.eur * quantity
                 break;
 
             case 'usd':
-                productsTotalPrice += usd * quantity
+                productsTotalPrice += product.price.usd * quantity
                 break;
         }
 
         productsCount += quantity
 
-        order.dataValues.productsCount = productsCount
-        order.dataValues.productsTotalPrice = productsTotalPrice
+        orderDataValues.productsCount = productsCount
+        orderDataValues.productsTotalPrice = productsTotalPrice
 
-        await orderRepo.updateOrder(order.id, order.dataValues)
+        await orderRepo.updateOrder(order.id, orderDataValues)
     }
 
     static async SubsCounters(order, productId) {
@@ -38,24 +36,21 @@ class OrderCounters {
 
         let productsCount = order.dataValues.productsCount
         let productsTotalPrice = order.dataValues.productsTotalPrice
-        const pln = product.price.pln
-        const eur = product.price.eur
-        const usd = product.price.usd
 
         const requestedProduct = await order.getProducts({ where: { id: productId } })
         const quantity = requestedProduct[0].products_orders.quantity
 
         switch (order.currency) {
             case 'pln':
-                productsTotalPrice -= pln * quantity
+                productsTotalPrice -= product.price.pln * quantity
                 break;
 
             case 'eur':
-                productsTotalPrice -= eur * quantity
+                productsTotalPrice -= product.price.eur * quantity
                 break;
 
             case 'usd':
-                productsTotalPrice -= usd * quantity
+                productsTotalPrice -= product.price.usd * quantity
                 break;
         }
 

@@ -7,12 +7,14 @@ exports.create = async (orderData) => {
     try {
         await Verification.IdExists(Resources.Customers, orderData.customerId)
 
-        return await orderRepo.createOrder(orderData)
+        for (let n = 0; n < orderData.wantedProducts.length; n++) 
+            await Verification.IdExists(Resources.Products, orderData.wantedProducts[n].id)
+    
+        const order = await orderRepo.createOrder(orderData)
+
+        return this.addProduct(order, orderData.wantedProducts) 
     } catch (error) {
-        if (error.name.includes("IDError")) {
-            throw new IdNotFound('Customer has not been found!')
-        }
-        throw new Error(error)
+        throw new IdNotFound(error.message + ' && Order has not been placed!')
     }
 }
 
@@ -25,7 +27,7 @@ exports.update = async (orderId, updatedOrderData) => {
         if (error.name.includes("Sequelize")) {
             throw new SequelizeError('Field cannot be null.')
         }
-        throw new IdNotFound('Order with given ID doesn\'t exist. No order was updated.')
+        throw new IdNotFound(error.message + ' && None order was updated.')
     }
 }
 
@@ -35,7 +37,7 @@ exports.delete = async (orderId) => {
         
         return await orderRepo.deleteOrder(orderId)
     } catch (error) {
-        throw new IdNotFound('Order with given ID doesn\'t exist. No order was deleted.')
+        throw new IdNotFound(error.message + ' && No order was deleted.')
     }
 }
 
@@ -53,19 +55,20 @@ exports.getById = async (orderId) => {
 
         return await orderRepo.getById(orderId)
     } catch (error) {
-        throw new IdNotFound('Order with given ID doesn\'t exist.')
+        throw new IdNotFound(error.message)
     }
 }
 
-exports.addProduct = async (order, productId, quantity) => {
+exports.addProduct = async (order, products) => {
     try {
-        await Verification.IdExists(Resources.Orders, order.id)
-        await Verification.IdExists(Resources.Products, productId)
-        await OrderCounters.AddCounters(order, productId, quantity)
+        for (let n = 0; n < products.length; n++) {
+            await Verification.IdExists(Resources.Products, products[n].id)
+            await OrderCounters.AddCounters(order, products[n].id, products[n].quantity)
+        }
 
-        return await orderRepo.addProduct(order, productId, quantity)
+        return orderRepo.addProduct(order, products)
     } catch (error) {
-        throw new IdNotFound('Product with given ID doesn\'t exist.')
+        throw new IdNotFound(error.message)
     }
 }
 

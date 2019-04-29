@@ -1,7 +1,7 @@
 const Orders = require('@db/dbHelper').Orders
 
 exports.createOrder = async (orderData) => {
-    return await Orders.create(orderData,
+    return Orders.create(orderData,
         { include: [{ all: true }]})
 }
 
@@ -22,13 +22,15 @@ exports.getAll = async () => {
 }
 
 exports.getById = async (orderId) => {
-    return await Orders.findById(orderId, 
+    return Orders.findById(orderId, 
         { include: [{ all: true }]})
 }
 
-exports.addProduct = async (order, productId, quantity) => {
-    return await order.addProducts(productId, 
-        { through: { quantity: quantity } })
+exports.addProduct = async (order, products) => {
+    for (let n = 0; n < products.length; n++) {
+        order.addProduct(products[n].id, 
+            { through: { quantity: products[n].quantity } })
+    }
 }
 
 exports.deleteProduct = async (order, productId) => {
@@ -36,7 +38,5 @@ exports.deleteProduct = async (order, productId) => {
 }
 
 exports.changeQuantity = async (order, productId, quantity) => {
-    // ???
-    return await order.setProducts(productId, 
-        { through: { quantity: quantity } })
+    
 }

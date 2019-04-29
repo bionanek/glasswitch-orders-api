@@ -57,9 +57,9 @@ exports.getById = async (request, response, next) => {
 exports.addProduct = async (request, response, next) => {
     try {
         const order = await ordersDomain.getById(request.params.orderId)
-        const product = await ordersDomain.addProduct(order, request.body.productId, request.body.quantity)
-        
-        response.status(200).json(product)
+        const products = await ordersDomain.addProduct(order, request.body.products)
+
+        response.status(200).json(products)
     } catch (error) {
         response.status(error.code).json(error)
     }
