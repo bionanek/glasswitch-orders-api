@@ -1,7 +1,7 @@
 const orderRepo = require('@repos/orderRepository')
 const { Verification, Resources } = require('@verify/verification')
 const { IdNotFound, SequelizeError } = require('@helpers/errors')
-const OrderCounters = require('@repos/orderCounters/orderCounters').OrderCounters
+const OrderHelpers = require('@repos/orderHelpers/orderHelpers').OrderHelpers
 
 exports.create = async (orderData) => {
     try {
@@ -23,16 +23,13 @@ exports.update = async (order, updatedOrderData) => {
         await Verification.IdExists(Resources.Orders, order.id)
         let updatedProducts = updatedOrderData.updatedProducts
 
-        for (let n = 0; n < updatedProducts.length; n++) {
-            let validateProduct = await order.getProducts({ where: { id: updatedProducts[n].id } })
+        await orderRepo.updateOrder(order.id, updatedOrderData)
+        
+        if (order.currency !== updatedOrderData.currency)
+            await OrderHelpers.CurrencyChange(order, updatedOrderData)
+        
+        await OrderHelpers.UpdateProducts(order, updatedProducts)
 
-            if (validateProduct.length === 0) {
-                await Verification.IdExists(Resources.Products, updatedProducts[n].id)
-                await this.addProduct(order, updatedProducts)
-            } else {
-                await this.changeQuantity(order, updatedProducts)
-            } 
-        }
         return orderRepo.updateOrder(order.id, updatedOrderData)
     } catch (error) {
         if (error.name.includes("Sequelize")) {
@@ -73,7 +70,7 @@ exports.getById = async (orderId) => {
 exports.addProduct = async (order, products) => {
     try {
         for (let n = 0; n < products.length; n++) {
-            await OrderCounters.AddCounters(order, products[n].id, products[n].quantity)
+            await OrderHelpers.AddCounters(order, products[n].id, products[n].quantity)
             orderRepo.addProduct(order, products[n].id, products[n].quantity)
         }
     } catch (error) {
@@ -87,7 +84,7 @@ exports.deleteProduct = async (order, products) => {
             let validateProduct = await order.getProducts({ where: { id: products[n].id } })
 
             if (validateProduct.length !== 0) {
-                await OrderCounters.SubsCounters(order, products[n].id)
+                await OrderHelpers.SubsCounters(order, products[n].id)
                 orderRepo.deleteProduct(order, products[n].id)
             }
         }
@@ -102,10 +99,10 @@ exports.changeQuantity = async (order, products) => {
             let validateProduct = await order.getProducts({ where: { id: products[n].id } })
 
             if (validateProduct.length !== 0) {
-                await OrderCounters.SubsCounters(order, products[n].id)
+                await OrderHelpers.SubsCounters(order, products[n].id)
                 await orderRepo.deleteProduct(order, products[n].id)
 
-                await OrderCounters.AddCounters(order, products[n].id, products[n].quantity)
+                await OrderHelpers.AddCounters(order, products[n].id, products[n].quantity)
                 orderRepo.addProduct(order, products[n].id, products[n].quantity)
             }
         }
