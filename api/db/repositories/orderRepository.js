@@ -26,15 +26,13 @@ exports.getById = async (orderId) => {
         { include: [{ all: true }]})
 }
 
-exports.addProduct = async (order, products) => {
-    for (let n = 0; n < products.length; n++) {
-        order.addProduct(products[n].id, 
-            { through: { quantity: products[n].quantity } })
-    }
+exports.addProduct = async (order, productId, quantity) => {
+    order.addProduct(productId, 
+        { through: { quantity: quantity } })
 }
 
 exports.deleteProduct = async (order, productId) => {
-    return await order.removeProducts(productId)
+    order.removeProducts(productId)
 }
 
 exports.changeQuantity = async (order, productId, quantity) => {

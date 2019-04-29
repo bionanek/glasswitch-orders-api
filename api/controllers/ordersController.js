@@ -14,9 +14,9 @@ exports.create = async (request, response, next) => {
 exports.update = async (request, response, next) => {
     try {
         const updatedOrderData = request.body
-        const orderId = request.params.orderId
-        const affectedRows = await ordersDomain.update(orderId, updatedOrderData)
-
+        const order = await ordersDomain.getById(request.params.orderId)
+        const affectedRows = await ordersDomain.update(order, updatedOrderData)
+    
         response.status(200).json(affectedRows)
     } catch (error) {
         response.status(error.code).json(error)
@@ -68,9 +68,9 @@ exports.addProduct = async (request, response, next) => {
 exports.deleteProduct = async (request, response, next) => {
     try {
         const order = await ordersDomain.getById(request.params.orderId)
-        const product = await ordersDomain.deleteProduct(order, request.body.productId)
+        const products = await ordersDomain.deleteProduct(order, request.body.products)
 
-        response.status(200).json(product)
+        response.status(200).json(products)
     } catch (error) {
         response.status(error.code).json(error)
     }
