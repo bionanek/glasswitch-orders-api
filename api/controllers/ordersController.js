@@ -54,17 +54,6 @@ exports.getById = async (request, response, next) => {
     }
 }
 
-exports.addProduct = async (request, response, next) => {
-    try {
-        const order = await ordersDomain.getById(request.params.orderId)
-        const products = await ordersDomain.addProduct(order, request.body.products)
-
-        response.status(200).json(products)
-    } catch (error) {
-        response.status(error.code).json(error)
-    }
-}
-
 exports.deleteProduct = async (request, response, next) => {
     try {
         const order = await ordersDomain.getById(request.params.orderId)
@@ -73,13 +62,5 @@ exports.deleteProduct = async (request, response, next) => {
         response.status(200).json(products)
     } catch (error) {
         response.status(error.code).json(error)
-    }
-}
-
-exports.changeQuantity = async (request, response, next) => {
-    try {
-
-    } catch (error) {
-        
     }
 }

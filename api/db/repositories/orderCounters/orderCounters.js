@@ -12,15 +12,15 @@ class OrderCounters {
         switch (order.currency) {
             case 'pln':
                 productsTotalPrice += product.price.pln * quantity
-                break;
+                break
 
             case 'eur':
                 productsTotalPrice += product.price.eur * quantity
-                break;
+                break
 
             case 'usd':
                 productsTotalPrice += product.price.usd * quantity
-                break;
+                break
         }
 
         productsCount += quantity
@@ -43,15 +43,15 @@ class OrderCounters {
         switch (order.currency) {
             case 'pln':
                 productsTotalPrice -= product.price.pln * quantity
-                break;
+                break
 
             case 'eur':
                 productsTotalPrice -= product.price.eur * quantity
-                break;
+                break
 
             case 'usd':
                 productsTotalPrice -= product.price.usd * quantity
-                break;
+                break
         }
 
         productsCount -= quantity

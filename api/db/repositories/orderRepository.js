@@ -6,17 +6,17 @@ exports.createOrder = async (orderData) => {
 }
 
 exports.updateOrder = async (orderId, updatedOrderData) => {
-    return await Orders.update(updatedOrderData,
+    return Orders.update(updatedOrderData,
         { where: { id: orderId } })
 }
 
 exports.deleteOrder = async (orderId) => {
-    return await Orders.destroy(
+    return Orders.destroy(
         { where: { id: orderId }, cascade: true })
 }
 
 exports.getAll = async () => {
-    return await Orders.findAll(
+    return Orders.findAll(
         { include: [{ all: true }]})
             .map(el => el.get({ plain: true }))
 }
@@ -27,14 +27,10 @@ exports.getById = async (orderId) => {
 }
 
 exports.addProduct = async (order, productId, quantity) => {
-    order.addProduct(productId, 
+    return order.addProduct(productId, 
         { through: { quantity: quantity } })
 }
 
 exports.deleteProduct = async (order, productId) => {
-    order.removeProducts(productId)
-}
-
-exports.changeQuantity = async (order, productId, quantity) => {
-    
+    return order.removeProducts(productId)
 }

@@ -75,16 +75,6 @@ class OrderValidation {
                 throw new UpdateError('One or more request fields are empty.')
         }
     }
-
-    static ValidateAddProducts(request, response, next) {
-        // const productsData = request.body
-
-        // if (!productsData.productId
-        //     || !productsData.quantity) {
-        //         throw new RequestValidationError('One or more request fields are missing.')
-        // }
-        next()
-    }
 }
 
 module.exports = {

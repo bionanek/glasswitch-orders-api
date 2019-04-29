@@ -21,22 +21,19 @@ exports.create = async (orderData) => {
 exports.update = async (order, updatedOrderData) => {
     try {
         await Verification.IdExists(Resources.Orders, order.id)
-        let newProducts = updatedOrderData.updateProducts
+        let updatedProducts = updatedOrderData.updatedProducts
 
-        for (let n = 0; n < newProducts.length; n++) {
-            let validateProducts = await order.getProducts({ where: { id: newProducts[n].id } })
+        for (let n = 0; n < updatedProducts.length; n++) {
+            let validateProduct = await order.getProducts({ where: { id: updatedProducts[n].id } })
 
-            if (validateProducts.length === 0) {
-                await Verification.IdExists(Resources.Products, newProducts[n].id)
-                await OrderCounters.AddCounters(order, newProducts[n].id, newProducts[n].quantity)
-
-                await orderRepo.addProduct(order, newProducts[n].id, newProducts[n].quantity)
-
-                orderRepo.updateOrder(order.id, updatedOrderData)
-            }
+            if (validateProduct.length === 0) {
+                await Verification.IdExists(Resources.Products, updatedProducts[n].id)
+                await this.addProduct(order, updatedProducts)
+            } else {
+                await this.changeQuantity(order, updatedProducts)
+            } 
         }
-
-        // return await 
+        return orderRepo.updateOrder(order.id, updatedOrderData)
     } catch (error) {
         if (error.name.includes("Sequelize")) {
             throw new SequelizeError('Field cannot be null.')
@@ -49,7 +46,7 @@ exports.delete = async (orderId) => {
     try {
         await Verification.IdExists(Resources.Orders, orderId)
         
-        return await orderRepo.deleteOrder(orderId)
+        return orderRepo.deleteOrder(orderId)
     } catch (error) {
         throw new IdNotFound(error.message + ' && No order was deleted.')
     }
@@ -57,7 +54,7 @@ exports.delete = async (orderId) => {
 
 exports.getAll = async () => {
     try {
-        return await orderRepo.getAll()
+        return orderRepo.getAll()
     } catch (error) {
         throw new Error('No orders were found.')
     }
@@ -67,7 +64,7 @@ exports.getById = async (orderId) => {
     try {
         await Verification.IdExists(Resources.Orders, orderId)
 
-        return await orderRepo.getById(orderId)
+        return orderRepo.getById(orderId)
     } catch (error) {
         throw new IdNotFound(error.message)
     }
@@ -76,10 +73,8 @@ exports.getById = async (orderId) => {
 exports.addProduct = async (order, products) => {
     try {
         for (let n = 0; n < products.length; n++) {
-            await Verification.IdExists(Resources.Products, products[n].id)
             await OrderCounters.AddCounters(order, products[n].id, products[n].quantity)
-
-            await orderRepo.addProduct(order, products[n].id, products[n].quantity)
+            orderRepo.addProduct(order, products[n].id, products[n].quantity)
         }
     } catch (error) {
         throw new IdNotFound(error.message)
@@ -89,11 +84,11 @@ exports.addProduct = async (order, products) => {
 exports.deleteProduct = async (order, products) => {
     try {
         for (let n = 0; n < products.length; n++) {
-            let validateProducts = await order.getProducts({ where: { id: products[n].id } })
+            let validateProduct = await order.getProducts({ where: { id: products[n].id } })
 
-            if (validateProducts.length !== 0) {
+            if (validateProduct.length !== 0) {
                 await OrderCounters.SubsCounters(order, products[n].id)
-                await orderRepo.deleteProduct(order, products[n].id)
+                orderRepo.deleteProduct(order, products[n].id)
             }
         }
     } catch (error) {
@@ -101,10 +96,20 @@ exports.deleteProduct = async (order, products) => {
     }
 }
 
-exports.changeQuantity = async (order, productId, quantity) => {
+exports.changeQuantity = async (order, products) => {
     try {
+        for (let n = 0; n < products.length; n++) {
+            let validateProduct = await order.getProducts({ where: { id: products[n].id } })
 
+            if (validateProduct.length !== 0) {
+                await OrderCounters.SubsCounters(order, products[n].id)
+                await orderRepo.deleteProduct(order, products[n].id)
+
+                await OrderCounters.AddCounters(order, products[n].id, products[n].quantity)
+                orderRepo.addProduct(order, products[n].id, products[n].quantity)
+            }
+        }
     } catch (error) {
-        throw new IdNotFound('Product with given ID doesn\'t exist.')
+        throw new IdNotFound(error.message)
     }
 }
