@@ -4,25 +4,25 @@ const { Sequelize } = require('@db/dbHelper')
 const Op = Sequelize.Op
 exports.Customers = Customers
 
-exports.createCustomer = async (customerData) => {
+exports.createCustomer = (customerData) => {
     return Customers.create(customerData)
 }
 
-exports.updateCustomer = async (customerId, updatedCustomerData) => {
+exports.updateCustomer = (customerId, updatedCustomerData) => {
     return Customers.update(updatedCustomerData, 
         { where: { id: customerId } })
 }
 
-exports.deleteCustomer = async (customerId) => {
+exports.deleteCustomer = (customerId) => {
     return Customers.destroy(
         { where: { id: customerId }, cascade: true })
 }
 
-exports.getAll = async () => {
+exports.getAll = () => {
     return Customers.findAll()
 }
 
-exports.getById = async (customerId) => {
+exports.getById = (customerId) => {
     return Customers.findById(customerId)
 }
 
