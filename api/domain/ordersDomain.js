@@ -23,12 +23,13 @@ exports.update = async (order, updatedOrderData) => {
         await Verification.IdExists(Resources.Orders, order.id)
         let updatedProducts = updatedOrderData.updatedProducts
 
-        await orderRepo.updateOrder(order.id, updatedOrderData)
-        
         if (order.currency !== updatedOrderData.currency)
             await OrderHelpers.CurrencyChange(order, updatedOrderData)
         
-        await OrderHelpers.UpdateProducts(order, updatedProducts)
+        orderRepo.updateOrder(order.id, updatedOrderData)
+        const updatedOrder = await orderRepo.getById(order.id)
+
+        await OrderHelpers.UpdateProducts(updatedOrder, updatedProducts)
 
         return orderRepo.updateOrder(order.id, updatedOrderData)
     } catch (error) {
