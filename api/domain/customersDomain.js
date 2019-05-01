@@ -2,7 +2,7 @@ const customerRepo = require('@repos/customerRepository')
 const { Verification, Resources } = require('@verify/verification')
 const { IdNotFound, SequelizeError } = require('@helpers/errors')
 
-exports.create = async (customerData) => {
+exports.create = (customerData) => {
     try {
         return customerRepo.createCustomer(customerData)
     } catch (error) {
@@ -33,7 +33,7 @@ exports.delete = async (customerId) => {
     }
 }
 
-exports.getAll = async () => {
+exports.getAll = () => {
     try {
         return customerRepo.getAll()
     } catch (error) {
@@ -51,6 +51,6 @@ exports.getById = async (customerId) => {
     }
 }
 
-exports.getSearchResults = async (searchPhrase) => {
+exports.getSearchResults = (searchPhrase) => {
     return customerRepo.getSearchResults(searchPhrase)
 }
