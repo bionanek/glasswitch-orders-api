@@ -1,6 +1,7 @@
-const Customers = require('@db/dbHelper').Customers
-const Products = require('@db/dbHelper').Products
-const Orders = require('@db/dbHelper').Orders
+const { 
+    Customers,
+    Products,
+    Orders } = require('@db/dbHelper')
 const { IdNotFound } = require('@helpers/errors')
 
 var Resources = {
@@ -32,9 +33,9 @@ class Verification {
         }
     }
 
-    static ResourceIsNull(resources, requestedItem) {
+    static ResourceIsNull(resource, requestedItem) {
         if (requestedItem === null || requestedItem === undefined) {
-            switch (resources) {
+            switch (resource) {
                 case Resources.Customers:
                     throw new IdNotFound('Customer has not been found!')
                 
