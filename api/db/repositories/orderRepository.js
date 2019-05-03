@@ -26,11 +26,11 @@ exports.getById = (orderId) => {
         { include: [{ all: true }]})
 }
 
-exports.addProduct = (order, productId, quantity) => {
+exports.addProducts = (order, productId, quantity) => {
     return order.addProducts(productId, 
         { through: { quantity: quantity } })
 }
 
-exports.deleteProduct = (order, productId) => {
+exports.deleteProducts = (order, productId) => {
     return order.removeProducts(productId)
 }

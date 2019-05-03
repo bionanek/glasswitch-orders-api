@@ -9,6 +9,6 @@ router.post('/', OrderValidation.Validate, OrdersController.create)
 router.patch('/:orderId', OrderValidation.Validate, OrdersController.update)
 router.delete('/:orderId', OrderValidation.Validate, OrdersController.delete)
 
-router.delete('/:orderId/delete-product', OrdersController.deleteProduct)
+router.delete('/:orderId/delete-product', OrdersController.deleteProducts)
 
 module.exports = router
