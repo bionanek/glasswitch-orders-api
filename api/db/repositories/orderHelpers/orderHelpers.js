@@ -1,8 +1,5 @@
-const productRepo = require('@repos/productRepository')
-
 class OrderHelpers {
-    static async addQuantityAndTotalPrice(order, productId, quantity) {
-        const product = await productRepo.getById(productId)
+    static async addQuantityAndTotalPrice(order, product, quantity) {
         const orderDataValues = order.dataValues
 
         orderDataValues.productsCount += quantity
@@ -13,12 +10,8 @@ class OrderHelpers {
         return orderDataValues
     }
 
-    static async substractQuantityAndTotalPrice(order, productId) {
-        const product = await productRepo.getById(productId)
+    static async subtractQuantityAndTotalPrice(order, product, quantity) {
         const orderDataValues = order.dataValues
-
-        const requestedProduct = await order.getProducts({ where: { id: productId } })
-        const quantity = requestedProduct[0].products_orders.quantity
 
         orderDataValues.productsCount -= quantity
 

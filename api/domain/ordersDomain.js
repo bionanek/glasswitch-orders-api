@@ -1,4 +1,5 @@
 const orderRepo = require('@repos/orderRepository')
+const productRepo = require('@repos/productRepository')
 const { Verification, Resources } = require('@verify/verification')
 const { IdNotFound, SequelizeError } = require('@helpers/errors')
 const { OrderHelpers } = require('@repos/orderHelpers/orderHelpers')
@@ -69,34 +70,38 @@ exports.getById = async (orderId) => {
     }
 }
 
-exports.addProducts = async (order, products) => {
+exports.addProducts = async (order, productsArray) => {
     try {
-        for (let n = 0; n < products.length; n++) {
-            const productsInOrder = await order.getProducts({ where: { id: products[n].id } })
+        for (let n = 0; n < productsArray.length; n++) {
+            const productsInOrder = await order.getProducts({ where: { id: productsArray[n].id } })
 
             if (productsInOrder.length !== 0) continue
 
-            await OrderHelpers.addQuantityAndTotalPrice(order, products[n].id, products[n].quantity)
+            const product = await productRepo.getById(productsArray[n].id)
+            await OrderHelpers.addQuantityAndTotalPrice(order, product, productsArray[n].quantity)
+
             await orderRepo.updateOrder(order.id, order.dataValues)
-            orderRepo.addProducts(order, products[n].id, products[n].quantity)
+            orderRepo.addProducts(order, productsArray[n].id, productsArray[n].quantity)
         }
     } catch (error) {
         throw new IdNotFound(error.message)
     }
 }
 
-exports.deleteProducts = async (orderId, products) => {
+exports.deleteProducts = async (orderId, productsArray) => {
     try {
         const order = await orderRepo.getById(orderId)
         
-        for (let n = 0; n < products.length; n++) {
-            const productsInOrder = await order.getProducts({ where: { id: products[n].id } })
+        for (let n = 0; n < productsArray.length; n++) {
+            const productsInOrder = await order.getProducts({ where: { id: productsArray[n].id } })
+            const productToDelete = await productRepo.getById(productsArray[n].id)
+            let quantity = productsInOrder[0].products_orders.quantity
 
             if (productsInOrder.length === 0) continue
 
-            await OrderHelpers.substractQuantityAndTotalPrice(order, products[n].id)
+            await OrderHelpers.subtractQuantityAndTotalPrice(order, productToDelete, quantity)
             await orderRepo.updateOrder(order.id, order.dataValues)
-            orderRepo.deleteProducts(order, products[n].id)
+            orderRepo.deleteProducts(order, productsArray[n].id)
         }
     } catch (error) {
         throw new IdNotFound(error.message)
@@ -121,7 +126,7 @@ exports.changeQuantity = async (order, products) => {
 
 exports.changeCurrency = async (prevOrder, updatedOrder) => {
     for (let n = 0; n < updatedOrder.products.length; n++) {
-        await OrderHelpers.substractQuantityAndTotalPrice(prevOrder, updatedOrder.products[n].id)
+        await OrderHelpers.subtractQuantityAndTotalPrice(prevOrder, updatedOrder.products[n].id)
         
         updatedOrder.dataValues.productsCount = prevOrder.dataValues.productsCount
         updatedOrder.dataValues.productsTotalPrice = prevOrder.dataValues.productsTotalPrice
@@ -152,7 +157,7 @@ exports.updateProducts = async (order, products) => {
 
             orderRepo.addProducts(order, products[n].id, products[n].quantity)
         } else {
-            await OrderHelpers.substractQuantityAndTotalPrice(order, products[n].id)
+            await OrderHelpers.subtractQuantityAndTotalPrice(order, products[n].id)
 
             await orderRepo.updateOrder(order.id, order.dataValues)
 
