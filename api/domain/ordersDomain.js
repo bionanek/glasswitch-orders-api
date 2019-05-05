@@ -76,10 +76,9 @@ exports.addProducts = async (order, productsArray) => {
             const productsInOrder = await order.getProducts({ where: { id: productsArray[n].id } })
 
             if (productsInOrder.length !== 0) continue
-
             const product = await productRepo.getById(productsArray[n].id)
+            
             await OrderHelpers.addQuantityAndTotalPrice(order, product, productsArray[n].quantity)
-
             await orderRepo.updateOrder(order.id, order.dataValues)
             orderRepo.addProducts(order, productsArray[n].id, productsArray[n].quantity)
         }
@@ -95,7 +94,7 @@ exports.deleteProducts = async (orderId, productsArray) => {
         for (let n = 0; n < productsArray.length; n++) {
             const productsInOrder = await order.getProducts({ where: { id: productsArray[n].id } })
             const productToDelete = await productRepo.getById(productsArray[n].id)
-            let quantity = productsInOrder[0].products_orders.quantity
+            const quantity = productsInOrder[0].products_orders.quantity
 
             if (productsInOrder.length === 0) continue
 
@@ -125,49 +124,61 @@ exports.changeQuantity = async (order, products) => {
 }
 
 exports.changeCurrency = async (prevOrder, updatedOrder) => {
-    for (let n = 0; n < updatedOrder.products.length; n++) {
-        await OrderHelpers.subtractQuantityAndTotalPrice(prevOrder, updatedOrder.products[n].id)
+    const productsToUpdate = updatedOrder.products
+
+    for (let n = 0; n < productsToUpdate.length; n++) {
+        const productsInOrder = await prevOrder.getProducts({ where: { id: productsToUpdate[n].id } })
+        const product = await productRepo.getById(productsToUpdate[n].id)
+        const prevQuantity = productsInOrder[0].products_orders.quantity
+
+        await OrderHelpers.subtractQuantityAndTotalPrice(prevOrder, product, prevQuantity)
         
         updatedOrder.dataValues.productsCount = prevOrder.dataValues.productsCount
         updatedOrder.dataValues.productsTotalPrice = prevOrder.dataValues.productsTotalPrice
         
         await orderRepo.updateOrder(updatedOrder.id, updatedOrder.dataValues)
-
-        await orderRepo.deleteProducts(updatedOrder, updatedOrder.products[n].id)
+        await orderRepo.deleteProducts(updatedOrder, productsToUpdate[n].id)
     }
 
     for (let n = 0; n < updatedOrder.products.length; n++) {
-        await OrderHelpers.addQuantityAndTotalPrice(updatedOrder, updatedOrder.products[n].id, updatedOrder.products[n].products_orders.quantity)
-        
-        await orderRepo.updateOrder(updatedOrder.id, updatedOrder.dataValues)
+        const product = await productRepo.getById(productsToUpdate[n].id)
+        const newQuantity = productsToUpdate[n].products_orders.quantity
 
-        orderRepo.addProducts(updatedOrder, updatedOrder.products[n].id, updatedOrder.products[n].products_orders.quantity)
+        await OrderHelpers.addQuantityAndTotalPrice(updatedOrder, product, newQuantity)
+        await orderRepo.updateOrder(updatedOrder.id, updatedOrder.dataValues)
+        orderRepo.addProducts(updatedOrder, product.id, newQuantity)
     }
 }
 
-exports.updateProducts = async (order, products) => {
-    for (let n = 0; n < products.length; n++) {
-        const productsInOrder = await order.getProducts({ where: { id: products[n].id } })
-        await Verification.IdExists(Resources.Products, products[n].id)
+exports.updateProducts = async (order, productsArray) => {
+    for (let n = 0; n < productsArray.length; n++) {
+        const productsInOrder = await order.getProducts({ where: { id: productsArray[n].id } })
+        const product = await productRepo.getById(productsArray[n].id)
+        const newQuantity = productsArray[n].quantity
+
+        await Verification.IdExists(Resources.Products, product.id)
 
         if (productsInOrder.length === 0) {
-            await OrderHelpers.addQuantityAndTotalPrice(order, products[n].id, products[n].quantity)
-
-            await orderRepo.updateOrder(order.id, order.dataValues)
-
-            orderRepo.addProducts(order, products[n].id, products[n].quantity)
+            this.updateOrderNewProducts(order, product, newQuantity)
         } else {
-            await OrderHelpers.subtractQuantityAndTotalPrice(order, products[n].id)
-
-            await orderRepo.updateOrder(order.id, order.dataValues)
-
-            await orderRepo.deleteProducts(order, products[n].id)
-
-            await OrderHelpers.addQuantityAndTotalPrice(order, products[n].id, products[n].quantity)
-
-            await orderRepo.updateOrder(order.id, order.dataValues)
-
-            orderRepo.addProducts(order, products[n].id, products[n].quantity)
+            const prevQuantity = productsInOrder[0].products_orders.quantity
+            this.updateOrderQuantityUpdate(order, product, prevQuantity, newQuantity)
         }
     }
+}
+
+exports.updateOrderNewProducts = async (order, product, quantity) => {
+    await OrderHelpers.addQuantityAndTotalPrice(order, product, quantity)
+    await orderRepo.updateOrder(order.id, order.dataValues)
+    orderRepo.addProducts(order, product.id, quantity)
+}
+
+exports.updateOrderQuantityUpdate = async (order, product, prevQuantity, newQuantity) => {
+    await OrderHelpers.subtractQuantityAndTotalPrice(order, product, prevQuantity)
+    await orderRepo.updateOrder(order.id, order.dataValues)
+    await orderRepo.deleteProducts(order, product.id)
+
+    await OrderHelpers.addQuantityAndTotalPrice(order, product, newQuantity)
+    await orderRepo.updateOrder(order.id, order.dataValues)
+    orderRepo.addProducts(order, product.id, newQuantity)
 }
