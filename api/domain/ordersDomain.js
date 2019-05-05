@@ -28,7 +28,7 @@ exports.update = async (orderId, updatedOrderData) => {
         await this.updateProducts(order, updatedProducts)
 
         await orderRepo.updateOrder(orderId, updatedOrderData)
-        const updatedOrder = await orderRepo.getById(orderId)
+        let updatedOrder = await orderRepo.getById(orderId)
 
         if (order.currency !== updatedOrderData.currency)
             await this.changeCurrency(order, updatedOrder)
@@ -90,7 +90,7 @@ exports.addProducts = async (order, productsArray) => {
 exports.deleteProducts = async (orderId, productsArray) => {
     try {
         const order = await orderRepo.getById(orderId)
-        
+
         for (let n = 0; n < productsArray.length; n++) {
             const productsInOrder = await order.getProducts({ where: { id: productsArray[n].id } })
             const productToDelete = await productRepo.getById(productsArray[n].id)
@@ -126,20 +126,27 @@ exports.changeQuantity = async (order, products) => {
 exports.changeCurrency = async (prevOrder, updatedOrder) => {
     const productsToUpdate = updatedOrder.products
 
+    await this.deleteProductsPrevCurrency(prevOrder, updatedOrder, productsToUpdate)
+    await this.addProductsNewCurrency(updatedOrder, productsToUpdate)
+}
+
+exports.deleteProductsPrevCurrency = async (prevOrder, updatedOrder, productsToUpdate) => {
     for (let n = 0; n < productsToUpdate.length; n++) {
         const productsInOrder = await prevOrder.getProducts({ where: { id: productsToUpdate[n].id } })
         const product = await productRepo.getById(productsToUpdate[n].id)
         const prevQuantity = productsInOrder[0].products_orders.quantity
 
         await OrderHelpers.subtractQuantityAndTotalPrice(prevOrder, product, prevQuantity)
-        
+
         updatedOrder.dataValues.productsCount = prevOrder.dataValues.productsCount
         updatedOrder.dataValues.productsTotalPrice = prevOrder.dataValues.productsTotalPrice
-        
+
         await orderRepo.updateOrder(updatedOrder.id, updatedOrder.dataValues)
         await orderRepo.deleteProducts(updatedOrder, productsToUpdate[n].id)
     }
+}
 
+exports.addProductsNewCurrency = async (updatedOrder, productsToUpdate) => {
     for (let n = 0; n < updatedOrder.products.length; n++) {
         const product = await productRepo.getById(productsToUpdate[n].id)
         const newQuantity = productsToUpdate[n].products_orders.quantity
@@ -159,10 +166,10 @@ exports.updateProducts = async (order, productsArray) => {
         await Verification.IdExists(Resources.Products, product.id)
 
         if (productsInOrder.length === 0) {
-            this.updateOrderNewProducts(order, product, newQuantity)
+            await this.updateOrderNewProducts(order, product, newQuantity)
         } else {
             const prevQuantity = productsInOrder[0].products_orders.quantity
-            this.updateOrderQuantityUpdate(order, product, prevQuantity, newQuantity)
+            await this.updateOrderQuantityUpdate(order, product, prevQuantity, newQuantity)
         }
     }
 }
