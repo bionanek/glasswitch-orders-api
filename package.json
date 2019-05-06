@@ -51,6 +51,7 @@
   },
   "_moduleAliases": {
     "@root": ".",
+    "@routes": "./api/routes",
     "@helpers": "./api/helpers",
     "@domains": "./api/domain",
     "@controllers": "./api/controllers",
