@@ -6,9 +6,9 @@ var cors = require("cors");
 
 const app = express();
 
-const productsRoutes = require('@routes/productsRouter');
-const customersRoutes = require('@routes/customersRouter');
-const ordersRoutes = require('@routes/ordersRouter');
+const productsRoutes = require("@routes/productsRouter");
+const customersRoutes = require("@routes/customersRouter");
+const ordersRoutes = require("@routes/ordersRouter");
 
 if (config.util.getEnv("NODE_ENV") == "test") {
   app.use(morgan("test"));
@@ -18,10 +18,11 @@ if (config.util.getEnv("NODE_ENV") == "test") {
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
-app.use('/products', productsRoutes);
-app.use('/customers', customersRoutes);
-app.use('/orders', ordersRoutes);
+app.use("/products", productsRoutes);
+app.use("/customers", customersRoutes);
+app.use("/orders", ordersRoutes);
 
 app.use((request, response, next) => {
   const error = new Error("Not found");
