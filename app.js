@@ -19,6 +19,7 @@ if (config.util.getEnv("NODE_ENV") == "test") {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+
 app.use("/products", productsRoutes);
 app.use("/customers", customersRoutes);
 app.use("/orders", ordersRoutes);
