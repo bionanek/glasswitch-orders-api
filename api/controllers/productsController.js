@@ -3,7 +3,7 @@ const productsDomain = require("@domains/productsDomain");
 exports.create = async (request, response, next) => {
   try {
     const productData = request.body;
-    productData.imageUrl = request.file.path;
+    productData.imageUrl = 'E:\Projects\glass-witch-api\' + request.file.path;
     const product = await productsDomain.create(productData);
 
     response.status(200).json(product);

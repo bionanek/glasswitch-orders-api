@@ -9,13 +9,9 @@ exports.productDataModel = {
   name: { type: Types.STRING, allowNull: false },
   description: { type: Types.STRING, allowNull: true },
   type: { type: Types.STRING, allowNull: false },
-  category: {
-    type: Types.STRING,
-    allowNull: false,
-    defaultValue: ""
-  },
-  width: { type: Types.STRING, allowNull: true },
-  height: { type: Types.STRING, allowNull: true },
-  depth: { type: Types.STRING, allowNull: true },
+  category: { type: Types.STRING, allowNull: false },
+  width: { type: Types.DOUBLE, allowNull: true },
+  height: { type: Types.DOUBLE, allowNull: true },
+  depth: { type: Types.DOUBLE, allowNull: true },
   imageUrl: { type: Types.STRING, allowNull: true }
 };
