@@ -23,6 +23,7 @@ router.post(
 );
 router.patch(
   "/:productId",
+  upload.single("image"),
   ProductValidation.Validate,
   ProductsController.update
 );
