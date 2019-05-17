@@ -1,15 +1,13 @@
 const multer = require("multer");
 
-const fullDate = new Date().toISOString();
-const dateNoTime = fullDate.split("T")[0];
+const dateNoTime = new Date().toISOString().split("T")[0];
+
 const storage = multer.diskStorage({
   destination: function(request, file, callback) {
     callback(null, "./productsImages/");
   },
   filename: function(request, file, callback) {
-    const productNameNoSpaces = request.body.name.replace(/\s/g, "");
-    const fileName =
-      request.body.code + "_" + productNameNoSpaces + "_" + dateNoTime + ".jpg";
+    const fileName = request.body.code + "_" + dateNoTime + ".jpg";
     request.body.imageName = fileName;
 
     callback(null, fileName);

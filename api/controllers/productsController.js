@@ -15,9 +15,6 @@ exports.create = async (request, response, next) => {
 exports.update = async (request, response, next) => {
   try {
     const updatedProductData = request.body;
-    updatedProductData.imageUrl =
-      "http://localhost:3001/" + request.body.imageName;
-
     const productId = request.params.productId;
     const affectedRows = await productsDomain.update(
       productId,
