@@ -7,6 +7,7 @@ exports.productDataModel = {
     autoIncrement: true
   },
   name: { type: Types.STRING, allowNull: false },
+  code: { type: Types.STRING, allowNull: false },
   description: { type: Types.STRING, allowNull: true },
   type: { type: Types.STRING, allowNull: false },
   category: { type: Types.STRING, allowNull: false },

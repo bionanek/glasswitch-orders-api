@@ -8,7 +8,8 @@ const storage = multer.diskStorage({
   },
   filename: function(request, file, callback) {
     const productNameNoSpaces = request.body.name.replace(/\s/g, "");
-    const fileName = productNameNoSpaces + "_" + dateNoTime + ".jpg";
+    const fileName =
+      request.body.code + "_" + productNameNoSpaces + "_" + dateNoTime + ".jpg";
     request.body.imageName = fileName;
 
     callback(null, fileName);
