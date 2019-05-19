@@ -6,8 +6,8 @@ const {
 } = require("@helpers/errors");
 const { productDataModel } = require("@models/productDataModel");
 const { PriceValidation } = require("@validation/priceValidation");
+const ProductsQueries = require("./models/QueryModels").ProductsQueries;
 
-const ByPriceRangeQueryModel = ["priceFrom", "priceTo", "curr", "order"];
 class ProductValidation {
 	static Validate(request, response, next) {
 		try {
@@ -32,15 +32,17 @@ class ProductValidation {
 	}
 
 	static ValidateGet(request) {
-		if (request.path === "/by/price") {
-			ProductValidation.ValidatePriceRangeQuery(request.query);
-		}
-		if (!request.query) {
-			ProductValidation.ValidateSearchQuery(request.query);
-		}
-
-		if (request.params.productId) {
-			ProductValidation.ValidateIdIsNaN(request.params.productId);
+		switch (request.path) {
+			case "/by/price":
+				ProductValidation.ValidatePriceRangeQuery(request.query);
+				break;
+			case "/search":
+				ProductValidation.ValidateSearchQuery(request.query);
+				break;
+			default:
+				if (request.params.productId) {
+					ProductValidation.ValidateIdIsNaN(request.params.productId);
+				}
 		}
 	}
 
@@ -48,17 +50,59 @@ class ProductValidation {
 		if (!query) {
 			throw new InvalidQueryParamsError(
 				`This endpoint requires a querry that contains fields: ${ByPriceRangeQueryModel.join(
-					","
+					", "
 				)}.`
 			);
 		}
 
-		for (const field of ByPriceRangeQueryModel) {
-			if (query[field] === undefined || query[field] === null) {
-				throw new InvalidQueryParamsError(
-					`Query is missing a field: '${field}'`
-				);
+		ProductValidation.ValidateRequiredQueryFieldsExist(
+			query,
+			ProductsQueries.ByPriceRangeQueryModel
+		);
+
+		ProductValidation.ValidateQueryFieldsHaveCorrectValues(
+			query,
+			ProductsQueries.ByPriceRangeQueryModel
+		);
+	}
+
+	static ValidateQueryFieldsHaveCorrectValues(query, queryModel) {
+		// TODO: cleanup this function
+		let invalidFields = {};
+		for (const field in query) {
+			if (queryModel[field] === "number") {
+				if (isNaN(query[field])) {
+					invalidFields[field] = queryModel[field];
+				}
+			} else if (typeof queryModel[field] === "object") {
+				const dictionary = queryModel[field];
+
+				if (!Object.values(dictionary).includes(query[field])) {
+					invalidFields[field] = queryModel[field];
+				}
 			}
+		}
+
+		if (Object.keys(invalidFields).length) {
+			const invalidFieldsJson = JSON.stringify(invalidFields);
+			throw new InvalidQueryParamsError(
+				`Query contains parameters of wrong types. Expected types for invalid field/s: ${invalidFieldsJson}`
+			);
+		}
+	}
+
+	static ValidateRequiredQueryFieldsExist(query, queryModel) {
+		let missingFields = [];
+		for (const field in queryModel) {
+			if (query[field] === undefined || query[field] === null) {
+				missingFields.push(field);
+			}
+		}
+
+		if (missingFields.length > 0) {
+			throw new InvalidQueryParamsError(
+				`Query is missing field/s: [${missingFields.join(", ")}]`
+			);
 		}
 	}
 
