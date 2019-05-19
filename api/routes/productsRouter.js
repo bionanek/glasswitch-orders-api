@@ -11,11 +11,15 @@ router.get(
 	ProductsController.getSearchResults
 );
 router.get(
+	"/by/price",
+	ProductValidation.Validate,
+	ProductsController.getByPriceRange
+);
+router.get(
 	"/:productId",
 	ProductValidation.Validate,
 	ProductsController.getById
 );
-router.get("/by/price", ProductsController.getByPriceRange);
 router.post("/", ProductValidation.Validate, ProductsController.create);
 router.patch(
 	"/:productId",
