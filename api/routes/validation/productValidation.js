@@ -1,6 +1,5 @@
 const {
 	RequestValidationError,
-	InvalidQueryParamsError,
 	ArgumentIsIncorrectType,
 	UpdateError
 } = require("@helpers/errors");
@@ -48,23 +47,7 @@ class ProductValidation {
 	}
 
 	static ValidatePriceRangeQuery(query) {
-		if (!query) {
-			throw new InvalidQueryParamsError(
-				`This endpoint requires a querry that contains fields: ${ByPriceRangeQueryModel.join(
-					", "
-				)}.`
-			);
-		}
-
-		URLQueryValidation.ValidateRequiredQueryFieldsExist(
-			query,
-			ProductsQueries.ByPriceRangeQueryModel
-		);
-
-		URLQueryValidation.ValidateQueryFieldsHaveCorrectValues(
-			query,
-			ProductsQueries.ByPriceRangeQueryModel
-		);
+		URLQueryValidation.Validate(query, ProductsQueries.ByPriceRangeQueryModel);
 	}
 
 	static ValidateSearchQuery(query) {

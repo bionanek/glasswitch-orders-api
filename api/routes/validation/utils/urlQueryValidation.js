@@ -1,28 +1,50 @@
 const { InvalidQueryParamsError } = require("@helpers/errors");
 
 class URLQueryValidation {
+	static Validate(query, queryModel) {
+		URLQueryValidation.ValidateQueryObject(query);
+		URLQueryValidation.ValidateRequiredQueryFieldsExist(query, queryModel);
+		URLQueryValidation.ValidateQueryFieldsHaveCorrectValues(query, queryModel);
+	}
+
+	static ValidateQueryObject(query) {
+		if (!query) {
+			throw new InvalidQueryParamsError("URLQuery cannot be empty.");
+		}
+	}
+
 	static ValidateQueryFieldsHaveCorrectValues(query, queryModel) {
+		const validationResult = URLQueryValidation.ValidateQueryValues(
+			query,
+			queryModel
+		);
+
+		if (!validationResult.isValid) {
+			const invalidFieldsJson = JSON.stringify(validationResult.invalidFields);
+			throw new InvalidQueryParamsError(
+				`Query contains parameters of wrong types. Expected types for invalid field/s: ${invalidFieldsJson}`
+			);
+		}
+	}
+
+	static ValidateQueryValues(query, queryModel) {
 		let invalidFields = {};
 		for (const field in query) {
-			if (queryModel[field] === "number") {
-				if (isNaN(query[field])) {
-					invalidFields[field] = queryModel[field];
-				}
+			if (queryModel[field] === "number" && isNaN(query[field])) {
+				invalidFields[field] = queryModel[field];
 			} else if (typeof queryModel[field] === "object") {
-				const dictionary = queryModel[field];
+				const allowedValues = Object.values(queryModel[field]);
 
-				if (!Object.values(dictionary).includes(query[field])) {
+				if (!allowedValues.includes(query[field])) {
 					invalidFields[field] = queryModel[field];
 				}
 			}
 		}
 
-		if (Object.keys(invalidFields).length) {
-			const invalidFieldsJson = JSON.stringify(invalidFields);
-			throw new InvalidQueryParamsError(
-				`Query contains parameters of wrong types. Expected types for invalid field/s: ${invalidFieldsJson}`
-			);
-		}
+		return {
+			isValid: Object.keys(invalidFields).length === 0,
+			invalidFields: invalidFields
+		};
 	}
 
 	static ValidateRequiredQueryFieldsExist(query, queryModel) {
