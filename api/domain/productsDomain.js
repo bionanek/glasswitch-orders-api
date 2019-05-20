@@ -1,8 +1,7 @@
 const productRepo = require("@repos/productRepository");
 const { IdNotFound, SequelizeError } = require("@helpers/errors");
 const { Verification, Resources } = require("@verify/verification");
-const imageUtils = require("../../productsImages/imageUtils");
-const fileSystem = require("fs");
+const imageUtils = require("@helpers/imageUtils");
 
 exports.create = async productData => {
   try {
@@ -67,13 +66,13 @@ exports.getSearchResults = async searchPhrase => {
 
 exports.imageUpdate = async (product, updatedProductData) => {
   if (product.imageName !== updatedProductData.imageName) {
-    if (updatedProductData.imageName === undefined) {
+    if (product.code !== updatedProductData.code) {
       await this.imageNameUrlUpdate(updatedProductData, product.imageName);
     }
-    updatedProductData.imageUrl =
-      "http://localhost:3001/" + updatedProductData.imageName;
 
-    imageUtils.imageDelete(product.imageName);
+    if (updatedProductData.imageName !== undefined) {
+      imageUtils.imageDelete(product.imageName);
+    }
   }
 };
 

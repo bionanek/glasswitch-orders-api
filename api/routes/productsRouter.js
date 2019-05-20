@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { ProductValidation } = require("@validation/productValidation");
 const ProductsController = require("@controllers/productsController");
-const { upload } = require("@validation/productImageUpload");
+const { upload } = require("@helpers/image-upload/productImageUpload");
 
 router.get("/", ProductsController.getAll);
 router.get(
