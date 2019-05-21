@@ -32,7 +32,7 @@ exports.delete = async productId => {
   try {
     await Verification.IdExists(Resources.Products, productId);
     const product = await productRepo.getById(productId);
-    imageUtils.imageDelete(product.imageName);
+    imageUtils.imageDelete(product.imageUrl);
 
     return await productRepo.deleteProduct(productId);
   } catch (error) {
