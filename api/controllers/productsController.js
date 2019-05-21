@@ -3,7 +3,6 @@ const productsDomain = require("@domains/productsDomain");
 exports.create = async (request, response, next) => {
   try {
     const productData = request.body;
-    productData.imageUrl = "http://localhost:3001/" + request.body.imageName;
     const product = await productsDomain.create(productData);
 
     response.status(200).json(product);

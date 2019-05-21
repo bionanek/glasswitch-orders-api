@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
   },
   filename: function(request, file, callback) {
     const fileName = request.body.code + "_" + dateNoTime + ".jpg";
-    request.body.imageName = fileName;
+    request.body.imageUrl = fileName;
 
     callback(null, fileName);
   }

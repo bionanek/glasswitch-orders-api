@@ -15,7 +15,7 @@ exports.update = async (productId, updatedProductData) => {
   try {
     await Verification.IdExists(Resources.Products, productId);
     const product = await productRepo.getById(productId);
-    await this.imageUpdate(product, updatedProductData);
+    await imageUpdate(product, updatedProductData);
 
     return await productRepo.updateProduct(productId, updatedProductData);
   } catch (error) {
@@ -64,28 +64,17 @@ exports.getSearchResults = async searchPhrase => {
   return await productRepo.getSearchResults(searchPhrase);
 };
 
-exports.imageUpdate = async (product, updatedProductData) => {
-  if (product.imageName !== updatedProductData.imageName) {
-    if (product.code !== updatedProductData.code) {
-      await this.imageNameUrlUpdate(updatedProductData, product.imageName);
-    }
+const imageUpdate = async (product, updatedProductData) => {
+  if (product.imageUrl === updatedProductData.imageUrl) return;
 
-    if (updatedProductData.imageName !== undefined) {
-      imageUtils.imageDelete(product.imageName);
-    }
+  if (updatedProductData.image === "undefined") {
+    const dateNoTime = new Date().toISOString().split("T")[0];
+    updatedProductData.imageUrl =
+      updatedProductData.code + "_" + dateNoTime + ".jpg";
+    imageUtils.imageRename(product.imageUrl, updatedProductData.imageUrl);
   }
-};
 
-exports.imageNameUrlUpdate = (updatedProductData, oldFileName) => {
-  const dateNoTime = new Date().toISOString().split("T")[0];
-
-  updatedProductData.imageName =
-    updatedProductData.code + "_" + dateNoTime + ".jpg";
-
-  updatedProductData.imageUrl =
-    "http://localhost:3001/" + updatedProductData.imageName;
-
-  imageUtils.imageRename(oldFileName, updatedProductData.imageName);
-
-  return updatedProductData;
+  if (updatedProductData.image === undefined) {
+    imageUtils.imageDelete(product.imageUrl);
+  }
 };

@@ -1,12 +1,17 @@
 const fileSystem = require("fs");
 
-exports.imageDelete = async fileName => {
-  await fileSystem.unlinkSync("./productsImages/" + fileName);
+exports.imageDelete = fileName => {
+  fileSystem.unlink("./productsImages/" + fileName, error => {
+    if (error) throw error.message;
+  });
 };
 
-exports.imageRename = async (oldFileName, newFileName) => {
-  await fileSystem.renameSync(
+exports.imageRename = (oldFileName, newFileName) => {
+  fileSystem.rename(
     "./productsImages/" + oldFileName,
-    "./productsImages/" + newFileName
+    "./productsImages/" + newFileName,
+    error => {
+      if (error) throw error.message;
+    }
   );
 };

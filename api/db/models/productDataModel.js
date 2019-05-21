@@ -14,6 +14,5 @@ exports.productDataModel = {
   width: { type: Types.DOUBLE, allowNull: true },
   height: { type: Types.DOUBLE, allowNull: true },
   depth: { type: Types.DOUBLE, allowNull: true },
-  imageUrl: { type: Types.STRING, allowNull: true },
-  imageName: { type: Types.STRING, allowNull: true }
+  imageUrl: { type: Types.STRING, allowNull: true }
 };
