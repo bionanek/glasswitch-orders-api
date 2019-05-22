@@ -15,7 +15,7 @@ exports.update = async (productId, updatedProductData) => {
   try {
     await Verification.IdExists(Resources.Products, productId);
     const product = await productRepo.getById(productId);
-    await imageUpdate(product, updatedProductData);
+    imageUpdate(product, updatedProductData);
 
     return await productRepo.updateProduct(productId, updatedProductData);
   } catch (error) {
@@ -64,7 +64,7 @@ exports.getSearchResults = async searchPhrase => {
   return await productRepo.getSearchResults(searchPhrase);
 };
 
-const imageUpdate = async (product, updatedProductData) => {
+const imageUpdate = (product, updatedProductData) => {
   if (product.imageUrl === updatedProductData.imageUrl) return;
 
   if (updatedProductData.image === "undefined") {
