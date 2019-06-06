@@ -72,8 +72,8 @@ exports.getSearchResults = async (request, response) => {
 exports.getByPriceRange = async (request, response) => {
 	try {
 		const priceRange = {
-			from: request.query.priceFrom,
-			to: request.query.priceTo,
+			from: +request.query.priceFrom,
+			to: +request.query.priceTo,
 			currency: request.query.curr
 		};
 		const productsInPriceRange = await productsDomain.getByPriceRange(

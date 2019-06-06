@@ -48,6 +48,21 @@ class ProductValidation {
 
 	static ValidatePriceRangeQuery(query) {
 		URLQueryValidation.Validate(query, ProductsQueries.ByPriceRangeQueryModel);
+		ProductValidation.ValidatePriceRange(+query.priceFrom, +query.priceTo);
+	}
+
+	static ValidatePriceRange(from, to) {
+		if (to < from) {
+			throw new RequestValidationError(
+				"'priceTo' must be higher than 'priveFrom'"
+			);
+		}
+
+		if (from < 0 || to < 0) {
+			throw new RequestValidationError(
+				"Given prices must be positive numbers."
+			);
+		}
 	}
 
 	static ValidateSearchQuery(query) {
