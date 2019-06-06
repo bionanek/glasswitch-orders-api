@@ -9,30 +9,30 @@ var OrdersDataModel = require("@models/orderDataModel").orderDataModel;
 let sequelize;
 
 function getSequelize() {
-  if (sequelize) {
-    return sequelize;
-  }
+	if (sequelize) {
+		return sequelize;
+	}
 
-  const options = config.dbOptions;
-  return new Sequelize(options);
+	const options = config.dbOptions;
+	return new Sequelize(options);
 }
 
 sequelize = getSequelize();
 
 var Products = sequelize.define("product", ProductsDataModel, {
-  freezeTableName: true
+	freezeTableName: true
 });
 var Prices = sequelize.define("price", PricesDataModel, {
-  freezeTableName: true
+	freezeTableName: true
 });
 var Customers = sequelize.define("customer", CustomersDataModel, {
-  freezeTableName: true
+	freezeTableName: true
 });
 var Orders = sequelize.define("order", OrdersDataModel, {
-  freezeTableName: true
+	freezeTableName: true
 });
 var ProductsOrders = sequelize.define("products_orders", {
-  quantity: Sequelize.INTEGER
+	quantity: Sequelize.INTEGER
 });
 
 Products.Price = Products.belongsTo(Prices, { onDelete: "cascade" });
@@ -40,14 +40,14 @@ Orders.Customer = Orders.belongsTo(Customers, { onDelete: "cascade" });
 Customers.Order = Customers.hasMany(Orders, { as: "orders" });
 
 Orders.belongsToMany(Products, {
-  as: "products",
-  through: ProductsOrders,
-  foreignKey: "orderId"
+	as: "products",
+	through: ProductsOrders,
+	foreignKey: "orderId"
 });
 Products.belongsToMany(Orders, {
-  as: "orders",
-  through: ProductsOrders,
-  foreignKey: "productId"
+	as: "orders",
+	through: ProductsOrders,
+	foreignKey: "productId"
 });
 
 sequelize.sync({ force: true });
