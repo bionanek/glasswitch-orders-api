@@ -52,11 +52,13 @@ exports.getSearchResults = async searchPhrase => {
 		where: {
 			[Op.or]: [
 				{ name: likeOperator },
+				{ code: likeOperator },
 				{ description: likeOperator },
 				{ category: likeOperator },
 				{ type: likeOperator }
 			]
-		}
+		},
+		include: [Products.Price]
 	});
 
 	return searchResults;

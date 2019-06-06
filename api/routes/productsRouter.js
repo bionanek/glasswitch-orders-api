@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { ProductValidation } = require("@validation/productValidation");
-
 const ProductsController = require("@controllers/productsController");
+const { upload } = require("@helpers/image-upload/productImageUpload");
 
 router.get("/", ProductsController.getAll);
 router.get(
@@ -20,9 +20,15 @@ router.get(
 	ProductValidation.Validate,
 	ProductsController.getById
 );
-router.post("/", ProductValidation.Validate, ProductsController.create);
+router.post(
+	"/",
+	upload.single("image"),
+	ProductValidation.Validate,
+	ProductsController.create
+);
 router.patch(
 	"/:productId",
+	upload.single("image"),
 	ProductValidation.Validate,
 	ProductsController.update
 );

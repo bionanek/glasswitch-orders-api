@@ -113,11 +113,32 @@ class IdNotFound extends Error {
 	}
 }
 
+class FileOperationError extends Error {
+	constructor(message) {
+		super(message);
+		this.name = "FileOperationError";
+		this.message = message;
+		this.code = 400;
+	}
+
+	toJSON() {
+		return {
+			error: {
+				errorCode: this.code,
+				name: this.name,
+				message: this.message,
+				stacktrace: this.stack
+			}
+		};
+	}
+}
+
 module.exports = {
 	ArgumentIsIncorrectType,
 	RequestValidationError,
 	UpdateError,
 	IdNotFound,
 	SequelizeError,
+	FileOperationError,
 	InvalidQueryParamsError
 };

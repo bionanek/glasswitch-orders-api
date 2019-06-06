@@ -1,6 +1,7 @@
 const productRepo = require("@repos/productRepository");
 const { IdNotFound, SequelizeError } = require("@helpers/errors");
 const { Verification, Resources } = require("@verify/verification");
+const imageUtils = require("@helpers/imageUtils");
 
 exports.create = async productData => {
 	try {
@@ -13,6 +14,8 @@ exports.create = async productData => {
 exports.update = async (productId, updatedProductData) => {
 	try {
 		await Verification.IdExists(Resources.Products, productId);
+		const product = await productRepo.getById(productId);
+		imageUpdate(product, updatedProductData);
 
 		return await productRepo.updateProduct(productId, updatedProductData);
 	} catch (error) {
@@ -28,6 +31,8 @@ exports.update = async (productId, updatedProductData) => {
 exports.delete = async productId => {
 	try {
 		await Verification.IdExists(Resources.Products, productId);
+		const product = await productRepo.getById(productId);
+		imageUtils.imageDelete(product.imageUrl);
 
 		return await productRepo.deleteProduct(productId);
 	} catch (error) {
@@ -57,6 +62,21 @@ exports.getById = async productId => {
 
 exports.getSearchResults = async searchPhrase => {
 	return await productRepo.getSearchResults(searchPhrase);
+};
+
+const imageUpdate = (product, updatedProductData) => {
+	if (product.imageUrl === updatedProductData.imageUrl) return;
+
+	if (updatedProductData.image === "undefined") {
+		const dateNoTime = new Date().toISOString().split("T")[0];
+		updatedProductData.imageUrl =
+			updatedProductData.code + "_" + dateNoTime + ".jpg";
+		imageUtils.imageRename(product.imageUrl, updatedProductData.imageUrl);
+	}
+
+	if (updatedProductData.image === undefined) {
+		imageUtils.imageDelete(product.imageUrl);
+	}
 };
 
 exports.getByPriceRange = async (priceRange, order) => {
