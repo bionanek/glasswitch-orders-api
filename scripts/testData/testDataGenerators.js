@@ -29,7 +29,7 @@ exports.productsMaker = function*(count) {
 	for (let i = 1; i <= count; i++) {
 		let product = {
 			name: "Prod " + getName() + " " + i,
-			code: `GW/${utils.intRandom(0, 500)}/${utils.intRandom(0, 500)}`,
+			code: `GW-${utils.intRandom(0, 500)}-${utils.intRandom(0, 500)}`,
 			description: "Description " + utils.lorem,
 			type: getName(),
 			category: getName(),
@@ -46,5 +46,37 @@ exports.productsMaker = function*(count) {
 		};
 
 		yield product;
+	}
+};
+
+const currencies = ["usd", "eur", "pln"];
+
+exports.ordersMaker = function*(count, productsRange, customersRange) {
+	for (let i = 1; i <= count; i++) {
+		let products = [];
+
+		for (let j = 0; j < utils.intRandom(1, 25); j++) {
+			products.push({
+				id: utils.intRandom(1, productsRange),
+				quantity: utils.intRandom(1, 1000)
+			});
+		}
+
+		let order = {
+			shippingCost: utils.decRandom(1, 200),
+			shippingCompany: utils.strRandom() + " Shipping Company",
+			currency: currencies[utils.intRandom(0, 2)],
+			notes: "Some Notes " + utils.lorem,
+			email: utils.strRandom() + "@mail.com",
+			confirmationSent: count % utils.intRandom(1, 10) === 0,
+			proformaSent: count % utils.intRandom(1, 10) > utils.intRandom(0, 10),
+			invoiceSent: count % utils.intRandom(1, 10) > utils.intRandom(0, 10),
+			settledPayment: count % utils.intRandom(1, 10) > utils.intRandom(0, 10),
+			deadline: utils.dateRandom(),
+			customerId: utils.intRandom(1, customersRange),
+			wantedProducts: products
+		};
+
+		yield order;
 	}
 };
