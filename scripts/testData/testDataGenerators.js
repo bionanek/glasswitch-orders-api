@@ -36,8 +36,7 @@ exports.productsMaker = function*(count) {
 			width: utils.decRandom(1, 20),
 			height: utils.decRandom(1, 20),
 			depth: utils.decRandom(1, 20),
-			imageUrl:
-				"https://shortyawards.imgix.net/entries/9th/7fc62abf-4e67-43f7-899e-629a87716d07.jpg?auto=format&fit=crop&h=400&q=65&w=400&s=9e4bd27c80965abbffb6a78c2ff93f52",
+			imageUrl: "placeholder-meme.jpg",
 			price: {
 				pln: utils.decRandom(1, 20),
 				eur: utils.decRandom(1, 20),
