@@ -17,5 +17,5 @@ exports.orderDataModel = {
     proformaSent:       { type: Types.BOOLEAN,   allowNull: false },
     invoiceSent:        { type: Types.BOOLEAN,   allowNull: false },
     settledPayment:     { type: Types.BOOLEAN,   allowNull: false },
-    deadline:           { type: Types.DATEONLY,  allowNull: false }
+    deadline:           { type: Types.STRING,  allowNull: false }
 }
