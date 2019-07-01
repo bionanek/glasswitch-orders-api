@@ -59,7 +59,7 @@ exports.deleteProducts = async (request, response, next) => {
 		const orderId = request.params.orderId
 		const products = await ordersDomain.deleteProducts(
 			orderId,
-			request.body.products
+			request.body.productsToDelete
 		)
 
 		response.status(200).json(products)
