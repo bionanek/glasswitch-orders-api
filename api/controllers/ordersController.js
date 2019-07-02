@@ -57,10 +57,7 @@ exports.getById = async (request, response, next) => {
 exports.deleteProducts = async (request, response, next) => {
 	try {
 		const orderId = request.params.orderId
-		const products = await ordersDomain.deleteProducts(
-			orderId,
-			request.body.productsToDelete
-		)
+		const products = await ordersDomain.deleteProducts(orderId, request.body)
 
 		response.status(200).json(products)
 	} catch (error) {
