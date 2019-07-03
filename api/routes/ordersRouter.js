@@ -4,6 +4,11 @@ const OrderValidation = require("@validation/orderValidation").OrderValidation
 const OrdersController = require("@controllers/ordersController")
 
 router.get("/", OrdersController.getAll)
+router.get(
+	"/search",
+	OrderValidation.Validate,
+	OrdersController.getSearchResults
+)
 router.get("/:orderId", OrderValidation.Validate, OrdersController.getById)
 router.post("/", OrderValidation.Validate, OrdersController.create)
 router.patch("/:orderId", OrderValidation.Validate, OrdersController.update)

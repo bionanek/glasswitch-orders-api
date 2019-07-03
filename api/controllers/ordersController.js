@@ -64,3 +64,15 @@ exports.deleteProducts = async (request, response, next) => {
 		response.status(error.code).json(error)
 	}
 }
+
+exports.getSearchResults = async (request, response) => {
+	try {
+		const filteredOrders = await ordersDomain.getSearchResults(
+			request.query.search
+		)
+
+		response.status(200).json(filteredOrders)
+	} catch (erorr) {
+		response.status(error.code).json(error)
+	}
+}

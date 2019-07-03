@@ -50,7 +50,7 @@ Products.belongsToMany(Orders, {
 	foreignKey: "productId"
 })
 
-sequelize.sync({ force: false })
+sequelize.sync({ force: true })
 
 exports.Prices = Prices
 exports.Products = Products

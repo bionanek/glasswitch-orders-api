@@ -1,9 +1,9 @@
-require("module-alias/register");
-require("module-alias/register");
-const http = require("http");
-const app = require("./app");
+require("module-alias/register")
+require("module-alias/register")
+const http = require("http")
+const app = require("./app")
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3001
 
-const server = http.createServer(app);
-server.listen(port);
+const server = http.createServer(app)
+server.listen(port)
