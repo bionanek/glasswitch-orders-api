@@ -86,3 +86,17 @@ exports.getByPriceRange = async (request, response) => {
 		response.status(error.code).json(error)
 	}
 }
+
+exports.generateProductsCatalog = async (request, response) => {
+	try {
+		const generatedPdf = await productsDomain.generateProductsCatalog(
+			request.body
+		)
+
+		setTimeout(() => {
+			response.sendFile(generatedPdf, { root: "./" })
+		}, 2500)
+	} catch (error) {
+		response.status(error.code).json(error)
+	}
+}

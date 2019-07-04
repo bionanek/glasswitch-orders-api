@@ -2,6 +2,9 @@ const productRepo = require("@repos/productRepository")
 const { IdNotFound, SequelizeError } = require("@helpers/errors")
 const { Verification, Resources } = require("@verify/verification")
 const imageUtils = require("@helpers/imageUtils")
+const fileSystem = require("fs")
+const pdf = require("html-pdf")
+const productsCatalogTemplate = require("../helpers/pdf-templates/productsCatalogTemplate")
 
 exports.create = async productData => {
 	try {
@@ -84,5 +87,24 @@ exports.getByPriceRange = async (priceRange, order) => {
 		return await productRepo.getByPriceRange(priceRange, order)
 	} catch (ex) {
 		throw new Error(ex)
+	}
+}
+
+exports.generateProductsCatalog = products => {
+	try {
+		const folderPath = "./pdfs/"
+		const fileName = `${new Date().toDateString()}-Products-Catalog.pdf`
+
+		if (!fileSystem.existsSync(folderPath)) {
+			fileSystem.mkdirSync(folderPath)
+		}
+
+		pdf
+			.create(productsCatalogTemplate(products))
+			.toFile(`${folderPath}/${fileName}`, err => {})
+
+		return folderPath + fileName
+	} catch (error) {
+		throw new Error(error.message)
 	}
 }
