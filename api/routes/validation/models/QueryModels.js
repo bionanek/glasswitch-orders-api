@@ -1,4 +1,4 @@
-const { CurrencyEnum, OrderEnum } = require("@helpers/enums");
+const { CurrencyEnum, OrderEnum } = require("@helpers/enums")
 
 exports.ProductsQueries = {
 	ByPriceRangeQueryModel: {
@@ -7,4 +7,4 @@ exports.ProductsQueries = {
 		curr: CurrencyEnum,
 		order: OrderEnum
 	}
-};
+}

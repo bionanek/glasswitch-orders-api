@@ -1,4 +1,8 @@
 const Orders = require("@db/dbHelper").Orders
+const Sequelize = require("@db/dbHelper").Sequelize
+
+const Op = Sequelize.Op
+exports.Orders = Orders
 
 exports.createOrder = orderData => {
 	return Orders.create(orderData, { include: [{ all: true }] })
@@ -20,6 +24,22 @@ exports.getAll = () => {
 
 exports.getById = orderId => {
 	return Orders.findById(orderId, { include: [{ all: true }] })
+}
+
+exports.getSearchResults = async searchPhrase => {
+	const likeOperator = { [Op.like]: `%${searchPhrase}%` }
+
+	const searchResults = await Orders.findAll({
+		where: {
+			[Op.or]: [
+				{ shippingCompany: likeOperator },
+				{ currency: likeOperator },
+				{ notes: likeOperator },
+				{ email: likeOperator }
+			]
+		}
+	})
+	return searchResults
 }
 
 exports.addProducts = (order, productId, quantity) => {

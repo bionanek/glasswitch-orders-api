@@ -58,11 +58,7 @@ exports.delete = async orderId => {
 }
 
 exports.getAll = () => {
-	try {
-		return orderRepo.getAll()
-	} catch (error) {
-		throw new Error("No orders were found.")
-	}
+	return orderRepo.getAll()
 }
 
 exports.getById = async orderId => {
@@ -73,6 +69,10 @@ exports.getById = async orderId => {
 	} catch (error) {
 		throw new IdNotFound(error.message)
 	}
+}
+
+exports.getSearchResults = searchPhrase => {
+	return orderRepo.getSearchResults(searchPhrase)
 }
 
 exports.addProducts = async (order, productsArray) => {

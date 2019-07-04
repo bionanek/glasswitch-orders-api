@@ -57,13 +57,22 @@ exports.getById = async (request, response, next) => {
 exports.deleteProducts = async (request, response, next) => {
 	try {
 		const orderId = request.params.orderId
-		const products = await ordersDomain.deleteProducts(
-			orderId,
-			request.body.products
-		)
+		const products = await ordersDomain.deleteProducts(orderId, request.body)
 
 		response.status(200).json(products)
 	} catch (error) {
+		response.status(error.code).json(error)
+	}
+}
+
+exports.getSearchResults = async (request, response) => {
+	try {
+		const filteredOrders = await ordersDomain.getSearchResults(
+			request.query.search
+		)
+
+		response.status(200).json(filteredOrders)
+	} catch (erorr) {
 		response.status(error.code).json(error)
 	}
 }

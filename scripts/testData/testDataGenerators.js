@@ -1,7 +1,7 @@
-const utils = require("./utils");
+const utils = require("./utils")
 
 function getName() {
-	return utils.strRandom() + " " + utils.strRandom();
+	return utils.strRandom() + " " + utils.strRandom()
 }
 
 exports.customerMaker = function*(count) {
@@ -19,11 +19,11 @@ exports.customerMaker = function*(count) {
 			billing_city: utils.strRandom() + " City",
 			billing_country: utils.strRandom() + " Country",
 			billing_postCode: null
-		};
+		}
 
-		yield customer;
+		yield customer
 	}
-};
+}
 
 exports.productsMaker = function*(count) {
 	for (let i = 1; i <= count; i++) {
@@ -42,23 +42,23 @@ exports.productsMaker = function*(count) {
 				eur: utils.decRandom(1, 20),
 				usd: utils.decRandom(1, 20)
 			}
-		};
+		}
 
-		yield product;
+		yield product
 	}
-};
+}
 
-const currencies = ["usd", "eur", "pln"];
+const currencies = ["usd", "eur", "pln"]
 
 exports.ordersMaker = function*(count, productsRange, customersRange) {
 	for (let i = 1; i <= count; i++) {
-		let products = [];
+		let products = []
 
 		for (let j = 0; j < utils.intRandom(1, 25); j++) {
 			products.push({
 				id: utils.intRandom(1, productsRange),
 				quantity: utils.intRandom(1, 1000)
-			});
+			})
 		}
 
 		let order = {
@@ -74,8 +74,8 @@ exports.ordersMaker = function*(count, productsRange, customersRange) {
 			deadline: utils.dateRandom(),
 			customerId: utils.intRandom(1, customersRange),
 			wantedProducts: products
-		};
+		}
 
-		yield order;
+		yield order
 	}
-};
+}
