@@ -93,14 +93,21 @@ exports.getByPriceRange = async (priceRange, order) => {
 exports.generateProductsCatalog = products => {
 	try {
 		const folderPath = "./pdfs/"
-		const fileName = `${new Date().toDateString()}-Products-Catalog.pdf`
+
+		const localeDate = new Date().toLocaleDateString().split("/")
+		const localeTime = new Date().toLocaleTimeString().split(":")
+
+		const cutDate = `${localeDate[0]}-${localeDate[1]}-${localeDate[2]}`
+		const cutTime = `${localeTime[0]}-${localeTime[1]}-${localeTime[2]}`
+
+		const fileName = `${cutDate}-${cutTime}-Products-Catalog.pdf`
 
 		if (!fileSystem.existsSync(folderPath)) {
 			fileSystem.mkdirSync(folderPath)
 		}
 
 		pdf
-			.create(productsCatalogTemplate(products))
+			.create(productsCatalogTemplate(products), {})
 			.toFile(`${folderPath}/${fileName}`, err => {})
 
 		return folderPath + fileName

@@ -1,28 +1,47 @@
-module.exports = ({ products }) => {
-	const today = new Date()
+module.exports = products => {
+	const imgSource = `http://localhost:3001/${products[0].imageUrl}`
 	return `
-	<!doctype html>
+	<!DOCTYPE html>
 	<html>
-		 <head>
-				<meta charset="utf-8">
-				<title>PDF Result Template</title>
-				<style>
-					 .invoice-box {
-					 max-width: 800px;
-					 margin: auto;
-					 padding: 30px;
-					 border: 1px solid #eee;
-					 box-shadow: 0 0 10px rgba(0, 0, 0, .15);
-					 font-size: 16px;
-					 line-height: 24px;
-					 font-family: 'Helvetica Neue', 'Helvetica',
-					 color: #555;
-					 }
-				</style>
-		 </head>
-		 <body>
-				<div class="invoice-box" />
-		 </body>
+		<head>
+			<meta charset="utf-8" />
+			<style>
+				.products-catalog-page {
+				max-width: 800px;
+				margin: auto;
+				padding: 30px;
+				}
+
+				.image-size {
+					float: left;
+					width: 250px;
+					height: 250px;
+				}
+
+				.products-data {
+					float: right;
+				}
+			</style>
+		</head>
+		<body>
+			<div class="products-catalog-page">
+			
+				<div class="products-row">
+					<img class="image-size" src=${imgSource} />
+					
+					<div class="products-data">
+						<h2>${products[0].name}. ${products[0].code}</h2>
+
+						<h3>${products[0].description}.</h2>
+
+						<h3>${products[0].price.pln}. ${products[0].price.eur}. ${
+		products[0].price.usd
+	}</h3>
+					</div>
+				</div>
+			
+			</div>
+		</body>
 	</html>
 	`
 }
