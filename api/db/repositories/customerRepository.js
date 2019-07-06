@@ -21,7 +21,7 @@ exports.getAll = () => {
 }
 
 exports.getById = customerId => {
-	return Customers.findById(customerId)
+	return Customers.findById(customerId, { include: [{ all: true }] })
 }
 
 exports.getSearchResults = async searchPhrase => {
