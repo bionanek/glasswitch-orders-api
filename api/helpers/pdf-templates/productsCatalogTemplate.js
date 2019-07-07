@@ -6,40 +6,43 @@ module.exports = products => {
 		<head>
 			<meta charset="utf-8" />
 			<style>
-				.products-catalog-page {
-				max-width: 800px;
-				margin: auto;
-				padding: 30px;
+				.wrapper {
+					display: grid;
+					grid-template-columns: 40%60%;
 				}
 
-				.image-size {
-					float: left;
-					width: 250px;
-					height: 250px;
+				.wrapper > div {
+					background: #eee;
+					padding: 1em;
 				}
 
-				.products-data {
-					float: right;
+				.wrapper > div:nth-child(odd) {
+					background: #ddd;
+				}
+
+				.image {
+					width: 300px;
+					height: 300px;
 				}
 			</style>
 		</head>
+
 		<body>
-			<div class="products-catalog-page">
-			
-				<div class="products-row">
-					<img class="image-size" src=${imgSource} />
-					
-					<div class="products-data">
-						<h2>${products[0].name}. ${products[0].code}</h2>
-
-						<h3>${products[0].description}.</h2>
-
-						<h3>${products[0].price.pln}. ${products[0].price.eur}. ${
-		products[0].price.usd
-	}</h3>
-					</div>
+			<div class="wrapper">
+				<div>
+					<img class="image" src="${imgSource}" />
 				</div>
-			
+
+				<div>
+					<h2>${products[0].name}. ${products[0].code}</h2>
+
+					<p>${products[0].description}.</p>
+
+					<h2>
+						${products[0].price.pln} PLN - ${products[0].price.eur} EUR -
+						${products[0].price.usd} USD
+					</h2>
+				</div>
 			</div>
 		</body>
 	</html>

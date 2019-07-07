@@ -1,4 +1,5 @@
 const productsDomain = require("@domains/productsDomain")
+const { productsCatalog } = require("@helpers/pdfGenerate")
 
 exports.create = async (request, response, next) => {
 	try {
@@ -89,9 +90,7 @@ exports.getByPriceRange = async (request, response) => {
 
 exports.generateProductsCatalog = async (request, response) => {
 	try {
-		const generatedPdf = await productsDomain.generateProductsCatalog(
-			request.body
-		)
+		const generatedPdf = await productsCatalog(request.body)
 
 		setTimeout(() => {
 			response.sendFile(generatedPdf, { root: "./" })
