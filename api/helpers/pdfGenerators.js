@@ -1,19 +1,19 @@
 const fileSystem = require("fs")
 const pdf = require("html-pdf")
-const productsCatalogTemplate = require("../helpers/pdf-templates/productsCatalogTemplate")
+const productsCatalogTemplate = require("./pdf-templates/productsCatalogTemplate")
 
 const folderPath = "./pdfs/"
 
 const localeDate = new Date().toLocaleDateString().split("/")
 const localeTime = new Date().toLocaleTimeString().split(":")
 
-const cutDate = `${localeDate[0]}-${localeDate[1]}-${localeDate[2]}`
-const cutTime = `${localeTime[0]}-${localeTime[1]}-${localeTime[2]}`
+const fixedDate = `${localeDate[0]}-${localeDate[1]}-${localeDate[2]}`
+const fixedTime = `${localeTime[0]}-${localeTime[1]}-${localeTime[2]}`
 
-exports.productsCatalog = products => {
+exports.generateProductsCatalogPdf = products => {
 	if (!fileSystem.existsSync(folderPath)) fileSystem.mkdirSync(folderPath)
 
-	const fileName = `${cutDate}-${cutTime}-Products-Catalog.pdf`
+	const fileName = `${fixedDate}-${fixedTime}-Products-Catalog.pdf`
 
 	pdf
 		.create(productsCatalogTemplate(products), {})
