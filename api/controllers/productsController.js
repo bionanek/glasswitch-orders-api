@@ -1,5 +1,5 @@
 const productsDomain = require("@domains/productsDomain")
-const { generateProductsCatalogPdf } = require("@helpers/pdfGenerator")
+const { generateProductsCatalogPdf } = require("@helpers/pdfGenerators")
 
 exports.create = async (request, response, next) => {
 	try {
@@ -92,6 +92,7 @@ exports.generateProductsCatalog = async (request, response) => {
 	try {
 		const generatedPdf = await generateProductsCatalogPdf(request.body)
 
+		// TODO: remove timeout
 		setTimeout(() => {
 			response.sendFile(generatedPdf, { root: "./" })
 		}, 2500)
