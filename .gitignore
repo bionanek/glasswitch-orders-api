@@ -65,3 +65,6 @@ typings/
 
 # Directories
 productsImages/
+pdfs/
+
+.package-lock.json

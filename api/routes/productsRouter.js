@@ -37,5 +37,9 @@ router.delete(
 	ProductValidation.Validate,
 	ProductsController.delete
 )
+router.post(
+	"/generateProductsCatalog",
+	ProductsController.generateProductsCatalog
+)
 
 module.exports = router
