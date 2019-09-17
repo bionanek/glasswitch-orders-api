@@ -4,9 +4,9 @@ module.exports = products => {
 	<html>
 		<head>
 			<meta charset="utf-8" />
-			<title>Products Catalog</title>
+			<title>Glass Witch - Products Catalog</title>
 			<style>
-				.invoice-box {
+				.catalog-box {
 					max-width: 800px;
 					margin: auto;
 					padding: 30px;
@@ -15,63 +15,69 @@ module.exports = products => {
 					font-size: 16px;
 					line-height: 24px;
 					font-family: "Helvetica Neue", "Helvetica";
-					color: #555;
+					color: #000000;
 				}
-
-				.margin-top {
-					margin-top: 50px;
-				}
-
-				.justify-center {
-					text-align: center;
-				}
-
-				.invoice-box table {
+	
+				.catalog-box table {
 					width: 100%;
 					line-height: inherit;
 					text-align: left;
 				}
-
-				.invoice-box table td {
+	
+				.catalog-box table td {
 					padding: 5px;
 					vertical-align: top;
 				}
 			</style>
 		</head>
-
+	
 		<body>
-			<div class="invoice-box">
-				<table id="myTable" cellpadding="0" cellspacing="0">
-					<tr class="item">
+			<div class="catalog-box">
+				<table cellpadding="5" cellspacing="5">
+					<tr>
 						<td>
 							<img
-								class="image"
 								src="http://localhost:3001/${products[0].imageUrl}"
 								style="width:300px;height:300px;"
 							/>
 						</td>
+	
 						<td>
-							<h2>${products[0].name}</h2>
+							<h1>${products[0].name}</h1>
 							<h2>${products[0].code}</h2>
 							<h4>${products[0].description}</h4>
-							<h3>${products[0].price.pln}PLN</h3>
-							<h3>${products[0].price.eur}EUR</h3>
-							<h3>${products[0].price.usd}USD</h3>
+							<h3>${products[0].price.pln}</h3>
+							<h3>${products[0].price.eur}</h3>
+							<h3>${products[0].price.usd}</h3>
 						</td>
+
+						<!-- <script>
+							var tableData = '';
+							var productsList = ${products};
+	
+							for (var i = 0; i < productsList.length; i++) {
+								var product = productsList[i];
+	
+								tableData += '<td>';
+								tableData += '<img src="http://localhost:3001/product.imageUrl}" style="width:300px;height:300px;" />';
+								tableData += '</td>';
+	
+								tableData += '<td>';
+								tableData += '<h2> product.name </h2>'
+								tableData += '<h2> product.code </h2>'
+								tableData += '<h2> product.description </h2>'
+								tableData += '<h2> product.price.pln </h2>'
+								tableData += '<h2> product.price.eur </h2>'
+								tableData += '<h2> product.price.usd </h2>'
+								tableData += '</td>';
+							}
+							document.writeln(tableData);
+						</script> -->
 					</tr>
 				</table>
 			</div>
-
-			<script>
-					var tableData = "";
-					for (var i = 0; i < ${products.length}; i++) {
-						tableData += "<tr>";
-						tableData += "<td>" + "<h2>DUPA</h2>" + "</td>";
-						tableData += "</tr>";
-					}
-					document.getElementById("myTable").innerHTML += tableData;
-				</script>
 		</body>
 	</html>
+	
 	`
 }
