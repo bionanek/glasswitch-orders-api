@@ -32,7 +32,7 @@
 	"homepage": "https://github.com/bionanek/glasswitch-orders-api#readme",
 	"dependencies": {
 		"@types/module-alias": "^2.0.0",
-		"bcrypt": "^3.0.2",
+		"bcrypt": "^5.0.0",
 		"body-parser": "^1.18.3",
 		"config": "^2.0.2",
 		"cors": "^2.8.5",
