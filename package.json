@@ -34,7 +34,7 @@
 		"@types/module-alias": "^2.0.0",
 		"bcrypt": "^3.0.2",
 		"body-parser": "^1.18.3",
-		"config": "^2.0.2",
+		"config": "^3.3.8",
 		"cors": "^2.8.5",
 		"express": "^4.16.4",
 		"html-pdf": "^2.2.0",
